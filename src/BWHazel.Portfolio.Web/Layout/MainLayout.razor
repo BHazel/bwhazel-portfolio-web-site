@@ -1,3 +1,33 @@
 ﻿@inherits LayoutComponentBase
 
-@this.Body
+<MudThemeProvider />
+<MudPopoverProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<MudLayout>
+    <MudAppBar>
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="e => this.ToggleDrawer()" />
+        <MudText Typo="Typo.h5">B W Hazel Portfolio</MudText>
+    </MudAppBar>
+    <MudDrawer @bind-Open="@this.isDrawerOpen" ClipMode="DrawerClipMode.Always">
+        <Nav />
+    </MudDrawer>
+    <MudMainContent>
+        <MudContainer Class="mt-8" MaxWidth="MaxWidth.Large">
+            @this.Body
+        </MudContainer>
+    </MudMainContent>
+</MudLayout>
+
+@code {
+    private bool isDrawerOpen = true;
+
+    /// <summary>
+    /// Toggles the navigation drawer between open and closed.
+    /// </summary>
+    private void ToggleDrawer()
+    {
+        this.isDrawerOpen = !this.isDrawerOpen;
+    }
+}
