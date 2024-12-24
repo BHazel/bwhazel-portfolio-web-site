@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using BWHazel.Portfolio.Web;
+using BWHazel.Portfolio.Web.Services;
 using MudBlazor.Services;
 
 const string SiteContentFile = "content.json";
@@ -21,6 +22,8 @@ HttpClient httpClient = new()
 };
 
 builder.Services.AddScoped(serviceProvider => httpClient);
+builder.Services.AddScoped<ScoreService>();
+
 builder.Configuration
     .AddJsonStream(await GetContentData(httpClient));
 
