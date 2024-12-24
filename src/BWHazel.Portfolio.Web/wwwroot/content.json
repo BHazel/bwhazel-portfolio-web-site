@@ -1,0 +1,62 @@
+{
+    "Music": {
+        "Scores": {
+            "MuseScoreUser": {
+                "Id": 536,
+                "Username": "BWHazel"
+            },
+            "Works": [
+                {
+                    "ScoreId": "fete-galante",
+                    "MuseScoreScoreId": 6287503,
+                    "Title": "Fete Galante",
+                    "Year": 2004,
+                    "Ensemble": "Mixed Quartet",
+                    "Parts": [
+                        "Flute",
+                        "Recorder (Descant)",
+                        "Oboe",
+                        "Piano"
+                    ],
+                    "ProgrammeNotes": "Written for flute, descant recorder, oboe and piano.  This was written for my A-Level music coursework and, like Wind in Harmony, started out as a simple exercise within the course!  This composition explores musical transformations and arrangements of a main theme as well as a piano cadenza."
+                },
+                {
+                    "ScoreId": "summer-dusk",
+                    "MuseScoreScoreId": 14830435,
+                    "Title": "Summer Dusk",
+                    "Year": 2002,
+                    "Ensemble": "Piano Solo",
+                    "Parts": [
+                        "Piano"
+                    ],
+                    "ProgrammeNotes": "This composition was written for GCSE Music coursework and is intended to invoke the image of a warm evening in midsummer."
+                },
+                {
+                    "ScoreId": "trumpet-fanfare",
+                    "MuseScoreScoreId": 6287479,
+                    "Title": "Trumpet Fanfare",
+                    "Year": 2000,
+                    "Ensemble": "Brass Duet",
+                    "Parts": [
+                        "Trumpet (x2)"
+                    ],
+                    "ProgrammeNotes": "This is a fanfare duet for two trumpets, also originating as a music exercise when was in year 8 at school!  A friend used the piece as the introductory fanfare to a Christmas concert he hosted several years ago."
+                },
+                {
+                    "ScoreId": "wind-in-harmony",
+                    "MuseScoreScoreId": 6287456,
+                    "Title": "Wind in Harmony",
+                    "Year": 2002,
+                    "Ensemble": "Mixed Quintet",
+                    "Parts": [
+                        "Flute",
+                        "Recorder (Descant)",
+                        "Oboe",
+                        "Piano"
+                    ],
+                    "ProgrammeNotes": "Written for flute, descant recorder, oboe and piano.  This was written for my GCSE music coursework and started out as a simple exercise within the course for applying a melody to a chord sequence!  To this day, it is my favourite composition!"
+                }
+            ]
+        }
+    }
+}

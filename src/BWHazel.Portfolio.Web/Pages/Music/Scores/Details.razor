@@ -1,0 +1,75 @@
+@page "/Music/Scores/{ScoreId}"
+
+@using BWHazel.Portfolio.Web.Models
+@using BWHazel.Portfolio.Web.Services
+
+@inject ScoreService ScoreService
+
+@if (this.score is not null && this.museScoreUser is not null)
+{
+    <MudText GutterBottom="true" Typo="Typo.h3">@this.score.Title</MudText>
+    <MudGrid>
+        <MudItem xs="12" sm="6">
+            <MusicalScore ScoreId="@this.score.ScoreId"
+                          MuseScoreUserId="@this.museScoreUser.MuseScoreUserId"
+                          MuseScoreUserName="@this.museScoreUser.Username"
+                          MuseScoreScoreId="@this.score.MuseScoreScoreId"
+                          Title="@this.score.Title" />
+        </MudItem>
+        <MudItem xs="12" sm="6">
+            <MudPaper Class="pa-4">
+                <MudText Typo="Typo.h6">Year</MudText>
+                <MudText GutterBottom="true" Typo="Typo.body1">@this.score.Year</MudText>
+
+                <MudText Typo="Typo.h6">Ensemble</MudText>
+                <MudText GutterBottom="true" Typo="Typo.body1">@this.score.Ensemble</MudText>
+
+                <MudText Typo="Typo.h6">Parts</MudText>
+                @foreach (string part in this.score.Parts)
+                {
+                    bool shouldAddBottomGutter = part == this.score.Parts.Last();
+                    <MudText GutterBottom="shouldAddBottomGutter" Typo="Typo.body1">@part</MudText>
+                }
+
+                <MudText Typo="Typo.h6">Programme Notes</MudText>
+                <MudText Typo="Typo.body1">@this.score.ProgrammeNotes</MudText>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+    <br />
+}
+else if (this.isLoaded)
+{
+    <MudAlert Severity="Severity.Error">
+        <strong>Error:</strong> No score with ID <em>@this.ScoreId</em> was found.
+    </MudAlert>
+}
+else
+{
+    <MudText Typo="Typo.body1">
+        Loading...
+    </MudText>
+}
+
+@code {
+    private bool isLoaded = false;
+    private MuseScoreUser? museScoreUser = null;
+    private Score? score = null;
+
+    /// <summary>
+    /// Gets or sets the score ID.
+    /// </summary>
+    [Parameter]
+    public string ScoreId { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Method invoked when the component is ready to start, having received its initial parameters from its parent in the render tree.
+    /// </summary>
+    protected override async Task OnInitializedAsync()
+    {
+        this.museScoreUser = this.ScoreService.GetMuseScoreUser();
+        this.score = this.ScoreService.GetScore(this.ScoreId);
+        this.isLoaded = true;
+        await base.OnInitializedAsync();
+    }
+}

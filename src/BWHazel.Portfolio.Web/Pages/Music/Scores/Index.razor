@@ -1,0 +1,62 @@
+@page "/Music/Scores"
+
+@using BWHazel.Portfolio.Web.Models
+@using BWHazel.Portfolio.Web.Services
+
+@inject NavigationManager NavigationManager
+@inject ScoreService ScoreService
+
+<MudText GutterBottom="true" Typo="Typo.h3">Scores</MudText>
+
+@if (this.scores.Any())
+{
+    <MudGrid>
+        @foreach (Score score in this.scores)
+        {
+            <MudItem xs="12" sm="6" md="4">
+                <MudCard Style="height: 100%">
+                    <MudCardHeader>
+                        <CardHeaderContent>
+                            <MudText Typo="Typo.h6">@score.Title</MudText>
+                        </CardHeaderContent>
+                    </MudCardHeader>
+                    <MudCardContent>
+                        <MudText>@score.ProgrammeNotes</MudText>
+                    </MudCardContent>
+                    <MudCardActions>
+                        <MudButton Variant="Variant.Text"
+                                   Color="Color.Primary"
+                                   OnClick="@(() => this.NavigationManager.NavigateTo($"/Music/Scores/{score.ScoreId}"))">
+                            View & Listen
+                        </MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+        }
+    </MudGrid>
+}
+else if (this.isLoaded)
+{
+    <MudAlert Severity="Severity.Error">
+        An error occurred loading the scores or no scores were found.
+    </MudAlert>
+}
+else
+{
+    <MudText Typo="Typo.body1">Loading...</MudText>
+}
+
+@code {
+    private bool isLoaded = false;
+    private List<Score> scores = [];
+    
+    /// <summary>
+    /// Method invoked when the component is ready to start, having received its initial parameters from its parent in the render tree.
+    /// </summary>
+    protected override async Task OnInitializedAsync()
+    {
+        this.scores = this.ScoreService.GetScores();
+        this.isLoaded = true;
+        await base.OnInitializedAsync();
+    }
+}
