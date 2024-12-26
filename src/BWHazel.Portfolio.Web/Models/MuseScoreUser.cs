@@ -9,6 +9,6 @@ namespace BWHazel.Portfolio.Web.Models;
 /// <param name="Username">The username.</param>
 public record MuseScoreUser
 (
-    IntId<MuseScoreUser> MuseScoreUserId, 
+    IntId<MuseScoreUser> MuseScoreUserId,
     string Username
 );

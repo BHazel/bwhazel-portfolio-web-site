@@ -14,9 +14,9 @@ public class ScoreService(IConfiguration configuration)
 {
     private const string MusicScoresMuseScoreUserKey = "Music:Scores:MuseScoreUser";
     private const string MusicScoresWorksKey = "Music:Scores:Works";
-    
+
     private readonly IConfiguration configuration = configuration;
-    
+
     /// <summary>
     /// Gets the MuseScore user.
     /// </summary>
@@ -27,7 +27,7 @@ public class ScoreService(IConfiguration configuration)
         MuseScoreUser museScoreUser = MapConfigurationToMuseScoreUser(musicScoresMuseScoreUserSection);
         return museScoreUser;
     }
-    
+
     /// <summary>
     /// Gets all scores.
     /// </summary>
@@ -39,10 +39,10 @@ public class ScoreService(IConfiguration configuration)
             .GetChildren()
             .Select(MapConfigurationToScore)
             .ToList();
-        
+
         return scores;
     }
-    
+
     /// <summary>
     /// Gets a score.
     /// </summary>
@@ -54,7 +54,7 @@ public class ScoreService(IConfiguration configuration)
         Score? score = scores.FirstOrDefault(s => s.ScoreId == scoreId);
         return score;
     }
-    
+
     /// <summary>
     /// Maps a configuration section to a MuseScore user.
     /// </summary>
@@ -66,10 +66,10 @@ public class ScoreService(IConfiguration configuration)
             int.Parse(musicScoresMuseScoreUserSection["Id"]!),
             musicScoresMuseScoreUserSection["Username"]!
         );
-        
+
         return museScoreUser;
     }
-    
+
     /// <summary>
     /// Maps a configuration section to a score.
     /// </summary>
