@@ -22,6 +22,7 @@ HttpClient httpClient = new()
 };
 
 builder.Services.AddScoped(serviceProvider => httpClient);
+builder.Services.AddScoped<AlbumService>();
 builder.Services.AddScoped<ScoreService>();
 
 builder.Configuration
