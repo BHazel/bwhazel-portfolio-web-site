@@ -1,0 +1,38 @@
+<a href="https://music.apple.com/gb/album/@this.AlbumSlug/@this.AlbumId?itscg=@this.ItscgToken&itsct=music_box_badge&ls=1&app=music&mttnsubad=@this.AlbumId"
+   style="display: inline-block;">
+    <img src="https://toolbox.marketingtools.apple.com/api/v2/badges/listen-on-apple-music/badge/en-gb?releaseDate=1201824000"
+         alt="Listen on Apple Music"
+         style="width: @(this.Width)px; height: @(this.Height)px; vertical-align: middle; object-fit: contain;" />
+</a>
+
+@code {
+    /// <summary>
+    /// Gets or sets the height.
+    /// </summary>
+    [Parameter]
+    public int Height { get; set; } = 82;
+    
+    /// <summary>
+    /// Gets or sets the height.
+    /// </summary>
+    [Parameter]
+    public int Width { get; set; } = 281;
+    
+    /// <summary>
+    /// Gets or sets the album ID.
+    /// </summary>
+    [Parameter]
+    public int AlbumId { get; set; }
+
+    /// <summary>
+    /// Gets or sets the album slug.
+    /// </summary>
+    [Parameter]
+    public string AlbumSlug { get; set; } = string.Empty;
+    
+    /// <summary>
+    /// Gets or sets the ITSCG token.
+    /// </summary>
+    [Parameter]
+    public int ItscgToken { get; set; } = 30200;
+}

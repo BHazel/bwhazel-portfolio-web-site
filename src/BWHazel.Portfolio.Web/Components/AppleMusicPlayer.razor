@@ -1,0 +1,41 @@
+<iframe id="embedPlayer"
+        height="@this.Height"
+        width="@this.Width%"
+        title="Media player"
+        src="https://embed.music.apple.com/gb/album/@this.AlbumSlug/@this.AlbumId?itscg=@this.ItscgToken&amp;itsct=music_box_player&amp;ls=1&amp;app=music&amp;mttnsubad=@this.AlbumId&amp;theme=auto"
+        sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation-by-user-activation"
+        allow="autoplay *; encrypted-media *; clipboard-write"
+        style="border: 0px; border-radius: 12px; width: @this.Width%; height: @(this.Height)px; max-width: 660px;">
+</iframe>
+
+@code {
+    /// <summary>
+    /// Gets or sets the height.
+    /// </summary>
+    [Parameter]
+    public int Height { get; set; } = 450;
+    
+    /// <summary>
+    /// Gets or sets the width as a percentage.
+    /// </summary>
+    [Parameter]
+    public int Width { get; set; } = 100;
+    
+    /// <summary>
+    /// Gets or sets the album ID.
+    /// </summary>
+    [Parameter]
+    public int AlbumId { get; set; }
+
+    /// <summary>
+    /// Gets or sets the album slug.
+    /// </summary>
+    [Parameter]
+    public string AlbumSlug { get; set; } = string.Empty;
+    
+    /// <summary>
+    /// Gets or sets the ITSCG token.
+    /// </summary>
+    [Parameter]
+    public int ItscgToken { get; set; } = 30200;
+}
