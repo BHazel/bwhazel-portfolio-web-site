@@ -1,0 +1,49 @@
+@page "/Music/Albums"
+
+@using BWHazel.Portfolio.Web.Models
+@using BWHazel.Portfolio.Web.Services
+
+@inject AlbumService AlbumService
+@inject NavigationManager NavigationManager
+
+<MudText GutterBottom="true" Typo="Typo.h3">Albums</MudText>
+
+@if (this.albums.Any())
+{
+    <MudGrid>
+        @foreach (Album album in this.albums)
+        {
+            <MudItem xs="12" sm="6" md="4">
+                <MudCard Style="height: 100%">
+                    <MudCardMedia Image="@album.ImagePath" Height="344" Title="@album.Title" />
+                    <MudCardContent>
+                        <MudText Typo="Typo.h5">@album.Title</MudText>
+                        <MudText Typo="Typo.body1">@album.Description</MudText>
+                    </MudCardContent>
+                    <MudCardActions>
+                        <MudButton Variant="Variant.Text"
+                                   Color="Color.Primary"
+                                   OnClick="@(() => this.NavigationManager.NavigateTo($"/Music/Albums/{album.AlbumId}"))">
+                            More Info
+                        </MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+        }
+    </MudGrid>
+}
+
+@code {
+    private bool isLoaded = false;
+    private List<Album> albums = [];
+    
+    /// <summary>
+    /// Method invoked when the component is ready to start, having received its initial parameters from its parent in the render tree.
+    /// </summary>
+    protected override async Task OnInitializedAsync()
+    {
+        this.albums = this.AlbumService.GetAllAlbums();
+        this.isLoaded = true;
+        await base.OnInitializedAsync();
+    }
+}
