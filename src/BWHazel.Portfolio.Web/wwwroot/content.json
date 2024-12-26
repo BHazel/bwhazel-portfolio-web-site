@@ -57,6 +57,17 @@
                     "ProgrammeNotes": "Written for flute, descant recorder, oboe and piano.  This was written for my GCSE music coursework and started out as a simple exercise within the course for applying a melody to a chord sequence!  To this day, it is my favourite composition!"
                 }
             ]
+        },
+        "Albums": {
+            "Works": [
+                {
+                    "AlbumId": "four-forces",
+                    "Title": "Four Forces",
+                    "Description": "The four forces of nature represented in Electronica!",
+                    "Year": 2008,
+                    "ImagePath": "img/music/albums/four-forces/album.png"
+                }
+            ]
         }
     }
 }
