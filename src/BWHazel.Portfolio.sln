@@ -4,6 +4,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{1C881E5A-E0E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BWHazel.Portfolio.Web", "BWHazel.Portfolio.Web\BWHazel.Portfolio.Web.csproj", "{E1F6B367-6BA6-449B-B8DD-AE208376335C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{E32763E3-D9D9-4A19-BD5C-E011742AAA3B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BWHazel.Portfolio.Web.Test", "BWHazel.Portfolio.Web.Test\BWHazel.Portfolio.Web.Test.csproj", "{80944827-4EC6-421F-A9F1-F401B0C278A4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -11,11 +15,16 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{E1F6B367-6BA6-449B-B8DD-AE208376335C} = {1C881E5A-E0EC-45B7-B822-4A212EE7D3BF}
+		{80944827-4EC6-421F-A9F1-F401B0C278A4} = {E32763E3-D9D9-4A19-BD5C-E011742AAA3B}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{E1F6B367-6BA6-449B-B8DD-AE208376335C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E1F6B367-6BA6-449B-B8DD-AE208376335C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E1F6B367-6BA6-449B-B8DD-AE208376335C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E1F6B367-6BA6-449B-B8DD-AE208376335C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80944827-4EC6-421F-A9F1-F401B0C278A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80944827-4EC6-421F-A9F1-F401B0C278A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80944827-4EC6-421F-A9F1-F401B0C278A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80944827-4EC6-421F-A9F1-F401B0C278A4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
