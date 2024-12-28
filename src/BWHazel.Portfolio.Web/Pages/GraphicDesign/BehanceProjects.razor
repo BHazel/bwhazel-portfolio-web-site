@@ -1,0 +1,50 @@
+@page "/Graphic-Design/Behance-Projects"
+
+@using BWHazel.Portfolio.Web.Services
+
+@inject BehanceProjectService BehanceProjectService
+
+<MudText GutterBottom="true" Typo="Typo.h3">Behance Projects</MudText>
+<MudAlert Severity="Severity.Info">
+    Click on a project to open it on the Behance web site.  More details on each creation, including tooling and methods where applicable, can be found there.
+</MudAlert>
+<br />
+
+@if (this.behanceProjectIds.Any())
+{
+    <MudGrid>
+        @foreach (int behanceProjectId in this.behanceProjectIds)
+        {
+            <MudItem xs="12" sm="6" md="4">
+                <MudCard Style="height: 100%">
+                    <BehanceProject ProjectId="@behanceProjectId"></BehanceProject>
+                </MudCard>
+            </MudItem>
+        }
+    </MudGrid>
+}
+else if (this.isLoaded)
+{
+    <MudAlert Severity="Severity.Error">
+        An error occurred loading the Behance projects or no Behance projects were found.
+    </MudAlert>
+}
+else
+{
+    <MudText Typo="Typo.body1">Loading...</MudText>
+}
+
+@code {
+    private bool isLoaded = false;
+    private List<int> behanceProjectIds = [];
+    
+    /// <summary>
+    /// Method invoked when the component is ready to start, having received its initial parameters from its parent in the render tree.
+    /// </summary>
+    protected override async Task OnInitializedAsync()
+    {
+        this.behanceProjectIds = this.BehanceProjectService.GetAllBehanceProjectIds();
+        this.isLoaded = true;
+        await base.OnInitializedAsync();
+    }
+}
