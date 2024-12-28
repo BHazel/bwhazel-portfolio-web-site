@@ -69,5 +69,27 @@
                 }
             ]
         }
+    },
+    "GraphicDesign": {
+        "BehanceProjects": {
+            "Works": [
+                {
+                    "ProjectId": "creative-explorations-2020-11",
+                    "BehanceProjectId": 107089045
+                },
+                {
+                    "ProjectId": "exploring-photoshop-in-antarctica",
+                    "BehanceProjectId": 106788851
+                },
+                {
+                    "ProjectId": "tastes-of-canada",
+                    "BehanceProjectId": 215618513
+                },
+                {
+                    "ProjectId": "triumvirates-flag",
+                    "BehanceProjectId": 215626971
+                }
+            ]
+        }
     }
 }

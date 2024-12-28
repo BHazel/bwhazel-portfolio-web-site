@@ -1,0 +1,30 @@
+<iframe height="@this.Height"
+        width="@this.Width"
+        src="https://www.behance.net/embed/project/@this.ProjectId?ilo0=1"
+        allow="clipboard-write"
+        allowfullscreen="allowfullscreen"
+        frameborder="0"
+        lazyload="lazyload"
+        refererPolicy="strict-origin-when-cross-origin"
+        style="height: @(this.Height)px">
+</iframe>
+
+@code {
+    /// <summary>
+    /// Gets or sets the height.
+    /// </summary>
+    [Parameter]
+    public int Height { get; set; } = 316;
+    
+    /// <summary>
+    /// Gets or sets the width.
+    /// </summary>
+    [Parameter]
+    public int Width { get; set; } = 404;
+    
+    /// <summary>
+    /// Gets or sets the project ID.
+    /// </summary>
+    [Parameter]
+    public int ProjectId { get; set; }
+}
