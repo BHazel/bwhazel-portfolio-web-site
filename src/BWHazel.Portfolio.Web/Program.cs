@@ -24,6 +24,7 @@ HttpClient httpClient = new()
 builder.Services.AddScoped(serviceProvider => httpClient);
 builder.Services.AddScoped<AlbumService>();
 builder.Services.AddScoped<ScoreService>();
+builder.Services.AddScoped<BehanceProjectService>();
 
 builder.Configuration
     .AddJsonStream(await GetContentData(httpClient));
