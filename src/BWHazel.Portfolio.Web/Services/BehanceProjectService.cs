@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Configuration;
@@ -11,7 +12,7 @@ namespace BWHazel.Portfolio.Web.Services;
 public class BehanceProjectService(IConfiguration configuration)
 {
     private const string GraphicDesignBehanceProjectsWorksKey = "GraphicDesign:BehanceProjects:Works";
-    
+
     private readonly IConfiguration configuration = configuration;
 
     /// <summary>
@@ -22,11 +23,18 @@ public class BehanceProjectService(IConfiguration configuration)
     {
         IConfigurationSection graphicDesignBehanceProjectsWorksSection =
             this.configuration.GetSection(GraphicDesignBehanceProjectsWorksKey);
-        
+
         List<int> behanceProjects = graphicDesignBehanceProjectsWorksSection
             .GetChildren()
-            .Select(section => int.Parse(section["BehanceProjectId"]!))
+            .Select(section => int.TryParse(section["BehanceProjectId"]!, out int behanceProjectId)
+                ? behanceProjectId
+                : 0)
             .ToList();
+
+        if (behanceProjects.Any(behanceProject => behanceProject == 0))
+        {
+            throw new ArgumentException("Behance project IDs are required and must be integers.");
+        }
 
         return behanceProjects;
     }
