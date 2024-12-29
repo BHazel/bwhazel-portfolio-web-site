@@ -35,10 +35,17 @@
         }
     </MudGrid>
 }
-else if (this.isLoaded)
+else if (this.isError)
 {
     <MudAlert Severity="Severity.Error">
-        An error occurred loading the scores or no scores were found.
+        <strong>An error occurred while loading the scores:</strong><br />
+        @this.errorMessage
+    </MudAlert>
+}
+else if (this.isLoaded)
+{
+    <MudAlert Severity="Severity.Warning">
+        No scores found.
     </MudAlert>
 }
 else
@@ -48,6 +55,8 @@ else
 
 @code {
     private bool isLoaded = false;
+    private bool isError = false;
+    private string? errorMessage;
     private List<Score> scores = [];
     
     /// <summary>
@@ -55,8 +64,20 @@ else
     /// </summary>
     protected override async Task OnInitializedAsync()
     {
-        this.scores = this.ScoreService.GetScores();
-        this.isLoaded = true;
+        try
+        {
+            this.scores = this.ScoreService.GetAllScores();
+        }
+        catch (Exception exception)
+        {
+            this.isError = true;
+            this.errorMessage = exception.Message;
+        }
+        finally
+        {
+            this.isLoaded = true;
+        }
+        
         await base.OnInitializedAsync();
     }
 }

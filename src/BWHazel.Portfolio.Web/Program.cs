@@ -26,6 +26,8 @@ HttpClient httpClient = new()
 
 builder.Services.AddScoped(serviceProvider => httpClient);
 builder.Services.AddScoped<IValidator<Album>, AlbumValidator>();
+builder.Services.AddScoped<IValidator<MuseScoreUser>, MuseScoreUserValidator>();
+builder.Services.AddScoped<IValidator<Score>, ScoreValidator>();
 builder.Services.AddScoped<AlbumService>();
 builder.Services.AddScoped<ScoreService>();
 builder.Services.AddScoped<BehanceProjectService>();
