@@ -7,7 +7,10 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using BWHazel.Portfolio.Web;
+using BWHazel.Portfolio.Web.Models;
+using BWHazel.Portfolio.Web.Models.Validators;
 using BWHazel.Portfolio.Web.Services;
+using FluentValidation;
 using MudBlazor.Services;
 
 const string SiteContentFile = "content.json";
@@ -22,6 +25,9 @@ HttpClient httpClient = new()
 };
 
 builder.Services.AddScoped(serviceProvider => httpClient);
+builder.Services.AddScoped<IValidator<Album>, AlbumValidator>();
+builder.Services.AddScoped<IValidator<MuseScoreUser>, MuseScoreUserValidator>();
+builder.Services.AddScoped<IValidator<Score>, ScoreValidator>();
 builder.Services.AddScoped<AlbumService>();
 builder.Services.AddScoped<ScoreService>();
 builder.Services.AddScoped<BehanceProjectService>();

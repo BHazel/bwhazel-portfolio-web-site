@@ -38,10 +38,18 @@
     </MudGrid>
     <br />
 }
+else if (this.isError)
+{
+    <MudAlert Severity="Severity.Error">
+        <strong>An error occurred loading the score:</strong><br />
+        @this.errorMessage
+    </MudAlert>
+}
 else if (this.isLoaded)
 {
     <MudAlert Severity="Severity.Error">
-        <strong>Error:</strong> No score with ID <em>@this.ScoreId</em> was found.
+        <strong>An error occurred loading the score:</strong><br />
+        No score with the ID <em>@this.ScoreId</em> was found.
     </MudAlert>
 }
 else
@@ -53,6 +61,8 @@ else
 
 @code {
     private bool isLoaded = false;
+    private bool isError = false;
+    private string? errorMessage;
     private MuseScoreUser? museScoreUser = null;
     private Score? score = null;
 
@@ -67,9 +77,21 @@ else
     /// </summary>
     protected override async Task OnInitializedAsync()
     {
-        this.museScoreUser = this.ScoreService.GetMuseScoreUser();
-        this.score = this.ScoreService.GetScore(this.ScoreId);
-        this.isLoaded = true;
+        try
+        {
+            this.museScoreUser = this.ScoreService.GetMuseScoreUser();
+            this.score = this.ScoreService.GetScore(this.ScoreId);
+        }
+        catch (Exception ex)
+        {
+            this.isError = true;
+            this.errorMessage = ex.Message;
+        }
+        finally
+        {
+            this.isLoaded = true;
+        }
+        
         await base.OnInitializedAsync();
     }
 }
