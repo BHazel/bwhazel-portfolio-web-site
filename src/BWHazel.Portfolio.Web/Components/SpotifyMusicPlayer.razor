@@ -1,12 +1,22 @@
-<iframe height="@this.Height"
-        width="@this.Width%"
-        src="https://open.spotify.com/embed/album/@this.AlbumId?utm_source=generator&theme=0"
-        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-        allowfullscreen=""
-        frameBorder="0"
-        loading="lazy"
-        style="border-radius:12px; height: @(this.Height)px">
-</iframe>
+@if (!string.IsNullOrWhiteSpace(this.AlbumId))
+{
+    <iframe height="@this.Height"
+            width="@this.Width%"
+            src="https://open.spotify.com/embed/album/@this.AlbumId?utm_source=generator&theme=0"
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+            allowfullscreen=""
+            frameBorder="0"
+            loading="lazy"
+            style="border-radius:12px; height: @(this.Height)px">
+    </iframe>
+}
+else
+{
+    <MudAlert Severity="Severity.Error">
+        <strong>An error occurred displaying the Spotify player:</strong><br />
+        The album ID is required.
+    </MudAlert>
+}
 
 @code {
     /// <summary>

@@ -1,14 +1,28 @@
-<div id="score">
-    <iframe width="100%"
-            src="https://musescore.com/user/@this.MuseScoreUserId/scores/@this.MuseScoreScoreId/embed"
-            frameborder="0"
-            allowfullscreen="allowfullscreen"
-            allow="autoplay; fullscreen">
-    </iframe>
-    <span>
-        <a href="https://musescore.com/user/@this.MuseScoreUserId/scores/@this.MuseScoreScoreId/s/f85IZm" target="_blank">@this.Title</a> by <a href="https://musescore.com/user/@this.MuseScoreUserId">@this.MuseScoreUserName</a>
-    </span>
-</div>
+@if (!string.IsNullOrWhiteSpace(this.ScoreId) &&
+     this.MuseScoreUserId != 0 &&
+     !string.IsNullOrWhiteSpace(this.MuseScoreUserName) &&
+     this.MuseScoreScoreId != 0 &&
+     !string.IsNullOrWhiteSpace(this.Title))
+{
+    <div id="score">
+        <iframe width="100%"
+                src="https://musescore.com/user/@this.MuseScoreUserId/scores/@this.MuseScoreScoreId/embed"
+                frameborder="0"
+                allowfullscreen="allowfullscreen"
+                allow="autoplay; fullscreen">
+        </iframe>
+        <span>
+            <a href="https://musescore.com/user/@this.MuseScoreUserId/scores/@this.MuseScoreScoreId/s/f85IZm" target="_blank">@this.Title</a> by <a href="https://musescore.com/user/@this.MuseScoreUserId">@this.MuseScoreUserName</a>
+        </span>
+    </div>
+}
+else
+{
+    <MudAlert Severity="Severity.Error">
+        <strong>An error occurred displaying the MuseScore score:</strong><br />
+        The score ID, MuseScore user ID, username, score ID and title are required.
+    </MudAlert>
+}
 
 @code {
     /// <summary>

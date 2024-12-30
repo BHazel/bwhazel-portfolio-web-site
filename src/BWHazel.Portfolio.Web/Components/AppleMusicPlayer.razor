@@ -1,12 +1,22 @@
-<iframe id="embedPlayer"
-        height="@this.Height"
-        width="@this.Width%"
-        title="Media player"
-        src="https://embed.music.apple.com/gb/album/@this.AlbumSlug/@this.AlbumId?itscg=@this.ItscgToken&amp;itsct=music_box_player&amp;ls=1&amp;app=music&amp;mttnsubad=@this.AlbumId&amp;theme=auto"
-        sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation-by-user-activation"
-        allow="autoplay *; encrypted-media *; clipboard-write"
-        style="border: 0px; border-radius: 12px; width: @this.Width%; height: @(this.Height)px; max-width: 660px;">
-</iframe>
+@if (this.AlbumId != 0 && !string.IsNullOrWhiteSpace(this.AlbumSlug))
+{
+    <iframe id="embedPlayer"
+            height="@this.Height"
+            width="@this.Width%"
+            title="Media player"
+            src="@($"https://embed.music.apple.com/gb/album/{this.AlbumSlug}/{this.AlbumId}?itscg={this.ItscgToken}&itsct=music_box_player&ls=1&app=music&mttnsubad={this.AlbumId}&theme=auto")"
+            sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation-by-user-activation"
+            allow="autoplay *; encrypted-media *; clipboard-write"
+            style="border: 0px; border-radius: 12px; width: @this.Width%; height: @(this.Height)px; max-width: 660px;">
+    </iframe>
+}
+else
+{
+    <MudAlert Severity="Severity.Error">
+        <strong>An error occurred displaying the Apple Music player:</strong><br />
+        The album ID and slug are required.
+    </MudAlert>
+}
 
 @code {
     /// <summary>
