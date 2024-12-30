@@ -1,0 +1,81 @@
+@inherits PortfolioTestContext
+
+@code {
+    /// <summary>
+    /// Tests that the <see cref="AppleMusicBadge"/> component renders the badge with default values with the album ID and slug provided.
+    /// </summary>
+    [Fact]
+    public void AppleMusicBadge_WithAlbumIdAndSlugAndAllDefaultValues_RendersBadge()
+    {
+        IRenderedFragment component = this.Render(@<AppleMusicBadge AlbumId="123" AlbumSlug="album-1" />);
+
+        component.MarkupMatches(@<a href="https://music.apple.com/gb/album/album-1/123?itscg=30200&itsct=music_box_badge&ls=1&app=music&mttnsubad=123"
+                                    style="display: inline-block;">
+                                    <img src="https://toolbox.marketingtools.apple.com/api/v2/badges/listen-on-apple-music/badge/en-gb?releaseDate=1201824000"
+                                         alt="Listen on Apple Music"
+                                         style="width: 281px; height: 82px; vertical-align: middle; object-fit: contain;"/>
+                                </a>);
+    }
+    
+    /// <summary>
+    /// Tests that the <see cref="AppleMusicBadge"/> component renders the badge with modified default values with the album ID and slug provided.
+    /// </summary>
+    [Fact]
+    public void AppleMusicBadge_WithAlbumIdAndSlugAndModifiedDefaultValues_RendersBadge()
+    {
+        IRenderedFragment component = this.Render(@<AppleMusicBadge Height="100"
+                                                                    Width="300"
+                                                                    AlbumId="123"
+                                                                    AlbumSlug="album-1"
+                                                                    ItscgToken="12345" />);
+
+        component.MarkupMatches(@<a href="https://music.apple.com/gb/album/album-1/123?itscg=12345&itsct=music_box_badge&ls=1&app=music&mttnsubad=123"
+                                    style="display: inline-block;">
+                                    <img src="https://toolbox.marketingtools.apple.com/api/v2/badges/listen-on-apple-music/badge/en-gb?releaseDate=1201824000"
+                                         alt="Listen on Apple Music"
+                                         style="width: 300px; height: 100px; vertical-align: middle; object-fit: contain;"/>
+                                </a>);
+    }
+    
+    /// <summary>
+    /// Tests that the <see cref="AppleMusicBadge"/> component renders an error when the album ID and slug are not provided.
+    /// </summary>
+    [Fact]
+        public void AppleMusicBadge_WithMissingAlbumIdAndSlug_RendersError()
+    {
+        IRenderedFragment component = this.Render(@<AppleMusicBadge />);
+
+        component.MarkupMatches(@<MudAlert Severity="Severity.Error">
+                                    <strong>An error occurred displaying the Apple Music badge:</strong><br/>
+                                    The album ID and slug are required.
+                                </MudAlert>);
+    }
+
+    /// <summary>
+    /// Tests that the <see cref="AppleMusicBadge"/> component renders an error when the album ID is not provided.
+    /// </summary>
+    [Fact]
+    public void AppleMusicBadge_WithMissingAlbumId_RendersError()
+    {
+        IRenderedFragment component = this.Render(@<AppleMusicBadge AlbumSlug="album-1" />);
+
+        component.MarkupMatches(@<MudAlert Severity="Severity.Error">
+                                    <strong>An error occurred displaying the Apple Music badge:</strong><br/>
+                                    The album ID and slug are required.
+                                </MudAlert>);
+    }
+    
+    /// <summary>
+    /// Tests that the <see cref="AppleMusicBadge"/> component renders an error when the album slug is not provided.
+    /// </summary>
+    [Fact]
+    public void AppleMusicBadge_WithMissingAlbumSlug_RendersError()
+    {
+        IRenderedFragment component = this.Render(@<AppleMusicBadge AlbumId="123" />);
+
+        component.MarkupMatches(@<MudAlert Severity="Severity.Error">
+                                    <strong>An error occurred displaying the Apple Music badge:</strong><br/>
+                                    The album ID and slug are required.
+                                </MudAlert>);
+    }
+}

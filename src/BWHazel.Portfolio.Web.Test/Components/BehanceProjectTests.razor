@@ -1,0 +1,59 @@
+@inherits PortfolioTestContext
+
+@code {
+    /// <summary>
+    /// Tests that the <see cref="BehanceProject"/> component renders the project with default values with the project ID provided.
+    /// </summary>
+    [Fact]
+    public void BehanceProject_WithProjectIdAndAllDefaultValues_RendersProject()
+    {
+        IRenderedFragment component = this.Render(@<BehanceProject ProjectId="123" />);
+        
+        component.MarkupMatches(@<iframe height="316"
+                                         width="404"
+                                         src="https://www.behance.net/embed/project/123?ilo0=1"
+                                         allow="clipboard-write"
+                                         allowfullscreen="allowfullscreen"
+                                         frameborder="0"
+                                         lazyload="lazyload"
+                                         refererPolicy="strict-origin-when-cross-origin"
+                                         style="height: 316px">
+                                </iframe>);
+    }
+    
+    /// <summary>
+    /// Tests that the <see cref="BehanceProject"/> component renders the project with modified default values with the project ID provided.
+    /// </summary>
+    [Fact]
+    public void BehanceProject_WithProjectIdAndModifiedDefaultValues_RendersProject()
+    {
+        IRenderedFragment component = this.Render(@<BehanceProject Height="100"
+                                                                   Width="300"
+                                                                   ProjectId="123" />);
+        
+        component.MarkupMatches(@<iframe height="100"
+                                         width="300"
+                                         src="https://www.behance.net/embed/project/123?ilo0=1"
+                                         allow="clipboard-write"
+                                         allowfullscreen="allowfullscreen"
+                                         frameborder="0"
+                                         lazyload="lazyload"
+                                         refererPolicy="strict-origin-when-cross-origin"
+                                         style="height: 100px">
+                                </iframe>);
+    }
+    
+    /// <summary>
+    /// Tests that the <see cref="BehanceProject"/> component renders an error when the project ID is not provided.
+    /// </summary>
+    [Fact]
+    public void BehanceProject_WithMissingProjectId_RendersError()
+    {
+        IRenderedFragment component = this.Render(@<BehanceProject />);
+
+        component.MarkupMatches(@<MudAlert Severity="Severity.Error">
+                                    <strong>An error occurred displaying the Behance project:</strong><br />
+                                    The project ID is required.
+                                </MudAlert>);
+    }
+}

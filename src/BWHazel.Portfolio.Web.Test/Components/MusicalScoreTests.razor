@@ -1,0 +1,127 @@
+@inherits PortfolioTestContext
+
+@code {
+    /// <summary>
+    /// Tests that the <see cref="MusicalScore"/> component renders the score with all required values provided.
+    /// </summary>
+    [Fact]
+    public void MusicalScore_WithAllRequiredValues_RendersScore()
+    {
+        IRenderedFragment component = this.Render(@<MusicalScore ScoreId="score-1"
+                                                                 MuseScoreUserId="123"
+                                                                 MuseScoreUserName="ExampleUser"
+                                                                 MuseScoreScoreId="1001"
+                                                                 Title="Score 1" />);
+        
+        component.MarkupMatches(@<div id="score">
+                                    <iframe width="100%"
+                                            src="https://musescore.com/user/123/scores/1001/embed"
+                                            frameborder="0"
+                                            allowfullscreen="allowfullscreen"
+                                            allow="autoplay; fullscreen">
+                                    </iframe>
+                                    <span>
+                                        <a href="https://musescore.com/user/123/scores/1001/s/f85IZm" target="_blank">Score 1</a> by <a href="https://musescore.com/user/123">ExampleUser</a>
+                                    </span>
+                                </div>);
+    }
+    
+    /// <summary>
+    /// Tests that the <see cref="MusicalScore"/> component renders an error when all required values are not provided.
+    /// </summary>
+    [Fact]
+    public void MusicalScore_WithAllRequiredValuesMissing_RendersError()
+    {
+        IRenderedFragment component = this.Render(@<MusicalScore />);
+
+        component.MarkupMatches(@<MudAlert Severity="Severity.Error">
+                                    <strong>An error occurred displaying the MuseScore score:</strong><br />
+                                    The score ID, MuseScore user ID, username, score ID and title are required.
+                                </MudAlert>);
+    }
+    
+    /// <summary>
+    /// Tests that the <see cref="MusicalScore"/> component renders an error when the score ID is not provided.
+    /// </summary>
+    [Fact]
+    public void MusicalScore_WithMissingScoreId_RendersError()
+    {
+        IRenderedFragment component = this.Render(@<MusicalScore MuseScoreUserId="123"
+                                                                 MuseScoreUserName="ExampleUser"
+                                                                 MuseScoreScoreId="1001"
+                                                                 Title="Score 1" />);
+
+        component.MarkupMatches(@<MudAlert Severity="Severity.Error">
+                                    <strong>An error occurred displaying the MuseScore score:</strong><br />
+                                    The score ID, MuseScore user ID, username, score ID and title are required.
+                                </MudAlert>);
+    }
+    
+    /// <summary>
+    /// Tests that the <see cref="MusicalScore"/> component renders an error when the MuseScore user ID is not provided.
+    /// </summary>
+    [Fact]
+    public void MusicalScore_WithMissingMuseScoreUserId_RendersError()
+    {
+        IRenderedFragment component = this.Render(@<MusicalScore ScoreId="score-1"
+                                                                 MuseScoreUserName="ExampleUser"
+                                                                 MuseScoreScoreId="1001"
+                                                                 Title="Score 1" />);
+
+        component.MarkupMatches(@<MudAlert Severity="Severity.Error">
+                                    <strong>An error occurred displaying the MuseScore score:</strong><br />
+                                    The score ID, MuseScore user ID, username, score ID and title are required.
+                                </MudAlert>);
+    }
+    
+    /// <summary>
+    /// Tests that the <see cref="MusicalScore"/> component renders an error when the MuseScore username is not provided.
+    /// </summary>
+    [Fact]
+    public void MusicalScore_WithMissingMuseScoreUsername_RendersError()
+    {
+        IRenderedFragment component = this.Render(@<MusicalScore ScoreId="score-1"
+                                                                 MuseScoreUserId="123"
+                                                                 MuseScoreScoreId="1001"
+                                                                 Title="Score 1" />);
+
+        component.MarkupMatches(@<MudAlert Severity="Severity.Error">
+                                    <strong>An error occurred displaying the MuseScore score:</strong><br />
+                                    The score ID, MuseScore user ID, username, score ID and title are required.
+                                </MudAlert>);
+    }
+    
+    /// <summary>
+    /// Tests that the <see cref="MusicalScore"/> component renders an error when the MuseScore score ID is not provided.
+    /// </summary>
+    [Fact]
+    public void MusicalScore_WithMissingMuseScoreScoreId_RendersError()
+    {
+        IRenderedFragment component = this.Render(@<MusicalScore ScoreId="score-1"
+                                                                 MuseScoreUserId="123"
+                                                                 MuseScoreUserName="ExampleUser"
+                                                                 Title="Score 1" />);
+
+        component.MarkupMatches(@<MudAlert Severity="Severity.Error">
+                                    <strong>An error occurred displaying the MuseScore score:</strong><br />
+                                    The score ID, MuseScore user ID, username, score ID and title are required.
+                                </MudAlert>);
+    }
+    
+    /// <summary>
+    /// Tests that the <see cref="MusicalScore"/> component renders an error when the title not provided.
+    /// </summary>
+    [Fact]
+    public void MusicalScore_WithMissingTitle_RendersError()
+    {
+        IRenderedFragment component = this.Render(@<MusicalScore ScoreId="score-1"
+                                                                 MuseScoreUserId="123"
+                                                                 MuseScoreUserName="ExampleUser"
+                                                                 MuseScoreScoreId="1001" />);
+
+        component.MarkupMatches(@<MudAlert Severity="Severity.Error">
+                                    <strong>An error occurred displaying the MuseScore score:</strong><br />
+                                    The score ID, MuseScore user ID, username, score ID and title are required.
+                                </MudAlert>);
+    }
+}
