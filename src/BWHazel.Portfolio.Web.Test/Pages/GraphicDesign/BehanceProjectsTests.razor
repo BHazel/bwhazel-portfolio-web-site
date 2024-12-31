@@ -1,0 +1,106 @@
+@using Microsoft.Extensions.Configuration
+@using BWHazel.Portfolio.Web.Pages.GraphicDesign
+@using BWHazel.Portfolio.Web.Services
+
+@inherits PortfolioTestContext
+
+@code {
+    /// <summary>
+    /// Tests that the <see cref="Web.Pages.GraphicDesign.BehanceProjects"/> page renders the Behance project grid when Behance projects are present in configuration.
+    /// </summary>
+    [Fact]
+    public void BehanceProjects_WhenBehanceProjectsExistInConfiguration_RendersGrid()
+    {
+        List<(string ProjectId, int BehanceProjectId)> behanceProjects =
+        [
+            ("project-1", 1),
+            ("project-2", 2)
+        ];
+        
+        Dictionary<string, string?> behanceProjectConfiguration = new();
+        for (int behanceProject = 0; behanceProject < behanceProjects.Count; behanceProject++)
+        {
+            behanceProjectConfiguration[$"GraphicDesign:BehanceProjects:Works:{behanceProject}:ProjectId"] = behanceProjects[behanceProject].ProjectId;
+            behanceProjectConfiguration[$"GraphicDesign:BehanceProjects:Works:{behanceProject}:BehanceProjectId"] = behanceProjects[behanceProject].BehanceProjectId.ToString();
+        }
+        
+        IConfiguration configuration = new ConfigurationBuilder()
+            .AddInMemoryCollection(behanceProjectConfiguration)
+            .Build();
+        
+        this.Services.AddSingleton(configuration);
+        this.Services.AddSingleton<BehanceProjectService>();
+        
+        IRenderedFragment page = this.Render(@<BehanceProjects />);
+        
+        IRenderedComponent<MudGrid> behanceProjectGrid = page.FindComponent<MudGrid>();
+        IReadOnlyList<IRenderedComponent<MudCard>> behanceProjectCards = behanceProjectGrid.FindComponents<MudCard>();
+        
+        behanceProjectGrid.ShouldNotBeNull();
+        behanceProjectCards.Count.ShouldBe(2);
+        for (int behanceProjectCard = 0; behanceProjectCard < behanceProjectCards.Count; behanceProjectCard++)
+        {
+            IRenderedComponent<MudCard> behanceProjectCardComponent = behanceProjectCards[behanceProjectCard];
+            behanceProjectCardComponent.MarkupMatches(@<MudCard Style="height: 100%">
+                                                          <BehanceProject ProjectId="@behanceProjects[behanceProjectCard].BehanceProjectId"></BehanceProject>
+                                                      </MudCard>);
+        }
+    }
+
+    /// <summary>
+    /// Tests that the <see cref="Web.Pages.GraphicDesign.BehanceProjects"/> page renders a warning when no Behance projects are present in configuration.
+    /// </summary>
+    [Fact]
+    public void BehanceProjects_WhenNoBehanceProjectsExistInConfiguration_RendersWarningAlert()
+    {
+        Dictionary<string, string?> behanceProjectConfiguration = new();
+        IConfiguration configuration = new ConfigurationBuilder()
+            .AddInMemoryCollection(behanceProjectConfiguration)
+            .Build();
+        
+        this.Services.AddSingleton(configuration);
+        this.Services.AddSingleton<BehanceProjectService>();
+        
+        IRenderedFragment page = this.Render(@<BehanceProjects />);
+        
+        IReadOnlyList<IRenderedComponent<MudAlert>> alerts = page.FindComponents<MudAlert>();
+        
+        alerts.ShouldNotBeNull();
+        alerts.Count.ShouldBe(2);
+        IRenderedComponent<MudAlert> warningAlert = alerts[1];
+        warningAlert.MarkupMatches(@<MudAlert Severity="MudBlazor.Severity.Warning">
+                                        No Behance projects found.
+                                    </MudAlert>);
+    }
+
+    /// <summary>
+    /// Tests that the <see cref="Web.Pages.GraphicDesign.BehanceProjects"/> page renders an error alert when an error occurs while loading Behance projects.
+    /// </summary>
+    [Fact]
+    public void BehanceProjects_WhenErrorOccursWhileLoadingBehanceProjects_RendersErrorAlert()
+    {
+        Dictionary<string, string?> behanceProjectConfiguration = new()
+        {
+            ["GraphicDesign:BehanceProjects:Works:0:ProjectId"] = "project-1"
+        };
+
+        IConfiguration configuration = new ConfigurationBuilder()
+            .AddInMemoryCollection(behanceProjectConfiguration)
+            .Build();
+        
+        this.Services.AddSingleton(configuration);
+        this.Services.AddSingleton<BehanceProjectService>();
+        
+        IRenderedFragment page = this.Render(@<BehanceProjects />);
+        
+        IReadOnlyList<IRenderedComponent<MudAlert>> alerts = page.FindComponents<MudAlert>();
+        
+        alerts.ShouldNotBeNull();
+        alerts.Count.ShouldBe(2);
+        IRenderedComponent<MudAlert> errorAlert = alerts[1];
+        errorAlert.MarkupMatches(@<MudAlert Severity="Severity.Error">
+                                        <strong>An error occurred while loading the Behance projects:</strong><br />
+                                        Behance project IDs are required and must be integers.
+                                    </MudAlert>);
+    }
+}

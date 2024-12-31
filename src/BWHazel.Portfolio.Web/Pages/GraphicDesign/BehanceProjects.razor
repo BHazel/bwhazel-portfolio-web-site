@@ -23,10 +23,17 @@
         }
     </MudGrid>
 }
-else if (this.isLoaded)
+else if (this.isError)
 {
     <MudAlert Severity="Severity.Error">
-        An error occurred loading the Behance projects or no Behance projects were found.
+        <strong>An error occurred while loading the Behance projects:</strong><br />
+        @this.errorMessage
+    </MudAlert>
+}
+else if (this.isLoaded)
+{
+    <MudAlert Severity="Severity.Warning">
+        No Behance projects found.
     </MudAlert>
 }
 else
@@ -36,6 +43,8 @@ else
 
 @code {
     private bool isLoaded = false;
+    private bool isError = false;
+    private string? errorMessage;
     private List<int> behanceProjectIds = [];
     
     /// <summary>
@@ -43,8 +52,20 @@ else
     /// </summary>
     protected override async Task OnInitializedAsync()
     {
-        this.behanceProjectIds = this.BehanceProjectService.GetAllBehanceProjectIds();
-        this.isLoaded = true;
+        try
+        {
+            this.behanceProjectIds = this.BehanceProjectService.GetAllBehanceProjectIds();
+        }
+        catch (Exception exception)
+        {
+            this.isError = true;
+            this.errorMessage = exception.Message;
+        }
+        finally
+        {
+            this.isLoaded = true;
+        }
+        
         await base.OnInitializedAsync();
     }
 }
