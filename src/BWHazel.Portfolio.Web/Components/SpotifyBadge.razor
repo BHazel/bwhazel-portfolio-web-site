@@ -1,9 +1,19 @@
-<a href="https://open.spotify.com/album/@this.AlbumId?si=@this.SiCode"
-   style="display: inline-block; width: @(this.Width)px; height: @(this.Height)px">
-    <img src="@Assets["/img/music/services/spotify.png"]"
-         alt="Listen on Spotify"
-         style="width: @(this.Width - 30)px; height: @(this.Height - 30)px; vertical-align: middle; object-fit: contain;" />
-</a>
+@if (!string.IsNullOrWhiteSpace(this.AlbumId) && !string.IsNullOrWhiteSpace(this.SiCode))
+{
+    <a href="https://open.spotify.com/album/@this.AlbumId?si=@this.SiCode"
+       style="display: inline-block; width: @(this.Width)px; height: @(this.Height)px">
+        <img src="@Assets["/img/music/services/spotify.png"]"
+             alt="Listen on Spotify"
+             style="width: @(this.Width - 30)px; height: @(this.Height - 30)px; vertical-align: middle; object-fit: contain;"/>
+    </a>
+}
+else
+{
+    <MudAlert Severity="Severity.Error">
+        <strong>An error occurred displaying the Spotify badge:</strong><br />
+        The album ID and SI code are required.
+    </MudAlert>
+}
 
 @code {
     /// <summary>

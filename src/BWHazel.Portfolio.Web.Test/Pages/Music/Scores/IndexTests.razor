@@ -1,0 +1,159 @@
+@using Microsoft.Extensions.Configuration
+@using BWHazel.Portfolio.Web.Models
+@using BWHazel.Portfolio.Web.Models.Validators
+@using BWHazel.Portfolio.Web.Pages.Music.Scores
+@using BWHazel.Portfolio.Web.Services
+@using FluentValidation
+
+@inherits PortfolioTestContext
+
+@inject NavigationManager NavigationManager
+
+@code {
+    /// <summary>
+    /// Tests that the <see cref="Web.Pages.Music.Scores.Index"/> page renders the score grid when scores are present in configuration.
+    /// </summary>
+    [Fact]
+    public void Index_WhenScoresExistInConfiguration_RendersGrid()
+    {
+        List<Score> scores =
+        [
+            new(
+                "score-1",
+                1001,
+                "Score 1",
+                2021,
+                "Score Ensemble 1",
+                ["Score 1 Part 1", "Score 1 Part 2"],
+                "Score 1 Programme Notes"
+            ),
+            new(
+                "score-2",
+                1002,
+                "Score 2",
+                2022,
+                "Score Ensemble 2",
+                ["Score 2 Part 1", "Score 2 Part 2"],
+                "Score 2 Programme Notes"
+            )
+        ];
+        
+        Dictionary<string, string?> scoreConfiguration = new();
+        for (int score = 0; score < scores.Count; score++)
+        {
+            scoreConfiguration[$"Music:Scores:Works:{score}:ScoreId"] = scores[score].ScoreId;
+            scoreConfiguration[$"Music:Scores:Works:{score}:MuseScoreScoreId"] = scores[score].MuseScoreScoreId.ToString();
+            scoreConfiguration[$"Music:Scores:Works:{score}:Title"] = scores[score].Title;
+            scoreConfiguration[$"Music:Scores:Works:{score}:Year"] = scores[score].Year.ToString();
+            scoreConfiguration[$"Music:Scores:Works:{score}:Ensemble"] = scores[score].Ensemble;
+            for (int part = 0; part < scores[score].Parts.Length; part++)
+            {
+                scoreConfiguration[$"Music:Scores:Works:{score}:Parts:{part}"] = scores[score].Parts[part];
+            }
+            
+            scoreConfiguration[$"Music:Scores:Works:{score}:ProgrammeNotes"] = scores[score].ProgrammeNotes;
+        }
+        
+        IConfiguration configuration = new ConfigurationBuilder()
+            .AddInMemoryCollection(scoreConfiguration)
+            .Build();
+
+        this.Services.AddSingleton(configuration);
+        this.Services.AddSingleton<IValidator<MuseScoreUser>, MuseScoreUserValidator>();
+        this.Services.AddSingleton<IValidator<Score>, ScoreValidator>();
+        this.Services.AddSingleton<ScoreService>();
+        
+        IRenderedFragment page = this.Render(@<Index />);
+        
+        IRenderedComponent<MudGrid> scoreGrid = page.FindComponent<MudGrid>();
+        IReadOnlyList<IRenderedComponent<MudCard>> scoreCards = scoreGrid.FindComponents<MudCard>();
+        
+        scoreGrid.ShouldNotBeNull();
+        scoreCards.Count.ShouldBe(2);
+        for (int scoreCard = 0; scoreCard < scoreCards.Count; scoreCard++)
+        {
+            IRenderedComponent<MudCard> scoreCardComponent = scoreCards[scoreCard];
+            scoreCardComponent.MarkupMatches(@<MudCard Style="height: 100%">
+                                                 <MudCardHeader>
+                                                     <CardHeaderContent>
+                                                         <MudText Typo="Typo.h6">@scores[scoreCard].Title</MudText>
+                                                     </CardHeaderContent>
+                                                 </MudCardHeader>
+                                                 <MudCardContent>
+                                                     <MudText>@scores[scoreCard].ProgrammeNotes</MudText>
+                                                 </MudCardContent>
+                                                 <MudCardActions>
+                                                     <MudButton Variant="Variant.Text"
+                                                                Color="Color.Primary"
+                                                                OnClick="@(() => this.NavigationManager.NavigateTo($"/Music/Scores/{scores[scoreCard].ScoreId}"))">
+                                                         View & Listen
+                                                     </MudButton>
+                                                 </MudCardActions>
+                                             </MudCard>);
+        }
+    }
+
+    /// <summary>
+    /// Tests that the <see cref="Web.Pages.Music.Scores.Index"/> page renders a warning alert when no scores are present in configuration.
+    /// </summary>
+    [Fact]
+    public void Index_WhenNoScoresExistInConfiguration_RendersWarningAlert()
+    {
+        Dictionary<string, string?> scoreConfiguration = new();
+        IConfiguration configuration = new ConfigurationBuilder()
+            .AddInMemoryCollection(scoreConfiguration)
+            .Build();
+        
+        this.Services.AddSingleton(configuration);
+        this.Services.AddSingleton<IValidator<MuseScoreUser>, MuseScoreUserValidator>();
+        this.Services.AddSingleton<IValidator<Score>, ScoreValidator>();
+        this.Services.AddSingleton<ScoreService>();
+        
+        IRenderedFragment page = this.Render(@<Index />);
+        
+        IRenderedComponent<MudAlert> alert = page.FindComponent<MudAlert>();
+
+        alert.ShouldNotBeNull();
+        alert.MarkupMatches(@<MudAlert Severity="MudBlazor.Severity.Warning">
+                                No scores found.
+                            </MudAlert>);
+    }
+
+    /// <summary>
+    /// Tests that the <see cref="Web.Pages.Music.Scores.Index"/> page renders an error alert when an error occurs while loading scores.
+    /// </summary>
+    [Fact]
+    public void Index_WhenErrorOccursWhileLoadingScores_RendersErrorAlert()
+    {
+        Dictionary<string, string?> scoreConfiguration = new()
+        {
+            ["Music:Scores:Works:0:ScoreId"] = null,
+            ["Music:Scores:Works:0:MuseScoreScoreId"] = "1001",
+            ["Music:Scores:Works:0:Title"] = "Score 1",
+            ["Music:Scores:Works:0:Year"] = "2021",
+            ["Music:Scores:Works:0:Ensemble"] = "Score Ensemble 1",
+            ["Music:Scores:Works:0:Parts:0"] = "Score 1 Part 1",
+            ["Music:Scores:Works:0:Parts:1"] = "Score 1 Part 2",
+            ["Music:Scores:Works:0:ProgrammeNotes"] = "Score 1 Programme Notes"
+        };
+        
+        IConfiguration configuration = new ConfigurationBuilder()
+            .AddInMemoryCollection(scoreConfiguration)
+            .Build();
+        
+        this.Services.AddSingleton(configuration);
+        this.Services.AddSingleton<IValidator<MuseScoreUser>, MuseScoreUserValidator>();
+        this.Services.AddSingleton<IValidator<Score>, ScoreValidator>();
+        this.Services.AddSingleton<ScoreService>();
+        
+        IRenderedFragment page = this.Render(@<Index />);
+        
+        IRenderedComponent<MudAlert> alert = page.FindComponent<MudAlert>();
+
+        alert.ShouldNotBeNull();
+        alert.MarkupMatches(@<MudAlert Severity="MudBlazor.Severity.Error">
+                                <strong>An error occurred while loading the scores:</strong><br />
+                                Score ID is required.
+                            </MudAlert>);
+    }
+}

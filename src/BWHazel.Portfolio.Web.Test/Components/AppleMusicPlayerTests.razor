@@ -1,0 +1,87 @@
+@inherits PortfolioTestContext
+
+@code {
+    /// <summary>
+    /// Tests that the <see cref="AppleMusicPlayer"/> component renders the player with default values with the album ID and slug provided.
+    /// </summary>
+    [Fact]
+    public void AppleMusicPlayer_WithAlbumIdAndSlugAndAllDefaultValues_RendersPlayer()
+    {
+        IRenderedFragment component = this.Render(@<AppleMusicPlayer AlbumId="123" AlbumSlug="album-1" />);
+        
+        component.MarkupMatches(@<iframe id="embedPlayer"
+                                         height="450"
+                                         width="100%"
+                                         title="Media player"
+                                         src="https://embed.music.apple.com/gb/album/album-1/123?itscg=30200&itsct=music_box_player&ls=1&app=music&mttnsubad=123&theme=auto"
+                                         sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation-by-user-activation"
+                                         allow="autoplay *; encrypted-media *; clipboard-write"
+                                         style="border: 0px; border-radius: 12px; width: 100%; height: 450px; max-width: 660px;">
+                                    </iframe>);
+    }
+
+    /// <summary>
+    /// Tests that the <see cref="AppleMusicPlayer"/> component renders the player with modified default values with the album ID and slug provided.
+    /// </summary>
+    [Fact]
+    public void AppleMusicPlayer_WithAlbumIdAndSlugAndModifiedDefaultValues_RendersPlayer()
+    {
+        IRenderedFragment component = this.Render(@<AppleMusicPlayer Height="100"
+                                                                     Width="50"
+                                                                     AlbumId="123"
+                                                                     AlbumSlug="album-1"
+                                                                     ItscgToken="12345"/>);
+        
+        component.MarkupMatches(@<iframe id="embedPlayer"
+                                            height="100"
+                                            width="50%"
+                                            title="Media player"
+                                            src="https://embed.music.apple.com/gb/album/album-1/123?itscg=12345&itsct=music_box_player&ls=1&app=music&mttnsubad=123&theme=auto"
+                                            sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation-by-user-activation"
+                                            allow="autoplay *; encrypted-media *; clipboard-write"
+                                            style="border: 0px; border-radius: 12px; width: 50%; height: 100px; max-width: 660px;">
+                                        </iframe>);
+    }
+    
+    /// <summary>
+    /// Tests that the <see cref="AppleMusicPlayer"/> component renders an error when the album ID and slug are not provided.
+    /// </summary>
+    [Fact]
+    public void AppleMusicPlayer_WithMissingAlbumIdAndSlug_RendersError()
+    {
+        IRenderedFragment component = this.Render(@<AppleMusicPlayer />);
+
+        component.MarkupMatches(@<MudAlert Severity="Severity.Error">
+                                    <strong>An error occurred displaying the Apple Music player:</strong><br/>
+                                    The album ID and slug are required.
+                                </MudAlert>);
+    }
+
+    /// <summary>
+    /// Tests that the <see cref="AppleMusicPlayer"/> component renders an error when the album ID is not provided.
+    /// </summary>
+    [Fact]
+    public void AppleMusicPlayer_WithMissingAlbumId_RendersError()
+    {
+        IRenderedFragment component = this.Render(@<AppleMusicPlayer AlbumSlug="album-1" />);
+
+        component.MarkupMatches(@<MudAlert Severity="Severity.Error">
+                                    <strong>An error occurred displaying the Apple Music player:</strong><br/>
+                                    The album ID and slug are required.
+                                </MudAlert>);
+    }
+    
+    /// <summary>
+    /// Tests that the <see cref="AppleMusicPlayer"/> component renders an error when the album slug is not provided.
+    /// </summary>
+    [Fact]
+    public void AppleMusicPlayer_WithMissingAlbumSlug_RendersError()
+    {
+        IRenderedFragment component = this.Render(@<AppleMusicPlayer AlbumId="123" />);
+
+        component.MarkupMatches(@<MudAlert Severity="Severity.Error">
+                                    <strong>An error occurred displaying the Apple Music player:</strong><br/>
+                                    The album ID and slug are required.
+                                </MudAlert>);
+    }
+}

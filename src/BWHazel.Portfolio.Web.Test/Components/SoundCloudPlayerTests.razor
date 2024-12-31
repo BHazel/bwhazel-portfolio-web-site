@@ -1,0 +1,124 @@
+@inherits PortfolioTestContext
+
+@code {
+    /// <summary>
+    /// Tests that the <see cref="SoundCloudPlayer"/> component renders the player with default values with the playlist ID, slug and title provided.
+    /// </summary>
+    [Fact]
+    public void SoundCloudPlayer_WithPlaylistIdAndSlugAndTitleAndAllDefaultValues_RendersPlayer()
+    {
+        IRenderedFragment component = this.Render(@<SoundCloudPlayer PlaylistId="123"
+                                                                     PlaylistSlug="playlist-1"
+                                                                     PlaylistTitle="Playlist 1" />);
+        
+        component.MarkupMatches(@<text>
+                                     <iframe height="450"
+                                             width="100%"
+                                             src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/123&color=%2331303d&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"
+                                             allow="autoplay"
+                                             frameborder="no"
+                                             scrolling="no"
+                                             style="height: 450px">
+                                     </iframe>
+                                     <div style="font-size: 10px; color: #cccccc; line-break: anywhere; word-break: normal; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif; font-weight: 100;">
+                                         <a href="https://soundcloud.com/benedict-hazel"
+                                            title="Benedict Hazel"
+                                            target="_blank"
+                                            style="color: #cccccc; text-decoration: none;">
+                                             Benedict Hazel
+                                         </a> ·
+                                         <a href="https://soundcloud.com/benedict-hazel/sets/playlist-1"
+                                            title="Playlist 1"
+                                            target="_blank"
+                                            style="color: #cccccc; text-decoration: none;">
+                                             Playlist 1
+                                         </a>
+                                     </div>
+                                 </text>);
+    }
+    
+    /// <summary>
+    /// Tests that the <see cref="SoundCloudPlayer"/> component renders the player with modified default values with the playlist ID, slug and title provided.
+    /// </summary>
+    [Fact]
+    public void SoundCloudPlayer_WithPlaylistIdAndSlugAndTitleAndModifiedDefaultValues_RendersPlayer()
+    {
+        IRenderedFragment component = this.Render(@<SoundCloudPlayer Height="100"
+                                                                     Width="50"
+                                                                     PlaylistId="123"
+                                                                     PlaylistSlug="playlist-1"
+                                                                     PlaylistTitle="Playlist 1"
+                                                                     UserSlug="example-user"
+                                                                     UserDisplayName="Example User" />);
+        
+        component.MarkupMatches(@<text>
+                                     <iframe height="100"
+                                             width="50%"
+                                             src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/123&color=%2331303d&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"
+                                             allow="autoplay"
+                                             frameborder="no"
+                                             scrolling="no"
+                                             style="height: 100px">
+                                     </iframe>
+                                     <div style="font-size: 10px; color: #cccccc; line-break: anywhere; word-break: normal; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif; font-weight: 100;">
+                                         <a href="https://soundcloud.com/example-user"
+                                            title="Example User"
+                                            target="_blank"
+                                            style="color: #cccccc; text-decoration: none;">
+                                             Example User
+                                         </a> ·
+                                         <a href="https://soundcloud.com/example-user/sets/playlist-1"
+                                            title="Playlist 1"
+                                            target="_blank"
+                                            style="color: #cccccc; text-decoration: none;">
+                                             Playlist 1
+                                         </a>
+                                     </div>
+                                 </text>);
+    }
+    
+    /// <summary>
+    /// Tests that the <see cref="SoundCloudPlayer"/> component renders an error when the playlist ID  is not provided.
+    /// </summary>
+    [Fact]
+    public void SoundCloudPlayer_WithMissingPlaylistId_RendersError()
+    {
+        IRenderedFragment component = this.Render(@<SoundCloudPlayer PlaylistSlug="playlist-1"
+                                                                     PlaylistTitle="Playlist 1" />);
+
+        component.MarkupMatches(@<MudAlert Severity="Severity.Error">
+                                    <strong>An error occurred displaying the SoundCloud player:</strong><br />
+                                    The playlist ID, slug and title are required.
+                                </MudAlert>);
+    }
+    
+    /// <summary>
+    /// Tests that the <see cref="SoundCloudPlayer"/> component renders an error when the playlist slug is not provided.
+    /// </summary>
+    [Fact]
+    public void SoundCloudPlayer_WithMissingPlaylistSlug_RendersError()
+    {
+        IRenderedFragment component = this.Render(@<SoundCloudPlayer PlaylistId="123"
+                                                                     PlaylistTitle="Playlist 1" />);
+
+        component.MarkupMatches(@<MudAlert Severity="Severity.Error">
+                                    <strong>An error occurred displaying the SoundCloud player:</strong><br />
+                                    The playlist ID, slug and title are required.
+                                </MudAlert>);
+    }
+    
+    /// <summary>
+    /// Tests that the <see cref="SoundCloudPlayer"/> component renders an error when the playlist title  is not provided.
+    /// </summary>
+    [Fact]
+    public void SoundCloudPlayer_WithMissingPlaylistTitle_RendersError()
+    {
+        IRenderedFragment component = this.Render(@<SoundCloudPlayer PlaylistId="123"
+                                                                     PlaylistSlug="playlist-1" />);
+
+        component.MarkupMatches(@<MudAlert Severity="Severity.Error">
+                                    <strong>An error occurred displaying the SoundCloud player:</strong><br />
+                                    The playlist ID, slug and title are required.
+                                </MudAlert>);
+    }
+}

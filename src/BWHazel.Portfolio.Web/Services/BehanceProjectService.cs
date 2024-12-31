@@ -24,18 +24,18 @@ public class BehanceProjectService(IConfiguration configuration)
         IConfigurationSection graphicDesignBehanceProjectsWorksSection =
             this.configuration.GetSection(GraphicDesignBehanceProjectsWorksKey);
 
-        List<int> behanceProjects = graphicDesignBehanceProjectsWorksSection
+        List<int> behanceProjectIds = graphicDesignBehanceProjectsWorksSection
             .GetChildren()
             .Select(section => int.TryParse(section["BehanceProjectId"]!, out int behanceProjectId)
                 ? behanceProjectId
                 : 0)
             .ToList();
 
-        if (behanceProjects.Any(behanceProject => behanceProject == 0))
+        if (behanceProjectIds.Any(behanceProjectId => behanceProjectId == 0))
         {
             throw new ArgumentException("Behance project IDs are required and must be integers.");
         }
 
-        return behanceProjects;
+        return behanceProjectIds;
     }
 }

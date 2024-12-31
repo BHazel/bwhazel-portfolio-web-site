@@ -1,0 +1,57 @@
+@inherits PortfolioTestContext
+
+@code {
+    /// <summary>
+    /// Tests that the <see cref="SpotifyMusicPlayer"/> component renders the player with default values with the album ID and SI code provided.
+    /// </summary>
+    [Fact]
+    public void SpotifyMusicPlayer_WithAlbumIdAndAllDefaultValues_RendersPlayer()
+    {
+        IRenderedFragment component = this.Render(@<SpotifyMusicPlayer AlbumId="album-1" />);
+        
+        component.MarkupMatches(@<iframe height="450"
+                                         width="100%"
+                                         src="https://open.spotify.com/embed/album/album-1?utm_source=generator&theme=0"
+                                         allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                                         allowfullscreen=""
+                                         frameBorder="0"
+                                         loading="lazy"
+                                         style="border-radius:12px; height: 450px">
+                                </iframe>);
+    }
+    
+    /// <summary>
+    /// Tests that the <see cref="SpotifyMusicPlayer"/> component renders the player with modified default values with the album ID and SI code provided.
+    /// </summary>
+    [Fact]
+    public void SpotifyMusicPlayer_WithAlbumIdAndModifiedDefaultValues_RendersPlayer()
+    {
+        IRenderedFragment component = this.Render(@<SpotifyMusicPlayer Height="100"
+                                                                       Width="50"
+                                                                       AlbumId="album-1" />);
+        
+        component.MarkupMatches(@<iframe height="100"
+                                         width="50%"
+                                         src="https://open.spotify.com/embed/album/album-1?utm_source=generator&theme=0"
+                                         allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                                         allowfullscreen=""
+                                         frameBorder="0"
+                                         loading="lazy"
+                                         style="border-radius:12px; height: 100px">
+                                </iframe>);
+    }
+    
+    /// <summary>
+    /// Tests that the <see cref="SpotifyBadge"/> component renders an error when the album ID is not provided.
+    /// </summary>
+    [Fact]
+    public void SpotifyMusicPlayer_WithMissingAlbumId_RendersError()
+    {
+        IRenderedFragment component = this.Render(@<SpotifyMusicPlayer />);
+        
+        component.MarkupMatches(@<MudAlert Severity="Severity.Error">
+                                    <strong>An error occurred displaying the Spotify player:</strong><br />
+                                    The album ID is required.
+                                </MudAlert>);
+    }
+}

@@ -1,13 +1,23 @@
-<iframe height="@this.Height"
-        width="@this.Width"
-        src="https://www.behance.net/embed/project/@this.ProjectId?ilo0=1"
-        allow="clipboard-write"
-        allowfullscreen="allowfullscreen"
-        frameborder="0"
-        lazyload="lazyload"
-        refererPolicy="strict-origin-when-cross-origin"
-        style="height: @(this.Height)px">
-</iframe>
+@if (this.ProjectId != 0)
+{
+    <iframe height="@this.Height"
+            width="@this.Width"
+            src="https://www.behance.net/embed/project/@this.ProjectId?ilo0=1"
+            allow="clipboard-write"
+            allowfullscreen="allowfullscreen"
+            frameborder="0"
+            lazyload="lazyload"
+            refererPolicy="strict-origin-when-cross-origin"
+            style="height: @(this.Height)px">
+    </iframe>
+}
+else
+{
+    <MudAlert Severity="Severity.Error">
+        <strong>An error occurred displaying the Behance project:</strong><br />
+        The project ID is required.
+    </MudAlert>
+}
 
 @code {
     /// <summary>

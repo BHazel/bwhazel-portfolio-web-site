@@ -1,9 +1,19 @@
-<a href="https://music.apple.com/gb/album/@this.AlbumSlug/@this.AlbumId?itscg=@this.ItscgToken&itsct=music_box_badge&ls=1&app=music&mttnsubad=@this.AlbumId"
-   style="display: inline-block;">
-    <img src="https://toolbox.marketingtools.apple.com/api/v2/badges/listen-on-apple-music/badge/en-gb?releaseDate=1201824000"
-         alt="Listen on Apple Music"
-         style="width: @(this.Width)px; height: @(this.Height)px; vertical-align: middle; object-fit: contain;" />
-</a>
+@if (this.AlbumId != 0 && !string.IsNullOrWhiteSpace(this.AlbumSlug))
+{
+    <a href="https://music.apple.com/gb/album/@this.AlbumSlug/@this.AlbumId?itscg=@this.ItscgToken&itsct=music_box_badge&ls=1&app=music&mttnsubad=@this.AlbumId"
+       style="display: inline-block;">
+        <img src="https://toolbox.marketingtools.apple.com/api/v2/badges/listen-on-apple-music/badge/en-gb?releaseDate=1201824000"
+             alt="Listen on Apple Music"
+             style="width: @(this.Width)px; height: @(this.Height)px; vertical-align: middle; object-fit: contain;" />
+    </a>
+}
+else
+{
+    <MudAlert Severity="Severity.Error">
+        <strong>An error occurred displaying the Apple Music badge:</strong><br />
+        The album ID and slug are required.
+    </MudAlert>
+}
 
 @code {
     /// <summary>
