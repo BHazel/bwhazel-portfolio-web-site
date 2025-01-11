@@ -1,0 +1,74 @@
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.Extensions.Configuration
+
+@inherits PortfolioTestContext
+
+@code {
+    /// <summary>
+    /// Tests that the <see cref="PortfolioPageTitle"/> renders the full page title when the site title and title are provided.
+    /// </summary>
+    [Fact]
+    public void PortfolioPageTitle_WithAllSiteTitleAndTitle_RendersFullPageTitle()
+    {
+        string siteTitle = "My Site";
+        string pageTitle = "My Page";
+        Dictionary<string, string?> siteConfiguration = new()
+        {
+            ["Site:Title"] = siteTitle
+        };
+        
+        IConfiguration configuration = new ConfigurationBuilder()
+            .AddInMemoryCollection(siteConfiguration)
+            .Build();
+
+        this.Services.AddSingleton(configuration);
+        this.Services.AddCascadingValue("SiteTitle", provider => configuration["Site:Title"]);
+
+        IRenderedFragment component = this.Render(@<PortfolioPageTitle Title="@pageTitle" />);
+        
+        component.MarkupMatches(@<PageTitle>@siteTitle - @pageTitle</PageTitle>);
+    }
+
+    /// <summary>
+    /// Tests that the <see cref="PortfolioPageTitle"/> renders the site title when the title is not provided.
+    /// </summary>
+    [Fact]
+    public void PortfolioPageTitle_WithMissingTitle_RendersSiteTitle()
+    {
+        string siteTitle = "My Site";
+        Dictionary<string, string?> siteConfiguration = new()
+        {
+            { "Site:Title", siteTitle }
+        };
+        
+        IConfiguration configuration = new ConfigurationBuilder()
+            .AddInMemoryCollection(siteConfiguration)
+            .Build();
+
+        this.Services.AddSingleton(configuration);
+        this.Services.AddCascadingValue("SiteTitle", provider => configuration["Site:Title"]);
+
+        IRenderedFragment component = this.Render(@<PortfolioPageTitle />);
+        
+        component.MarkupMatches(@<PageTitle>@siteTitle</PageTitle>);
+    }
+
+    /// <summary>
+    /// Tests that the <see cref="PortfolioPageTitle"/> renders the full page title with a default site title when the site title is not provided.
+    /// </summary>
+    [Fact]
+    public void PortfolioPageTitle_WithMissingSiteTitle_RendersFullPageTitleWithDefaultSiteTitle()
+    {
+        string pageTitle = "My Page";
+        IConfiguration configuration = new ConfigurationBuilder()
+            .AddInMemoryCollection(new Dictionary<string, string?>())
+            .Build();
+
+        this.Services.AddSingleton(configuration);
+        this.Services.AddCascadingValue("SiteTitle", provider => configuration["Site:Title"]);
+        
+        IRenderedFragment component = this.Render(@<PortfolioPageTitle Title="@pageTitle" />);
+        
+        component.MarkupMatches(@<PageTitle>Benedict W. Hazel - @pageTitle</PageTitle>);
+    }
+}
