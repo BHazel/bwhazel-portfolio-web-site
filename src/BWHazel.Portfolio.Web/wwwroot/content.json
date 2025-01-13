@@ -91,5 +91,81 @@
                 }
             ]
         }
+    },
+    "SiteList": {
+        "Sites": [
+            {
+                "Title": "Aka.BWHazel",
+                "Url": "https://aka.bwhazel.co.uk",
+                "Description": "My personal URL shortener.",
+                "Hosting": "Civo Kubernetes",
+                "SourceCodeUrl": "https://github.com/BHazel/aka.git",
+                "Availability": "AlwaysAvailable",
+                "Notes": null
+            },
+            {
+                "Title": "Benedict W. Hazel",
+                "Url": "https://bwhazel.co.uk",
+                "Description": "My personal website and creative portfolio!",
+                "Hosting": "Netlify",
+                "SourceCodeUrl": "https://github.com/BHazel/bwhazel-portfolio-web-site.git",
+                "Availability": "AlwaysAvailable",
+                "Notes": "Relaunched as v4 and renamed in 2025 from B W Hazel."
+            },
+            {
+                "Title": "BWHazel API",
+                "Url": "https://api.bwhazel.co.uk",
+                "Description": "Basic APIs for use by 3rd parties in their own solutions.",
+                "Hosting": "Civo Kubernetes",
+                "SourceCodeUrl": "https://github.com/BHazel/bwhazel-web-api.git",
+                "Availability": "AlwaysAvailable",
+                "Notes": null
+            },
+            {
+                "Title": "BWHazel Info",
+                "Url": null,
+                "Description": "Technical and legal info on my web sites",
+                "Hosting": "Netlify",
+                "SourceCodeUrl": "https://github.com/BHazel/bwhazel-info-web-site.git",
+                "Availability": "TakenOffline",
+                "Notes": "Shut down in 2025 and content merged into B W Hazel."
+            },
+            {
+                "Title": "Carols",
+                "Url": null,
+                "Description": "Interactive song sheets for Christmas carolling.",
+                "Hosting": "Microsoft Azure App Service",
+                "SourceCodeUrl": null,
+                "Availability": "LimitedAccess",
+                "Notes": null
+            },
+            {
+                "Title": "Countdown",
+                "Url": null,
+                "Description": "Basic countdown clock for tailored events.",
+                "Hosting": "Netlify",
+                "SourceCodeUrl": null,
+                "Availability": "LimitedAccess",
+                "Notes": null
+            },
+            {
+                "Title": "Four Forces",
+                "Url": null,
+                "Description": "Web site for an electronica album I wrote inspired by the four forces of nature.",
+                "Hosting": "eUKhost IIS",
+                "SourceCodeUrl": null,
+                "Availability": "TakenOffline",
+                "Notes": "Shut down in 2025 and content merged into B W Hazel."
+            },
+            {
+                "Title": "Travel Blog",
+                "Url": "https://bwhantarctica.blogspot.com",
+                "Description": "A blog for my travels.",
+                "Hosting": "Google Blogger",
+                "SourceCodeUrl": null,
+                "Availability": "AlwaysAvailable",
+                "Notes": null
+            }
+        ]
     }
 }

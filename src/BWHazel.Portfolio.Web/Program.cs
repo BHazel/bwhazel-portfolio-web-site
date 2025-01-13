@@ -14,6 +14,8 @@ using FluentValidation;
 using MudBlazor.Services;
 
 const string SiteContentFile = "content.json";
+const string SiteTitleKey = "Site:Title";
+const string SiteVersionKey = "Site:Version";
 
 WebAssemblyHostBuilder builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -28,12 +30,17 @@ builder.Services.AddScoped(serviceProvider => httpClient);
 builder.Services.AddScoped<IValidator<Album>, AlbumValidator>();
 builder.Services.AddScoped<IValidator<MuseScoreUser>, MuseScoreUserValidator>();
 builder.Services.AddScoped<IValidator<Score>, ScoreValidator>();
+builder.Services.AddScoped<IValidator<Site>, SiteValidator>();
 builder.Services.AddScoped<AlbumService>();
 builder.Services.AddScoped<ScoreService>();
 builder.Services.AddScoped<BehanceProjectService>();
+builder.Services.AddScoped<SiteListService>();
 
 builder.Configuration
     .AddJsonStream(await GetContentData(httpClient));
+
+builder.Services.AddCascadingValue("SiteTitle", provider => builder.Configuration[SiteTitleKey]);
+builder.Services.AddCascadingValue("SiteVersion", provider => builder.Configuration[SiteVersionKey]);
 
 builder.Services.AddMudServices();
 

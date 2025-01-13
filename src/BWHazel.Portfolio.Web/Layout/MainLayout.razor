@@ -8,7 +8,7 @@
 <MudLayout>
     <MudAppBar>
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="e => this.ToggleDrawer()" />
-        <MudText Typo="Typo.h5">B W Hazel Portfolio</MudText>
+        <MudText Typo="Typo.h5">@this.SiteTitle</MudText>
     </MudAppBar>
     <MudDrawer @bind-Open="@this.isDrawerOpen" ClipMode="DrawerClipMode.Always">
         <Nav />
@@ -22,6 +22,12 @@
 
 @code {
     private bool isDrawerOpen = true;
+
+    /// <summary>
+    /// Gets or sets the site title.
+    /// </summary>
+    [CascadingParameter(Name = "SiteTitle")]
+    public string SiteTitle { get; set; } = string.Empty;
 
     /// <summary>
     /// Toggles the navigation drawer between open and closed.

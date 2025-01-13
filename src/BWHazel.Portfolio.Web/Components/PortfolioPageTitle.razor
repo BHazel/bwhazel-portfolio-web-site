@@ -1,0 +1,26 @@
+<PageTitle>@this.BuildPageTitle()</PageTitle>
+
+@code {
+    /// <summary>
+    /// Gets or sets the site title.
+    /// </summary>
+    [CascadingParameter(Name = "SiteTitle")]
+    public string SiteTitle { get; set; } = "Benedict W. Hazel";
+    
+    /// <summary>
+    /// Gets or sets the title.
+    /// </summary>
+    [Parameter]
+    public string Title { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Builds the page title.
+    /// </summary>
+    /// <returns>The page title.</returns>
+    private string BuildPageTitle()
+    {
+        return !string.IsNullOrWhiteSpace(this.Title)
+            ? $"{SiteTitle} - {this.Title}"
+            : SiteTitle;
+    }
+}
