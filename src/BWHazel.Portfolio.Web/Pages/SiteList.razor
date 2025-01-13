@@ -1,0 +1,136 @@
+@page "/Site-List"
+
+@using BWHazel.Portfolio.Web.Models
+@using BWHazel.Portfolio.Web.Services
+
+@inject SiteListService SiteListService
+
+<PortfolioPageTitle Title="Site List" />
+
+<MudText GutterBottom="true" Typo="Typo.h3">Site List</MudText>
+<MudText Typo="Typo.body1">
+    All my personal web sites are outlined below.  Availabilities include:
+</MudText>
+<MudText GutterBottom="true" Typo="Typo.body1">
+    <ul class="default-bullet-list ml-6">
+        <li><MudText Typo="Typo.body1"><strong>Always Available:</strong> Fully public sites available at all times.</MudText></li>
+        <li><MudText Typo="Typo.body1"><strong>Limited Access:</strong> Not intended for general access but targeted at specific groups and may be limited to specific timeframes.</MudText></li>
+        <li><MudText Typo="Typo.body1"><strong>Taken Offline:</strong> No longer available and details temporarily provided for transparency.</MudText></li>
+    </ul>
+</MudText>
+
+@if (this.allSites.Any())
+{
+    <MudTable Items="@this.allSites"
+              Hover="true"
+              Breakpoint="Breakpoint.Sm">
+        <HeaderContent>
+            <MudTh>Site</MudTh>
+            <MudTh>Description</MudTh>
+            <MudTh>Availability</MudTh>
+            <MudTh>Hosting</MudTh>
+            <MudTh>Source Code</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Site">
+                @if (!string.IsNullOrWhiteSpace(context.Url))
+                {
+                    <MudLink Href="@context.Url">@context.Title</MudLink>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body1">@context.Title</MudText>
+                }
+            </MudTd>
+            <MudTd DataLabel="Description">
+                <MudText Typo="Typo.body1">
+                    @if (!string.IsNullOrWhiteSpace(context.Notes))
+                    {
+                        <strong>@context.Notes</strong>
+                        <br/>
+                    }
+
+                    @context.Description
+                </MudText >
+            </MudTd>
+            <MudTd DataLabel="Availability">
+                <MudText Typo="Typo.body1">
+                    @context.Availability.GetDescription()
+                </MudText>
+            </MudTd>
+            <MudTd DataLabel="Hosting">
+                <MudText Typo="Typo.body1">
+                    @context.Hosting
+                </MudText>
+            </MudTd>
+            <MudTd DataLabel="Source Code">
+                @if (!string.IsNullOrWhiteSpace(context.SourceCodeUrl))
+                {
+                    <MudLink Href="@context.SourceCodeUrl">Available</MudLink>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body1">Unavailable</MudText>
+                }
+            </MudTd>
+        </RowTemplate>
+    </MudTable>
+}
+else if (this.isError)
+{
+    <MudAlert Severity="Severity.Error">
+        <strong>An error occurred while loading the site list:</strong><br />
+        @this.errorMessage
+    </MudAlert>
+}
+else if (this.isLoaded)
+{
+    <MudAlert Severity="Severity.Warning">
+        No sites found.
+    </MudAlert>
+}
+else
+{
+    <MudText Typo="Typo.body1">Loading...</MudText>
+}
+
+@code {
+    private bool isLoaded = false;
+    private bool isError = false;
+    private string? errorMessage;
+    private List<Site> allSites = [];
+    
+    /// <summary>
+    /// Method invoked when the component is ready to start, having received its initial parameters from its parent in the render tree.
+    /// </summary>
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            this.allSites = this.SiteListService.GetAllSites();
+        }
+        catch (Exception exception)
+        {
+            this.isError = true;
+            this.errorMessage = exception.Message;
+        }
+        finally
+        {
+            this.isLoaded = true;
+        }
+        
+        await base.OnInitializedAsync();
+    }
+    
+    /// <summary>
+    /// Filters the sites by availability.
+    /// </summary>
+    /// <param name="availability">The site availability.</param>
+    /// <returns>A collection of sites filtered by availability.</returns>
+    private List<Site> FilterSites(SiteAvailability availability)
+    {
+        return this.allSites
+            .Where(site => site.Availability == availability)
+            .ToList();
+    }
+}

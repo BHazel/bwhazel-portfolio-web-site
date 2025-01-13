@@ -1,0 +1,281 @@
+@using Microsoft.Extensions.Configuration
+@using BWHazel.Portfolio.Web.Models
+@using BWHazel.Portfolio.Web.Models.Validators
+@using BWHazel.Portfolio.Web.Pages
+@using BWHazel.Portfolio.Web.Services
+@using FluentValidation
+
+@inherits PortfolioTestContext
+
+@code {
+    /// <summary>
+    /// Tests that the <see cref="SiteList" /> page renders the site list table when sites are present in configuration.
+    /// </summary>
+    [Fact]
+    public void SiteList_WhenSitesExistInConfiguration_RendersTable()
+    {
+        List<Site> sites =
+        [
+            new(
+                "Site 1",
+                "https://example1.co.uk",
+                "Site 1 Description",
+                "Site 1 Hosting",
+                "https://source.example1.co.uk",
+                SiteAvailability.AlwaysAvailable,
+                "Site 1 Notes"
+            ),
+            new(
+                "Site 2",
+                "https://example2.co.uk",
+                "Site 2 Description",
+                "Site 2 Hosting",
+                "https://source.example2.co.uk",
+                SiteAvailability.LimitedAccess,
+                "Site 2 Notes"
+            )
+        ];
+        
+        Dictionary<string, string?> siteConfiguration = new();
+        for (int site = 0; site < sites.Count; site++)
+        {
+            siteConfiguration[$"SiteList:Sites:{site}:Title"] = sites[site].Title;
+            siteConfiguration[$"SiteList:Sites:{site}:Url"] = sites[site].Url;
+            siteConfiguration[$"SiteList:Sites:{site}:Description"] = sites[site].Description;
+            siteConfiguration[$"SiteList:Sites:{site}:Hosting"] = sites[site].Hosting;
+            siteConfiguration[$"SiteList:Sites:{site}:SourceCodeUrl"] = sites[site].SourceCodeUrl;
+            siteConfiguration[$"SiteList:Sites:{site}:Availability"] = sites[site].Availability.ToString();
+            siteConfiguration[$"SiteList:Sites:{site}:Notes"] = sites[site].Notes;
+        }
+        
+        IConfiguration configuration = new ConfigurationBuilder()
+            .AddInMemoryCollection(siteConfiguration)
+            .Build();
+
+        this.Services.AddSingleton(configuration);
+        this.Services.AddSingleton<IValidator<Site>, SiteValidator>();
+        this.Services.AddSingleton<SiteListService>();
+
+        IRenderedFragment page = this.Render(@<SiteList />);
+        
+        IRenderedComponent<MudTable<Site>> siteTable = page.FindComponent<MudTable<Site>>();
+        IReadOnlyList<IRenderedComponent<MudTr>> tableRows = siteTable.FindComponents<MudTr>();
+
+        siteTable.ShouldNotBeNull();
+        tableRows.Count.ShouldBe(2);
+        for (int tableRow = 0; tableRow < tableRows.Count; tableRow++)
+        {
+            IReadOnlyList<IRenderedComponent<MudTd>> renderedRowCells = tableRows[tableRow].FindComponents<MudTd>();
+            List<MudTd> cells = renderedRowCells.Select(cell => cell.Instance).ToList();
+
+            renderedRowCells[0].MarkupMatches(@<MudTd DataLabel="Site">
+                                                  <MudLink Href="@sites[tableRow].Url">@sites[tableRow].Title</MudLink>
+                                              </MudTd>);
+            
+            renderedRowCells[1].MarkupMatches(@<MudTd DataLabel="Description">
+                                                  <MudText Typo="Typo.body1">
+                                                      <strong>@sites[tableRow].Notes</strong>
+                                                      <br/>
+                                                      @sites[tableRow].Description
+                                                  </MudText>
+                                              </MudTd>);
+            
+            renderedRowCells[2].MarkupMatches(@<MudTd DataLabel="Availability">
+                                                  <MudText Typo="Typo.body1">
+                                                      @sites[tableRow].Availability.GetDescription()
+                                                  </MudText>
+                                              </MudTd>);
+
+            renderedRowCells[3].MarkupMatches(@<MudTd DataLabel="Hosting">
+                                                  <MudText Typo="Typo.body1">
+                                                      @sites[tableRow].Hosting
+                                                  </MudText>
+                                              </MudTd>);
+
+            renderedRowCells[4].MarkupMatches(@<MudTd DataLabel="Source Code">
+                                                  <MudLink Href="@sites[tableRow].SourceCodeUrl">Available</MudLink>
+                                              </MudTd>);
+        }
+    }
+
+    /// <summary>
+    /// Tests that the <see cref="SiteList" /> page renders the title as text without a link when the URL is not provided.
+    /// </summary>
+    [Fact]
+    public void SiteList_WhenUrlMissing_RendersTitleAsText()
+    {
+        Dictionary<string, string?> siteConfiguration = new()
+        {
+            ["SiteList:Sites:0:Title"] = "Site 1",
+            ["SiteList:Sites:0:Url"] = null,
+            ["SiteList:Sites:0:Description"] = "Site 1 Description",
+            ["SiteList:Sites:0:Hosting"] = "Site 1 Hosting",
+            ["SiteList:Sites:0:SourceCodeUrl"] = "https://source.example1.co.uk",
+            ["SiteList:Sites:0:Availability"] = SiteAvailability.AlwaysAvailable.ToString(),
+            ["SiteList:Sites:0:Notes"] = "Site 1 Notes"
+        };
+        
+        IConfiguration configuration = new ConfigurationBuilder()
+            .AddInMemoryCollection(siteConfiguration)
+            .Build();
+
+        this.Services.AddSingleton(configuration);
+        this.Services.AddSingleton<IValidator<Site>, SiteValidator>();
+        this.Services.AddSingleton<SiteListService>();
+
+        IRenderedFragment page = this.Render(@<SiteList />);
+        
+        IRenderedComponent<MudTable<Site>> siteTable = page.FindComponent<MudTable<Site>>();
+        IRenderedComponent<MudTr> tableRow = siteTable.FindComponent<MudTr>();
+        IRenderedComponent<MudTd> siteCell = tableRow
+            .FindComponents<MudTd>()
+            .First(cell => cell.Instance.DataLabel == "Site");
+        
+        siteCell.MarkupMatches(@<MudTd DataLabel="Site">
+                                   <MudText Typo="Typo.body1">
+                                       Site 1
+                                   </MudText>
+                               </MudTd>);
+    }
+    
+    /// <summary>
+    /// Tests that the <see cref="SiteList" /> page renders the description as text without notes when the notes are not provided.
+    /// </summary>
+    [Fact]
+    public void SiteList_WhenNotesMissing_DoesNotRenderNotes()
+    {
+        Dictionary<string, string?> siteConfiguration = new()
+        {
+            ["SiteList:Sites:0:Title"] = "Site 1",
+            ["SiteList:Sites:0:Url"] = "https://example1.co.uk",
+            ["SiteList:Sites:0:Description"] = "Site 1 Description",
+            ["SiteList:Sites:0:Hosting"] = "Site 1 Hosting",
+            ["SiteList:Sites:0:SourceCodeUrl"] = "https://source.example1.co.uk",
+            ["SiteList:Sites:0:Availability"] = SiteAvailability.AlwaysAvailable.ToString(),
+            ["SiteList:Sites:0:Notes"] = null
+        };
+        
+        IConfiguration configuration = new ConfigurationBuilder()
+            .AddInMemoryCollection(siteConfiguration)
+            .Build();
+
+        this.Services.AddSingleton(configuration);
+        this.Services.AddSingleton<IValidator<Site>, SiteValidator>();
+        this.Services.AddSingleton<SiteListService>();
+
+        IRenderedFragment page = this.Render(@<SiteList />);
+        
+        IRenderedComponent<MudTable<Site>> siteTable = page.FindComponent<MudTable<Site>>();
+        IRenderedComponent<MudTr> tableRow = siteTable.FindComponent<MudTr>();
+        IRenderedComponent<MudTd> siteCell = tableRow
+            .FindComponents<MudTd>()
+            .First(cell => cell.Instance.DataLabel == "Description");
+        
+        siteCell.MarkupMatches(@<MudTd DataLabel="Description">
+                                   <MudText Typo="Typo.body1">
+                                        Site 1 Description
+                                   </MudText>
+                               </MudTd>);
+    }
+    
+    /// <summary>
+    /// Tests that the <see cref="SiteList" /> page renders the source code URL as text when the source code URL is not provided.
+    /// </summary>
+    [Fact]
+    public void SiteList_WhenSourceCodeUrlMissing_RendersUnavailableAsText()
+    {
+        Dictionary<string, string?> siteConfiguration = new()
+        {
+            ["SiteList:Sites:0:Title"] = "Site 1",
+            ["SiteList:Sites:0:Url"] = "https://example1.co.uk",
+            ["SiteList:Sites:0:Description"] = "Site 1 Description",
+            ["SiteList:Sites:0:Hosting"] = "Site 1 Hosting",
+            ["SiteList:Sites:0:SourceCodeUrl"] = null,
+            ["SiteList:Sites:0:Availability"] = SiteAvailability.AlwaysAvailable.ToString(),
+            ["SiteList:Sites:0:Notes"] = "Site 1 Notes"
+        };
+        
+        IConfiguration configuration = new ConfigurationBuilder()
+            .AddInMemoryCollection(siteConfiguration)
+            .Build();
+
+        this.Services.AddSingleton(configuration);
+        this.Services.AddSingleton<IValidator<Site>, SiteValidator>();
+        this.Services.AddSingleton<SiteListService>();
+
+        IRenderedFragment page = this.Render(@<SiteList />);
+        
+        IRenderedComponent<MudTable<Site>> siteTable = page.FindComponent<MudTable<Site>>();
+        IRenderedComponent<MudTr> tableRow = siteTable.FindComponent<MudTr>();
+        IRenderedComponent<MudTd> siteCell = tableRow
+            .FindComponents<MudTd>()
+            .First(cell => cell.Instance.DataLabel == "Source Code");
+        
+        siteCell.MarkupMatches(@<MudTd DataLabel="Source Code">
+                                   <MudText Typo="Typo.body1">
+                                       Unavailable
+                                   </MudText>
+                               </MudTd>);
+    }
+
+    /// <summary>
+    /// Tests that the <see cref="SiteList" /> page renders a warning alert when no sites are present in configuration.
+    /// </summary>
+    [Fact]
+    public void SiteList_WhenNoSitesExistInConfiguration_RendersWarningAlert()
+    {
+        Dictionary<string, string?> siteConfiguration = new();
+        IConfiguration configuration = new ConfigurationBuilder()
+            .AddInMemoryCollection(siteConfiguration)
+            .Build();
+
+        this.Services.AddSingleton(configuration);
+        this.Services.AddSingleton<IValidator<Site>, SiteValidator>();
+        this.Services.AddSingleton<SiteListService>();
+
+        IRenderedFragment page = this.Render(@<SiteList />);
+        
+        IRenderedComponent<MudAlert> alert = page.FindComponent<MudAlert>();
+
+        alert.ShouldNotBeNull();
+        alert.MarkupMatches(@<MudAlert Severity="MudBlazor.Severity.Warning">
+                                No sites found.
+                            </MudAlert>);
+    }
+
+    /// <summary>
+    /// Tests that the <see cref="SiteList" /> page renders an error alert when an error occurs while loading sites.
+    /// </summary>
+    [Fact]
+    public void SiteList_WhenErrorOccursWhileLoadingSites_RendersErrorAlert()
+    {
+        Dictionary<string, string?> siteConfiguration = new()
+        {
+            ["SiteList:Sites:0:Title"] = null,
+            ["SiteList:Sites:0:Url"] = "https://example1.co.uk",
+            ["SiteList:Sites:0:Description"] = "Site 1 Description",
+            ["SiteList:Sites:0:Hosting"] = "Site 1 Hosting",
+            ["SiteList:Sites:0:SourceCodeUrl"] = "https://source.example1.co.uk",
+            ["SiteList:Sites:0:Availability"] = SiteAvailability.AlwaysAvailable.ToString(),
+            ["SiteList:Sites:0:Notes"] = "Site 1 Notes"
+        };
+        
+        IConfiguration configuration = new ConfigurationBuilder()
+            .AddInMemoryCollection(siteConfiguration)
+            .Build();
+
+        this.Services.AddSingleton(configuration);
+        this.Services.AddSingleton<IValidator<Site>, SiteValidator>();
+        this.Services.AddSingleton<SiteListService>();
+
+        IRenderedFragment page = this.Render(@<SiteList />);
+        
+        IRenderedComponent<MudAlert> alert = page.FindComponent<MudAlert>();
+
+        alert.ShouldNotBeNull();
+        alert.MarkupMatches(@<MudAlert Severity="MudBlazor.Severity.Error">
+                                <strong>An error occurred while loading the site list:</strong><br />
+                                Validation failed: -- Title.Value: Title is required. Severity: Error
+                            </MudAlert>);
+    }
+}
