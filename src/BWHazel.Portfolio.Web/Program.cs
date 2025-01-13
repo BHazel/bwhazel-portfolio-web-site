@@ -30,9 +30,11 @@ builder.Services.AddScoped(serviceProvider => httpClient);
 builder.Services.AddScoped<IValidator<Album>, AlbumValidator>();
 builder.Services.AddScoped<IValidator<MuseScoreUser>, MuseScoreUserValidator>();
 builder.Services.AddScoped<IValidator<Score>, ScoreValidator>();
+builder.Services.AddScoped<IValidator<Site>, SiteValidator>();
 builder.Services.AddScoped<AlbumService>();
 builder.Services.AddScoped<ScoreService>();
 builder.Services.AddScoped<BehanceProjectService>();
+builder.Services.AddScoped<SiteListService>();
 
 builder.Configuration
     .AddJsonStream(await GetContentData(httpClient));
