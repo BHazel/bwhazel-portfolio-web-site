@@ -5,6 +5,7 @@
 
 @inject ScoreService ScoreService
 
+<PortfolioPageTitle Title="@this.pageTitle" />
 @if (this.score is not null && this.museScoreUser is not null)
 {
     <MudText GutterBottom="true" Typo="Typo.h3">@this.score.Title</MudText>
@@ -63,6 +64,7 @@ else
     private bool isLoaded = false;
     private bool isError = false;
     private string? errorMessage;
+    private string? pageTitle = "Loading Score...";
     private MuseScoreUser? museScoreUser = null;
     private Score? score = null;
 
@@ -86,10 +88,14 @@ else
         {
             this.isError = true;
             this.errorMessage = ex.Message;
+            this.pageTitle = "Error Loading Score";
         }
         finally
         {
             this.isLoaded = true;
+            this.pageTitle = !this.isError
+                ? this.score?.Title ?? "Score Not Found"
+                : this.pageTitle;
         }
         
         await base.OnInitializedAsync();

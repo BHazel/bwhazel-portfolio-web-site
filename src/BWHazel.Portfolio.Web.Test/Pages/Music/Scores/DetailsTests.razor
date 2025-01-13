@@ -1,0 +1,168 @@
+@using Microsoft.Extensions.Configuration
+@using BWHazel.Portfolio.Web.Models
+@using BWHazel.Portfolio.Web.Models.Validators
+@using BWHazel.Portfolio.Web.Pages.Music.Scores
+@using BWHazel.Portfolio.Web.Services
+@using FluentValidation
+
+@inherits PortfolioTestContext
+
+@code {
+    private MuseScoreUser museScoreUser = new(123, "ExampleUser");
+    private Score score = new(
+        "score-1",
+        1001,
+        "Score 1",
+        2021,
+        "Score Ensemble 1",
+        ["Score 1 Part 1", "Score 1 Part 2"],
+        "Score 1 Programme Notes"
+    );
+
+    /// <summary>
+    /// Tests that the <see cref="Web.Pages.Music.Scores.Details" /> page renders the musical score and details when MuseScore user and score are present in configuration.
+    /// </summary>
+    [Fact]
+    public void Details_WhenGivenScoreIdAndScoreAndMuseScoreUserExistsInConfiguration_RendersPage()
+    {
+        Dictionary<string, string?> scoreConfiguration = new()
+        {
+            ["Music:Scores:MuseScoreUser:Id"] = this.museScoreUser.MuseScoreUserId.Value.ToString(),
+            ["Music:Scores:MuseScoreUser:Username"] = this.museScoreUser.Username,
+            ["Music:Scores:Works:0:ScoreId"] = this.score.ScoreId,
+            ["Music:Scores:Works:0:MuseScoreScoreId"] = this.score.MuseScoreScoreId.ToString(),
+            ["Music:Scores:Works:0:Title"] = this.score.Title,
+            ["Music:Scores:Works:0:Year"] = this.score.Year.ToString(),
+            ["Music:Scores:Works:0:Ensemble"] = this.score.Ensemble
+        };
+        
+        for (int part = 0; part < this.score.Parts.Length; part++)
+        {
+            scoreConfiguration[$"Music:Scores:Works:0:Parts:{part}"] = this.score.Parts[part];
+        }
+        
+        scoreConfiguration["Music:Scores:Works:0:ProgrammeNotes"] = this.score.ProgrammeNotes;
+        
+        IConfiguration configuration = new ConfigurationBuilder()
+            .AddInMemoryCollection(scoreConfiguration)
+            .Build();
+        
+        this.Services.AddSingleton(configuration);
+        this.Services.AddSingleton<IValidator<MuseScoreUser>, MuseScoreUserValidator>();
+        this.Services.AddSingleton<IValidator<Score>, ScoreValidator>();
+        this.Services.AddSingleton<ScoreService>();
+        
+        IRenderedFragment page = this.Render(@<Details ScoreId="@this.score.ScoreId" />);
+        
+        IRenderedComponent<PortfolioPageTitle> renderedPortfolioPageTitleComponent = page.FindComponent<PortfolioPageTitle>();
+        IRenderedComponent<MusicalScore> renderedScoreComponent = page.FindComponent<MusicalScore>();
+        IRenderedComponent<MudPaper> renderedScoreInfoPaperComponent = page.FindComponent<MudPaper>();
+        
+        renderedPortfolioPageTitleComponent.ShouldNotBeNull();
+        PortfolioPageTitle portfolioPageTitle = renderedPortfolioPageTitleComponent.Instance;
+        portfolioPageTitle.Title.ShouldBe(this.score.Title);
+        
+        renderedScoreComponent.ShouldNotBeNull();
+        MusicalScore musicalScore = renderedScoreComponent.Instance;
+        musicalScore.ScoreId.ShouldBe(this.score.ScoreId);
+        musicalScore.MuseScoreUserId.ShouldBe(this.museScoreUser.MuseScoreUserId.Value);
+        musicalScore.MuseScoreUserName.ShouldBe(this.museScoreUser.Username);
+        musicalScore.MuseScoreScoreId.ShouldBe(this.score.MuseScoreScoreId.Value);
+        musicalScore.Title.ShouldBe(this.score.Title);
+        
+        renderedScoreInfoPaperComponent.ShouldNotBeNull();
+        IReadOnlyList<IRenderedComponent<MudText>> scoreInfoTexts = renderedScoreInfoPaperComponent.FindComponents<MudText>();
+        scoreInfoTexts.Count.ShouldBe(7 + this.score.Parts.Length);
+        scoreInfoTexts[1].MarkupMatches(@<MudText GutterBottom="true" Typo="Typo.body1">@this.score.Year</MudText>);
+        scoreInfoTexts[3].MarkupMatches(@<MudText GutterBottom="true" Typo="Typo.body1">@this.score.Ensemble</MudText>);
+        for (int part = 0; part < this.score.Parts.Length; part++)
+        {
+            bool shouldAddBottomGutter = part == this.score.Parts.Length - 1;
+            scoreInfoTexts[5 + part].MarkupMatches(@<MudText GutterBottom="@shouldAddBottomGutter" Typo="Typo.body1">@score.Parts[part]</MudText>);
+        }
+        
+        scoreInfoTexts[^1].MarkupMatches(@<MudText Typo="Typo.body1">@this.score.ProgrammeNotes</MudText>);
+    }
+
+    /// <summary>
+    /// Tests that the <see cref="Web.Pages.Music.Scores.Details" /> page renders an error alert when a score ID is given but does not exist in configuration.
+    /// </summary>
+    [Fact]
+    public void Details_WhenGivenScoreIdButScoreDoesNotExistsInConfiguration_RendersErrorAlert()
+    {
+        Dictionary<string, string?> scoreConfiguration = new()
+        {
+            ["Music:Scores:MuseScoreUser:Id"] = this.museScoreUser.MuseScoreUserId.Value.ToString(),
+            ["Music:Scores:MuseScoreUser:Username"] = this.museScoreUser.Username
+        };
+        
+        IConfiguration configuration = new ConfigurationBuilder()
+            .AddInMemoryCollection(scoreConfiguration)
+            .Build();
+        
+        this.Services.AddSingleton(configuration);
+        this.Services.AddSingleton<IValidator<MuseScoreUser>, MuseScoreUserValidator>();
+        this.Services.AddSingleton<IValidator<Score>, ScoreValidator>();
+        this.Services.AddSingleton<ScoreService>();
+        
+        IRenderedFragment page = this.Render(@<Details ScoreId="@this.score.ScoreId" />);
+        
+        IRenderedComponent<PortfolioPageTitle> renderedPortfolioPageTitleComponent = page.FindComponent<PortfolioPageTitle>();
+        IRenderedComponent<MudAlert> alert = page.FindComponent<MudAlert>();
+        
+        renderedPortfolioPageTitleComponent.ShouldNotBeNull();
+        PortfolioPageTitle portfolioPageTitle = renderedPortfolioPageTitleComponent.Instance;
+        portfolioPageTitle.Title.ShouldBe("Score Not Found");
+        
+        alert.ShouldNotBeNull();
+        alert.MarkupMatches(@<MudAlert Severity="MudBlazor.Severity.Error">
+                                <strong>An error occurred loading the score:</strong><br />
+                                No score with the ID <em>@this.score.ScoreId</em> was found.
+                            </MudAlert>);
+    }
+
+    /// <summary>
+    /// Tests that the <see cref="Web.Pages.Music.Scores.Details" /> page renders an error alert when an error occurs while loading a score.
+    /// </summary>
+    [Fact]
+    public void Details_WhenErrorOccursWhileLoadingScores_RendersErrorAlert()
+    {
+        Dictionary<string, string?> scoreConfiguration = new()
+        {
+            ["Music:Scores:MuseScoreUser:Id"] = this.museScoreUser.MuseScoreUserId.Value.ToString(),
+            ["Music:Scores:MuseScoreUser:Username"] =this. museScoreUser.Username,
+            ["Music:Scores:Works:0:ScoreId"] = this.score.ScoreId,
+            ["Music:Scores:Works:0:MuseScoreScoreId"] = this.score.MuseScoreScoreId.ToString(),
+            ["Music:Scores:Works:0:Title"] = null,
+            ["Music:Scores:Works:0:Year"] = this.score.Year.ToString(),
+            ["Music:Scores:Works:0:Ensemble"] = this.score.Ensemble,
+            ["Music:Scores:Works:0:Parts:0"] = this.score.Parts[0],
+            ["Music:Scores:Works:0:Parts:1"] = this.score.Parts[1],
+            ["Music:Scores:Works:0:ProgrammeNotes"] = this.score.ProgrammeNotes
+        };
+        
+        IConfiguration configuration = new ConfigurationBuilder()
+            .AddInMemoryCollection(scoreConfiguration)
+            .Build();
+        
+        this.Services.AddSingleton(configuration);
+        this.Services.AddSingleton<IValidator<MuseScoreUser>, MuseScoreUserValidator>();
+        this.Services.AddSingleton<IValidator<Score>, ScoreValidator>();
+        this.Services.AddSingleton<ScoreService>();
+        
+        IRenderedFragment page = this.Render(@<Details ScoreId="@this.score.ScoreId" />);
+        
+        IRenderedComponent<PortfolioPageTitle> renderedPortfolioPageTitleComponent = page.FindComponent<PortfolioPageTitle>();
+        IRenderedComponent<MudAlert> alert = page.FindComponent<MudAlert>();
+        
+        renderedPortfolioPageTitleComponent.ShouldNotBeNull();
+        PortfolioPageTitle portfolioPageTitle = renderedPortfolioPageTitleComponent.Instance;
+        portfolioPageTitle.Title.ShouldBe("Error Loading Score");
+        
+        alert.ShouldNotBeNull();
+        alert.MarkupMatches(@<MudAlert Severity="MudBlazor.Severity.Error">
+                                <strong>An error occurred loading the score:</strong><br />
+                                Validation failed: -- Title: Title is required. Severity: Error
+                            </MudAlert>);
+    }
+}
