@@ -18,10 +18,10 @@ public class EnumExtensionsTests
         TestEnum testEnum = TestEnum.HasDescription;
 
         string? description = testEnum.GetDescription();
-        
+
         description.ShouldBe("Has Description");
     }
-    
+
     /// <summary>
     /// Tests that the <see cref="EnumExtensions.GetDescription" /> method returns the string representation of the enumeration value if no description is present.
     /// </summary>
@@ -31,7 +31,7 @@ public class EnumExtensionsTests
         TestEnum testEnum = TestEnum.None;
 
         string? description = testEnum.GetDescription();
-        
+
         description.ShouldBe("None");
     }
 }

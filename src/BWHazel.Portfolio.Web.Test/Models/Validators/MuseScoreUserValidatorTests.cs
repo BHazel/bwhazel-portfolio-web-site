@@ -42,7 +42,7 @@ public class MuseScoreUserValidatorTests
         validationResult.IsValid.ShouldBeFalse();
         validationResult.ShouldHaveValidationErrorFor(m => m.MuseScoreUserId.Value);
     }
-    
+
     /// <summary>
     /// Tests that the <see cref="MuseScoreUserValidator"/> class returns an invalid result for a MuseScore user with an invalid username.
     /// </summary>

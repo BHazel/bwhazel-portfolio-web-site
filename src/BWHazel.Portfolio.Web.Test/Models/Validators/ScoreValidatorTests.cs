@@ -31,7 +31,7 @@ public class ScoreValidatorTests
 
         validationResult.IsValid.ShouldBeTrue();
     }
-    
+
     /// <summary>
     /// Tests that the <see cref="ScoreValidator"/> class returns an invalid result for a score with an invalid score ID.
     /// </summary>
@@ -58,7 +58,7 @@ public class ScoreValidatorTests
         validationResult.IsValid.ShouldBeFalse();
         validationResult.ShouldHaveValidationErrorFor(s => s.ScoreId.Value);
     }
-    
+
     /// <summary>
     /// Tests that the <see cref="ScoreValidator"/> class returns an invalid result for a score with an invalid MuseScore score ID.
     /// </summary>
@@ -83,7 +83,7 @@ public class ScoreValidatorTests
         validationResult.IsValid.ShouldBeFalse();
         validationResult.ShouldHaveValidationErrorFor(s => s.MuseScoreScoreId.Value);
     }
-    
+
     /// <summary>
     /// Tests that the <see cref="ScoreValidator"/> class returns an invalid result for a score with an invalid title.
     /// </summary>
@@ -108,7 +108,7 @@ public class ScoreValidatorTests
         validationResult.IsValid.ShouldBeFalse();
         validationResult.ShouldHaveValidationErrorFor(s => s.Title);
     }
-    
+
     /// <summary>
     /// Tests that the <see cref="ScoreValidator"/> class returns an invalid result for a score with an invalid year.
     /// </summary>
@@ -133,7 +133,7 @@ public class ScoreValidatorTests
         validationResult.IsValid.ShouldBeFalse();
         validationResult.ShouldHaveValidationErrorFor(s => s.Year);
     }
-    
+
     /// <summary>
     /// Tests that the <see cref="ScoreValidator"/> class returns an invalid result for a score with an invalid ensemble.
     /// </summary>
@@ -158,7 +158,7 @@ public class ScoreValidatorTests
         validationResult.IsValid.ShouldBeFalse();
         validationResult.ShouldHaveValidationErrorFor(s => s.Ensemble);
     }
-    
+
     /// <summary>
     /// Tests that the <see cref="ScoreValidator"/> class returns an invalid result for a score with no parts.
     /// </summary>
@@ -180,7 +180,7 @@ public class ScoreValidatorTests
         validationResult.IsValid.ShouldBeFalse();
         validationResult.ShouldHaveValidationErrorFor(s => s.Parts);
     }
-    
+
     /// <summary>
     /// Tests that the <see cref="ScoreValidator"/> class returns an invalid result for a score with an invalid part.
     /// </summary>
@@ -205,7 +205,7 @@ public class ScoreValidatorTests
         validationResult.IsValid.ShouldBeFalse();
         validationResult.ShouldHaveValidationErrorFor(s => s.Parts);
     }
-    
+
     /// <summary>
     /// Tests that the <see cref="ScoreValidator"/> class returns an invalid result for a score with invalid programme notes.
     /// </summary>

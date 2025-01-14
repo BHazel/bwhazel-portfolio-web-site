@@ -12,19 +12,19 @@ public enum SiteAvailability
     /// </summary>
     [Description("Always Available")]
     AlwaysAvailable,
-    
+
     /// <summary>
     /// Not intended for general access but targeted at specific groups and may be limited to specific timeframes.
     /// </summary>
     [Description("Limited Access")]
     LimitedAccess,
-    
+
     /// <summary>
     /// Taken offline and no longer available.
     /// </summary>
     [Description("Taken Offline")]
     TakenOffline,
-    
+
     /// <summary>
     /// Availability is unknown.
     /// </summary>

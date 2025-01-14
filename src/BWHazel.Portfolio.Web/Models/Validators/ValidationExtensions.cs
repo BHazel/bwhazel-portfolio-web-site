@@ -30,7 +30,7 @@ public static class ValidationExtensions
     {
         return ruleBuilder.Must(str => str.Length > 0 && !str.Contains(' '));
     }
-    
+
     /// <summary>
     /// Validates a string value is a valid URI.
     /// </summary>
@@ -48,7 +48,7 @@ public static class ValidationExtensions
                 {
                     return true;
                 }
-                
+
                 Uri uri = new(str!);
                 return true;
             }

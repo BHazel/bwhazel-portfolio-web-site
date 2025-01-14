@@ -14,7 +14,7 @@ namespace BWHazel.Portfolio.Web.Services;
 public class SiteListService(IConfiguration configuration, IValidator<Site> siteValidator)
 {
     private const string SiteListSitesKey = "SiteList:Sites";
-    
+
     private readonly IConfiguration configuration = configuration;
     private readonly IValidator<Site> siteValidator = siteValidator;
 
@@ -29,10 +29,10 @@ public class SiteListService(IConfiguration configuration, IValidator<Site> site
             .GetChildren()
             .Select(MapConfigurationToSite)
             .ToList();
-        
+
         return sites;
     }
-    
+
     /// <summary>
     /// Maps a configuration section to a site.
     /// </summary>
@@ -51,7 +51,7 @@ public class SiteListService(IConfiguration configuration, IValidator<Site> site
                 : SiteAvailability.Unknown,
             siteListSiteSection["Notes"]!
         );
-        
+
         this.siteValidator.ValidateAndThrow(site);
         return site;
     }

@@ -21,7 +21,7 @@ public static class EnumExtensions
         {
             return null;
         }
-        
+
         DescriptionAttribute? descriptionAttribute = enumField.GetCustomAttribute<DescriptionAttribute>();
         return descriptionAttribute is not null
             ? descriptionAttribute.Description

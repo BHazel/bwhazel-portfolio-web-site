@@ -13,7 +13,7 @@ public enum TestEnum
     /// </summary>
     [Description("Has Description")]
     HasDescription,
-    
+
     /// <summary>
     /// Enumeration field without a description.
     /// </summary>

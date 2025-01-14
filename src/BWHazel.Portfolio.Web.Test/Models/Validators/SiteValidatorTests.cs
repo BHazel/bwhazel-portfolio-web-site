@@ -11,7 +11,7 @@ namespace BWHazel.Portfolio.Web.Test.Models.Validators;
 /// </summary>
 public class SiteValidatorTests
 {
-    private Site site = new(
+    private readonly Site site = new(
         "My Site",
         "https://example.co.uk",
         "My Site Description",
@@ -19,7 +19,7 @@ public class SiteValidatorTests
         "https://source.example.co.uk",
         SiteAvailability.AlwaysAvailable,
         "My Site Notes");
-    
+
     /// <summary>
     /// Tests that the <see cref="SiteValidator"/> class returns a valid result for a valid site.
     /// </summary>
@@ -44,12 +44,12 @@ public class SiteValidatorTests
     {
         SiteValidator validator = new();
         Site updatedSite = this.site with { Title = invalidTitle };
-        
+
         TestValidationResult<Site> validationResult = validator.TestValidate(updatedSite);
-        
+
         validationResult.IsValid.ShouldBeFalse();
     }
-    
+
     /// <summary>
     /// Tests that the <see cref="SiteValidator"/> class returns a valid result for a site with a missing URL.
     /// </summary>
@@ -63,7 +63,7 @@ public class SiteValidatorTests
 
         validationResult.IsValid.ShouldBeTrue();
     }
-    
+
     /// <summary>
     /// Tests that the <see cref="SiteValidator"/> class returns an invalid result for a site with an invalid URL.
     /// </summary>
@@ -81,7 +81,7 @@ public class SiteValidatorTests
 
         validationResult.IsValid.ShouldBeFalse();
     }
-    
+
     /// <summary>
     /// Tests that the <see cref="SiteValidator"/> class returns an invalid result for a site with an invalid description.
     /// </summary>
@@ -93,12 +93,12 @@ public class SiteValidatorTests
     {
         SiteValidator validator = new();
         Site updatedSite = this.site with { Description = invalidDescription };
-        
+
         TestValidationResult<Site> validationResult = validator.TestValidate(updatedSite);
-        
+
         validationResult.IsValid.ShouldBeFalse();
     }
-    
+
     /// <summary>
     /// Tests that the <see cref="SiteValidator"/> class returns an invalid result for a site with an invalid hosting.
     /// </summary>
@@ -110,12 +110,12 @@ public class SiteValidatorTests
     {
         SiteValidator validator = new();
         Site updatedSite = this.site with { Hosting = invalidHosting };
-        
+
         TestValidationResult<Site> validationResult = validator.TestValidate(updatedSite);
-        
+
         validationResult.IsValid.ShouldBeFalse();
     }
-    
+
     /// <summary>
     /// Tests that the <see cref="SiteValidator"/> class returns a valid result for a site with a missing source code URL.
     /// </summary>
@@ -129,7 +129,7 @@ public class SiteValidatorTests
 
         validationResult.IsValid.ShouldBeTrue();
     }
-    
+
     /// <summary>
     /// Tests that the <see cref="SiteValidator"/> class returns an invalid result for a site with an invalid source code URL.
     /// </summary>
@@ -156,12 +156,12 @@ public class SiteValidatorTests
     {
         SiteValidator validator = new();
         Site updatedSite = this.site with { Availability = SiteAvailability.Unknown };
-        
+
         TestValidationResult<Site> validationResult = validator.TestValidate(updatedSite);
-        
+
         validationResult.IsValid.ShouldBeFalse();
     }
-    
+
     /// <summary>
     /// Tests that the <see cref="SiteValidator"/> class returns a valid result for a site with missing notes.
     /// </summary>

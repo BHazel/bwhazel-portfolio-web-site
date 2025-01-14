@@ -77,7 +77,7 @@ public class AlbumValidatorTests
         validationResult.IsValid.ShouldBeFalse();
         validationResult.ShouldHaveValidationErrorFor(a => a.Title);
     }
-    
+
     /// <summary>
     /// Tests that the <see cref="AlbumValidator"/> class returns an invalid result for an album with an invalid description.
     /// </summary>
@@ -100,7 +100,7 @@ public class AlbumValidatorTests
         validationResult.IsValid.ShouldBeFalse();
         validationResult.ShouldHaveValidationErrorFor(a => a.Description);
     }
-    
+
     /// <summary>
     /// Tests that the <see cref="AlbumValidator"/> class returns an invalid result for an album with an invalid year.
     /// </summary>
@@ -123,7 +123,7 @@ public class AlbumValidatorTests
         validationResult.IsValid.ShouldBeFalse();
         validationResult.ShouldHaveValidationErrorFor(a => a.Year);
     }
-    
+
     /// <summary>
     /// Tests that the <see cref="AlbumValidator"/> class returns an invalid result for an album with an invalid image path.
     /// </summary>

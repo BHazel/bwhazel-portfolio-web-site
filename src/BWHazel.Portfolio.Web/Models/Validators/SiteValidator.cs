@@ -27,7 +27,7 @@ public class SiteValidator : AbstractValidator<Site>
         this.RuleFor(site => site.Hosting)
             .NotEmpty()
             .WithMessage("Hosting is required.");
-        
+
         this.RuleFor(site => site.SourceCodeUrl)
             .Uri(true)
             .WithMessage("Source code URL is not valid.");

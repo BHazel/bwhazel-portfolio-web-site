@@ -1,12 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using BWHazel.Data;
+using Microsoft.Extensions.Configuration;
 using BWHazel.Portfolio.Web.Models;
 using BWHazel.Portfolio.Web.Models.Validators;
 using BWHazel.Portfolio.Web.Services;
 using FluentValidation;
-using Microsoft.Extensions.Configuration;
 using Shouldly;
 using Xunit;
 

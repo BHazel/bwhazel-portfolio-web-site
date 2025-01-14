@@ -37,15 +37,15 @@ public class SiteListServiceTests
             ["SiteList:Sites:1:Availability"] = "LimitedAccess",
             ["SiteList:Sites:1:Notes"] = "Site 2 Notes"
         };
-        
+
         IConfiguration configuration = new ConfigurationBuilder()
             .AddInMemoryCollection(siteConfiguration)
             .Build();
-        
+
         SiteListService siteListService = new(configuration, new SiteValidator());
 
         List<Site> sites = siteListService.GetAllSites();
-        
+
         sites.Count.ShouldBe(2);
         sites[0].Title.Value.ShouldBe("Site 1");
         sites[0].Url.ShouldBe("https://example1.co.uk");
@@ -73,11 +73,11 @@ public class SiteListServiceTests
         IConfiguration configuration = new ConfigurationBuilder()
             .AddInMemoryCollection(siteConfiguration)
             .Build();
-        
+
         SiteListService siteListService = new(configuration, new SiteValidator());
-        
+
         List<Site> sites = siteListService.GetAllSites();
-        
+
         sites.ShouldNotBeNull();
         sites.Count.ShouldBe(0);
     }
@@ -102,13 +102,13 @@ public class SiteListServiceTests
             ["SiteList:Sites:0:Availability"] = "AlwaysAvailable",
             ["SiteList:Sites:0:Notes"] = "Site 1 Notes",
         };
-        
+
         IConfiguration configuration = new ConfigurationBuilder()
             .AddInMemoryCollection(siteConfiguration)
             .Build();
-        
+
         SiteListService siteListService = new(configuration, new SiteValidator());
-        
+
         ValidationException exception = Should.Throw<ValidationException>(() => siteListService.GetAllSites());
         exception.Message.ShouldContain("Title is required.");
     }
@@ -129,15 +129,15 @@ public class SiteListServiceTests
             ["SiteList:Sites:0:Availability"] = "AlwaysAvailable",
             ["SiteList:Sites:0:Notes"] = "Site 1 Notes",
         };
-        
+
         IConfiguration configuration = new ConfigurationBuilder()
             .AddInMemoryCollection(siteConfiguration)
             .Build();
-        
+
         SiteListService siteListService = new(configuration, new SiteValidator());
-        
+
         List<Site> sites = siteListService.GetAllSites();
-        
+
         sites.Count.ShouldBe(1);
     }
 
@@ -161,17 +161,17 @@ public class SiteListServiceTests
             ["SiteList:Sites:0:Availability"] = "AlwaysAvailable",
             ["SiteList:Sites:0:Notes"] = "Site 1 Notes",
         };
-        
+
         IConfiguration configuration = new ConfigurationBuilder()
             .AddInMemoryCollection(siteConfiguration)
             .Build();
-        
+
         SiteListService siteListService = new(configuration, new SiteValidator());
-        
+
         ValidationException exception = Should.Throw<ValidationException>(() => siteListService.GetAllSites());
         exception.Message.ShouldContain("Site URL is not valid.");
     }
-    
+
     /// <summary>
     /// Tests that the <see cref="SiteListService.GetAllSites" /> method throws an exception when the description is invalid.
     /// </summary>
@@ -192,17 +192,17 @@ public class SiteListServiceTests
             ["SiteList:Sites:0:Availability"] = "AlwaysAvailable",
             ["SiteList:Sites:0:Notes"] = "Site 1 Notes",
         };
-        
+
         IConfiguration configuration = new ConfigurationBuilder()
             .AddInMemoryCollection(siteConfiguration)
             .Build();
-        
+
         SiteListService siteListService = new(configuration, new SiteValidator());
-        
+
         ValidationException exception = Should.Throw<ValidationException>(() => siteListService.GetAllSites());
         exception.Message.ShouldContain("Description is required.");
     }
-    
+
     /// <summary>
     /// Tests that the <see cref="SiteListService.GetAllSites" /> method throws an exception when the hosting is invalid.
     /// </summary>
@@ -223,17 +223,17 @@ public class SiteListServiceTests
             ["SiteList:Sites:0:Availability"] = "AlwaysAvailable",
             ["SiteList:Sites:0:Notes"] = "Site 1 Notes",
         };
-        
+
         IConfiguration configuration = new ConfigurationBuilder()
             .AddInMemoryCollection(siteConfiguration)
             .Build();
-        
+
         SiteListService siteListService = new(configuration, new SiteValidator());
-        
+
         ValidationException exception = Should.Throw<ValidationException>(() => siteListService.GetAllSites());
         exception.Message.ShouldContain("Hosting is required.");
     }
-    
+
     /// <summary>
     /// Tests that the <see cref="SiteListService.GetAllSites" /> method returns all sites when the source code URL is not provided.
     /// </summary>
@@ -250,18 +250,18 @@ public class SiteListServiceTests
             ["SiteList:Sites:0:Availability"] = "AlwaysAvailable",
             ["SiteList:Sites:0:Notes"] = "Site 1 Notes",
         };
-        
+
         IConfiguration configuration = new ConfigurationBuilder()
             .AddInMemoryCollection(siteConfiguration)
             .Build();
-        
+
         SiteListService siteListService = new(configuration, new SiteValidator());
-        
+
         List<Site> sites = siteListService.GetAllSites();
-        
+
         sites.Count.ShouldBe(1);
     }
-    
+
     /// <summary>
     /// Tests that the <see cref="SiteListService.GetAllSites" /> method throws an exception when the source code URL is invalid.
     /// </summary>
@@ -282,13 +282,13 @@ public class SiteListServiceTests
             ["SiteList:Sites:0:Availability"] = "AlwaysAvailable",
             ["SiteList:Sites:0:Notes"] = "Site 1 Notes",
         };
-        
+
         IConfiguration configuration = new ConfigurationBuilder()
             .AddInMemoryCollection(siteConfiguration)
             .Build();
-        
+
         SiteListService siteListService = new(configuration, new SiteValidator());
-        
+
         ValidationException exception = Should.Throw<ValidationException>(() => siteListService.GetAllSites());
         exception.Message.ShouldContain("Source code URL is not valid.");
     }
@@ -315,13 +315,13 @@ public class SiteListServiceTests
             ["SiteList:Sites:0:Availability"] = invalidAvailability,
             ["SiteList:Sites:0:Notes"] = "Site 1 Notes",
         };
-        
+
         IConfiguration configuration = new ConfigurationBuilder()
             .AddInMemoryCollection(siteConfiguration)
             .Build();
-        
+
         SiteListService siteListService = new(configuration, new SiteValidator());
-        
+
         ValidationException exception = Should.Throw<ValidationException>(() => siteListService.GetAllSites());
         exception.Message.ShouldContain("Availability is required and must not be unknown.");
     }
@@ -342,15 +342,15 @@ public class SiteListServiceTests
             ["SiteList:Sites:0:Availability"] = "AlwaysAvailable",
             ["SiteList:Sites:0:Notes"] = null
         };
-        
+
         IConfiguration configuration = new ConfigurationBuilder()
             .AddInMemoryCollection(siteConfiguration)
             .Build();
-        
+
         SiteListService siteListService = new(configuration, new SiteValidator());
-        
+
         List<Site> sites = siteListService.GetAllSites();
-        
+
         sites.Count.ShouldBe(1);
     }
 }
