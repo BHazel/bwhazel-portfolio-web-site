@@ -1,4 +1,4 @@
-﻿@inherits LayoutComponentBase
+@inherits LayoutComponentBase
 
 <MudThemeProvider />
 <MudPopoverProvider />
@@ -11,7 +11,7 @@
         <MudText Typo="Typo.h5">@this.SiteTitle</MudText>
     </MudAppBar>
     <MudDrawer @bind-Open="@this.isDrawerOpen" ClipMode="DrawerClipMode.Always">
-        <Nav />
+        <NavMenu />
     </MudDrawer>
     <MudMainContent>
         <MudContainer Class="mt-8" MaxWidth="MaxWidth.Large">
