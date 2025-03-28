@@ -94,12 +94,14 @@
         
         IRenderedFragment page = this.Render(@<Index />);
         
-        IRenderedComponent<MudAlert> alert = page.FindComponent<MudAlert>();
-
-        alert.ShouldNotBeNull();
-        alert.MarkupMatches(@<MudAlert Severity="MudBlazor.Severity.Warning">
-                                No albums found.
-                            </MudAlert>);
+        IReadOnlyList<IRenderedComponent<MudAlert>> alerts = page.FindComponents<MudAlert>();
+        
+        alerts.ShouldNotBeNull();
+        alerts.Count.ShouldBe(2);
+        IRenderedComponent<MudAlert> warningAlert = alerts[1];
+        warningAlert.MarkupMatches(@<MudAlert Severity="MudBlazor.Severity.Warning">
+                                       No albums found.
+                                   </MudAlert>);
     }
     
     /// <summary>
@@ -127,12 +129,14 @@
         
         IRenderedFragment page = this.Render(@<Index />);
         
-        IRenderedComponent<MudAlert> alert = page.FindComponent<MudAlert>();
-
-        alert.ShouldNotBeNull();
-        alert.MarkupMatches(@<MudAlert Severity="MudBlazor.Severity.Error">
-                                <strong>An error occurred while loading the albums:</strong><br />
-                                Album ID is required.
-                            </MudAlert>);
+        IReadOnlyList<IRenderedComponent<MudAlert>> alerts = page.FindComponents<MudAlert>();
+        
+        alerts.ShouldNotBeNull();
+        alerts.Count.ShouldBe(2);
+        IRenderedComponent<MudAlert> errorAlert = alerts[1];
+        errorAlert.MarkupMatches(@<MudAlert Severity="MudBlazor.Severity.Error">
+                                     <strong>An error occurred while loading the albums:</strong><br />
+                                     Album ID is required.
+                                 </MudAlert>);
     }
 }
