@@ -1,0 +1,31 @@
+@using BWHazel.Portfolio.Web.Services
+
+@inject NavigationManager NavigationManager
+@inject ITelemetryService TelemetryService
+
+<MudAlert Severity="Severity.Error">
+    <strong>Not Found (Error 404)</strong><br />
+    There is no page at this address.  Please check the URL and try again.<br />
+    Requested URL: @this.GetPageUrl()
+</MudAlert>
+
+@code {
+    /// <summary>
+    /// Method invoked after each time the component has been rendered interactively and the UI has finished updating.
+    /// </summary>
+    /// <param name="firstRender"><c>true</c> if this is the first time <see cref="OnAfterRenderAsync"/> has been invoked on this component instance; otherwise <c>false</c>.</param>
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        await this.TelemetryService.SendException("404", "Not Found", this.GetPageUrl());
+    }
+
+    /// <summary>
+    /// Gets the current page URL relative to the root.
+    /// </summary>
+    /// <returns>The current page relative URL.</returns>
+    private string GetPageUrl()
+    {
+        return $"/{this.NavigationManager.ToBaseRelativePath(this.NavigationManager.Uri)}";
+    }
+}

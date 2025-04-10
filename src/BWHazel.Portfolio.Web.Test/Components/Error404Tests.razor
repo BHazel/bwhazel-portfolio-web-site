@@ -1,0 +1,48 @@
+@using BWHazel.Portfolio.Web.Services
+@inherits PortfolioTestContext
+
+@code {
+    private ITelemetryService telemetryService;
+    private readonly NavigationManager navigationManager;
+    
+    /// <summary>
+    /// Initialises a new instance of the <see cref="Error404Tests" /> class.
+    /// </summary>
+    public Error404Tests()
+    {
+        this.telemetryService = Substitute.For<ITelemetryService>();
+        this.Services.AddSingleton(this.telemetryService);
+        this.navigationManager = this.Services.GetRequiredService<NavigationManager>();
+    }
+
+    /// <summary>
+    /// Tests that the <see cref="Web.Components.Error404" /> component sends a telemetry exception when it is loaded.
+    /// </summary>
+    [Fact]
+    public void Error404_WhenLoaded_SendsTelemetryException()
+    {
+        IRenderedFragment component = this.Render(@<Error404 />);
+        
+        this.telemetryService.Received(1).SendException(Arg.Is("404"), Arg.Is("Not Found"), Arg.Any<string>());
+    }
+
+    /// <summary>
+    /// Tests that the <see cref="Web.Components.Error404" /> component renders an error alert with the requested URL when loaded.
+    /// </summary>
+    [Fact]
+    public void Error404_WhenLoaded_RendersErrorAlertWithRequestedUrl()
+    {
+        string testUrl = "/test-page";
+        this.navigationManager.NavigateTo(testUrl);
+        
+        IRenderedFragment component = this.Render(@<Error404 />);
+        
+        IRenderedComponent<MudAlert> errorAlert = component.FindComponent<MudAlert>();
+        
+        errorAlert.MarkupMatches(@<MudAlert Severity="Severity.Error">
+                                     <strong>Not Found (Error 404)</strong><br />
+                                     There is no page at this address.  Please check the URL and try again.<br />
+                                     Requested URL: @testUrl
+                                 </MudAlert>);
+    }
+}
