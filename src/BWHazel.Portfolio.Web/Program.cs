@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using BlazorApplicationInsights;
 using BWHazel.Portfolio.Web;
 using BWHazel.Portfolio.Web.Models;
 using BWHazel.Portfolio.Web.Models.Validators;
@@ -35,6 +36,7 @@ builder.Services.AddScoped<AlbumService>();
 builder.Services.AddScoped<ScoreService>();
 builder.Services.AddScoped<BehanceProjectService>();
 builder.Services.AddScoped<SiteListService>();
+builder.Services.AddScoped<ITelemetryService, ApplicationInsightsTelemetryService>();
 
 builder.Configuration
     .AddJsonStream(await GetContentData(httpClient));
@@ -43,6 +45,11 @@ builder.Services.AddCascadingValue("SiteTitle", provider => builder.Configuratio
 builder.Services.AddCascadingValue("SiteVersion", provider => builder.Configuration[SiteVersionKey]);
 
 builder.Services.AddMudServices();
+
+builder.Services.AddBlazorApplicationInsights(options =>
+{
+    options.ConnectionString = builder.Configuration.GetConnectionString("AzureApplicationInsights");
+});
 
 await builder
     .Build()

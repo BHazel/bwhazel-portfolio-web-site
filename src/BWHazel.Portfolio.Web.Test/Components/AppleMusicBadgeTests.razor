@@ -41,7 +41,7 @@
     /// Tests that the <see cref="AppleMusicBadge"/> component renders an error when the album ID and slug are not provided.
     /// </summary>
     [Fact]
-        public void AppleMusicBadge_WithMissingAlbumIdAndSlug_RendersError()
+    public void AppleMusicBadge_WithMissingAlbumIdAndSlug_RendersError()
     {
         IRenderedFragment component = this.Render(@<AppleMusicBadge />);
 
@@ -77,5 +77,21 @@
                                     <strong>An error occurred displaying the Apple Music badge:</strong><br/>
                                     The album ID and slug are required.
                                 </MudAlert>);
+    }
+    
+    /// <summary>
+    /// Tests that the <see cref="AppleMusicBadge"/> component executes the click event handler when clicked.
+    /// </summary>
+    [Fact]
+    public void AppleMusicBadge_WithOnClickHandler_ExecutesDelegate()
+    {
+        bool isClicked = false;
+        IRenderedFragment component = this.Render(@<AppleMusicBadge AlbumId="123"
+                                                                    AlbumSlug="album-1"
+                                                                    OnClick="@(async () => await Task.Run<bool>(() => isClicked = !isClicked))" />);
+
+        component.Find("a").Click();
+        
+        isClicked.ShouldBeTrue();
     }
 }

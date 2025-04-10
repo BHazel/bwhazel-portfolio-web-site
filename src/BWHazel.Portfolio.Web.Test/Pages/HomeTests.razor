@@ -1,0 +1,86 @@
+@inherits PortfolioTestContext
+
+@using BWHazel.Portfolio.Web.Pages;
+@using BWHazel.Portfolio.Web.Services;
+
+@code {
+    private const string BaseUrl = "http://localhost";
+    private readonly ITelemetryService telemetryService;
+    private readonly NavigationManager navigationManager;
+    
+    /// <summary>
+    /// Initialises a new instance of the <see cref="HomeTests" /> class.
+    /// </summary>
+    public HomeTests()
+    {
+        this.telemetryService = Substitute.For<ITelemetryService>();
+        this.Services.AddSingleton(this.telemetryService);
+        this.navigationManager = this.Services.GetRequiredService<NavigationManager>();
+    }
+    
+    /// <summary>
+    /// Tests that the <see cref="Web.Pages.Home"/> page sends telemetry events when expansion panels are clicked.
+    /// </summary>
+    /// <param name="expansionPanelTitle">The expansion panel title.</param>
+    /// <param name="telemetryEventName">The telemetry event name.</param>
+    /// <param name="telemetryCategory">The telemetry category.</param>
+    [Theory]
+    [InlineData("My PhD Research Overview", "ResearchOverview", "Chemistry")]
+    [InlineData("Metallomacrocycles Paper", "MetallomacrocyclesPaper", "Chemistry")]
+    [InlineData("Research Contributions Paper", "ResearchContributionsPaper", "Chemistry")]
+    [InlineData("Instrumental Scores", "InstrumentalScores", "Music")]
+    [InlineData("Four Forces", "FourForces", "Music")]
+    [InlineData("Competitions", "Competitions", "Sport")]
+    [InlineData("Significant Milestones", "SignificantMilestones", "Sport")]
+    public void Home_WhenExpansionPanelIsClicked_SendsTelemetryEvent(string expansionPanelTitle, string telemetryEventName, string telemetryCategory)
+    {
+        IRenderedFragment page = this.Render(@<Home />);
+        IReadOnlyList<IRenderedComponent<MudExpansionPanel>> expansionPanels = page.FindComponents<MudExpansionPanel>();
+        IRenderedComponent<MudExpansionPanel> expansionPanel = expansionPanels.First(panel => panel.Instance.Text == expansionPanelTitle);
+        
+        expansionPanel.Find(".mud-expand-panel").Click();
+
+        this.telemetryService.Received(1).SendEvent(Arg.Is(telemetryEventName), Arg.Is(telemetryCategory), Arg.Is("/"));
+    }
+
+    [Theory]
+    [InlineData("Instrumental Scores", 0, "/Music/Scores")]
+    [InlineData("Four Forces", 0, "/Music/Albums/Four-Forces")]
+    public void Home_WhenButtonToInternalPageInExpansionPanelIsClicked_Navigates(string expansionPanelTitle, int buttonIndex, string destinationUrl)
+    {
+        IRenderedFragment page = this.Render(@<Home />);
+        IReadOnlyList<IRenderedComponent<MudExpansionPanel>> expansionPanels = page.FindComponents<MudExpansionPanel>();
+        IRenderedComponent<MudExpansionPanel> expansionPanel = expansionPanels.First(panel => panel.Instance.Text == expansionPanelTitle);
+        IRenderedComponent<MudButton> button = expansionPanel.FindComponents<MudButton>()[buttonIndex];
+
+        button.Find("button").Click();
+        
+        this.navigationManager.Uri.ShouldBe($"{BaseUrl}{destinationUrl}");
+    }
+    
+    /// <summary>
+    /// Tests that the <see cref="Web.Pages.Home"/> page navigates to the correct URL and sends telemetry events when buttons to external sites in expansion panels are clicked.
+    /// </summary>
+    /// <param name="expansionPanelTitle">The expansion panel title.</param>
+    /// <param name="buttonIndex">The button index in the expansion panel.</param>
+    /// <param name="destinationUrl">The destination URL.</param>
+    /// <param name="telemetryEventName">The telemetry event name.</param>
+    /// <param name="telemetryCategory">The telemetry category.</param>
+    [Theory]
+    [InlineData("Metallomacrocycles Paper", 0, "https://chemistry-europe.onlinelibrary.wiley.com/doi/abs/10.1002/chem.200500623", "MetallomacrocyclesPaperRead", "Chemistry")]
+    [InlineData("Research Contributions Paper", 0, "https://chemistry-europe.onlinelibrary.wiley.com/doi/abs/10.1002/chem.201203603", "ResearchContributionsPaperRead", "Chemistry")]
+    [InlineData("Competitions", 0, "https://www.youtube.com/watch?v=jIJbiOlm_eo", "Competition2010VideoView", "Sport")]
+    [InlineData("Competitions", 1, "https://www.youtube.com/watch?v=lvEgZVoiHgw", "Competition2012VideoView", "Sport")]
+    public void Home_WhenButtonToExternalSiteInExpansionPanelIsClicked_NavigatesAndSendsTelemetryEvent(string expansionPanelTitle, int buttonIndex, string destinationUrl, string telemetryEventName, string telemetryCategory)
+    {
+        IRenderedFragment page = this.Render(@<Home />);
+        IReadOnlyList<IRenderedComponent<MudExpansionPanel>> expansionPanels = page.FindComponents<MudExpansionPanel>();
+        IRenderedComponent<MudExpansionPanel> expansionPanel = expansionPanels.First(panel => panel.Instance.Text == expansionPanelTitle);
+        IRenderedComponent<MudButton> button = expansionPanel.FindComponents<MudButton>()[buttonIndex];
+
+        button.Find("button").Click();
+        
+        this.navigationManager.Uri.ShouldBe(destinationUrl);
+        this.telemetryService.Received(1).SendEvent(Arg.Is(telemetryEventName), Arg.Is(telemetryCategory), Arg.Is("/"));
+    }
+}
