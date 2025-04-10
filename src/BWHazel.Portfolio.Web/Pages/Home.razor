@@ -1,5 +1,8 @@
 ﻿@page "/"
 
+@using BWHazel.Portfolio.Web.Services
+
+@inject ITelemetryService TelemetryService
 @inject NavigationManager NavigationManager
 
 <PortfolioPageTitle Title="Welcome!" />
@@ -157,7 +160,7 @@
             </MudPaper>
             
             <MudExpansionPanels>
-                <MudExpansionPanel Text="My PhD Research Overview" Style="@($"background: {PortfolioThemeProvider.PrimaryColour}")">
+                <MudExpansionPanel Text="My PhD Research Overview" Style="@($"background: {PortfolioThemeProvider.PrimaryColour}")" @onclick=@(async () => await this.TelemetryService.SendEvent("ResearchOverview", "Chemistry", this.GetPageUrl()))>
                     <MudText GutterBottom="true" Typo="Typo.body2">
                         Metallomacrocycles are examples of cyclic supermolecules, effectively made up of smaller molecules and a large central cavity.  In this case they are organic linker units and metal-centred complexes.  They are often referred to as Molecular Squares as the metal complexes form the corners and are linked together via the organic compounds which are usually linear.
                     </MudText>
@@ -171,24 +174,24 @@
                         The two papers in the other popup sections below contain information about the metallomacrocycles I studied.  The first is an introduction to them and the second is one I co-authored and presents of some of my research.  Both papers are co-authored by Prof. Anthony Meijer and Prof. Jim Thomas, my PhD supervisors.
                     </MudText>
                 </MudExpansionPanel>
-                <MudExpansionPanel Text="Metallomacrocycles Paper" Style="@($"background: {PortfolioThemeProvider.PrimaryColour}")">
+                <MudExpansionPanel Text="Metallomacrocycles Paper" Style="@($"background: {PortfolioThemeProvider.PrimaryColour}")" @onclick=@(async () => await this.TelemetryService.SendEvent("MetallomacrocyclesPaper", "Chemistry", this.GetPageUrl()))>
                     <MudText GutterBottom="true" Typo="Typo.h6">Self-Assembled, Kinetically Locked, RuII-Based Metallomacrocycles: Physical, Structural, and Modeling Studies</MudText>
                     <MudPaper Elevation="3" Class="mb-4 pa-3" Style="@($"background: {PortfolioThemeProvider.PrimaryLightenColour}")">
                         <MudText GutterBottom="true" Typo="Typo.body1">Paul de Wolf, Phil Waywell, Matt Hanson, Sarah L. Heath, Anthony J. H. M. Meijer, Simon J. Teat, Jim A. Thomas</MudText>
                         <MudText GutterBottom="true" Typo="Typo.body1"><em>Chem. Eur. J., 2006, <strong>12</strong>, 8, 2188-2195</em></MudText>
                     </MudPaper>
-                    <MudButton Class="mb-2" Variant="Variant.Filled" Style="@($"background: {PortfolioThemeProvider.PrimaryLightenColour}")" OnClick="@(() => this.NavigationManager.NavigateTo("https://chemistry-europe.onlinelibrary.wiley.com/doi/abs/10.1002/chem.200500623"))">Read Online</MudButton>
+                    <MudButton Class="mb-2" Variant="Variant.Filled" Style="@($"background: {PortfolioThemeProvider.PrimaryLightenColour}")" OnClick="@(() => this.NavigateTo("https://chemistry-europe.onlinelibrary.wiley.com/doi/abs/10.1002/chem.200500623", "MetallomacrocyclesPaperRead", "Chemistry"))">Read Online</MudButton>
                     <MudText GutterBottom="true" Typo="Typo.body1">
                         By using a “complex as ligand approach,” the metal-ion-templated self-assembly of heterometallic teteranuclear metallomacrocycles containing kinetically locked RuII centers is described. Depending on the metal-ion template employed in the self-assembly process, the final macrocycle can be kinetically labile or inert. Electrochemical studies reveal that the kinetically inert macrocycles display reversible Ru<sup>III</sup>/<sup>II</sup> oxidation couples. The crystal structure of a kinetically inert Ru2Re2 macrocycles reveals a structurally complex palmate anion-binding pocket. Host–guest studies carried out with the same macrocyle in organic solvents reveals that the complex functions as a luminescent sensor for anions and that binding affinity and luminescent modulation is dependent on the structural nature and charge of the guest anion. Computational density functional theory (DFT) studies support the hypothesis that the luminescence of the macrocycle is from a 3MLCT state and further suggests that the observed guest-induced luminescence changes are most likely due to modulation of nonradiative decay processes.
                     </MudText>
                 </MudExpansionPanel>
-                <MudExpansionPanel Text="Research Contributions Paper" Style="@($"background: {PortfolioThemeProvider.PrimaryColour}")">
+                <MudExpansionPanel Text="Research Contributions Paper" Style="@($"background: {PortfolioThemeProvider.PrimaryColour}")"  @onclick=@(async () => await this.TelemetryService.SendEvent("ResearchContributionsPaper", "Chemistry", this.GetPageUrl()))>
                     <MudText GutterBottom="true" Typo="Typo.h6">A Self-Assembled Luminescent Host That Selectively Senses ATP in Water</MudText>
                     <MudPaper Elevation="3" Class="mb-4 pa-3" Style="@($"background: {PortfolioThemeProvider.PrimaryLightenColour}")">
                         <MudText GutterBottom="true" Typo="Typo.body1">Haslina Ahmad, Benedict W. Hazel, Anthony J. H. M. Meijer, Jim A. Thomas, Karl A. Wilkinson</MudText>
                         <MudText GutterBottom="true" Typo="Typo.body1"><em>Chem. Eur. J., 2013, <strong>19</strong>, 16, 5081-5087</em></MudText>
                     </MudPaper>
-                    <MudButton Class="mb-2 teal lighten-2" Variant="Variant.Filled" Style="@($"background: {PortfolioThemeProvider.PrimaryLightenColour}")" OnClick="@(() => this.NavigationManager.NavigateTo("https://chemistry-europe.onlinelibrary.wiley.com/doi/abs/10.1002/chem.201203603"))">Read Online</MudButton>
+                    <MudButton Class="mb-2 teal lighten-2" Variant="Variant.Filled" Style="@($"background: {PortfolioThemeProvider.PrimaryLightenColour}")" OnClick="@(() => this.NavigateTo("https://chemistry-europe.onlinelibrary.wiley.com/doi/abs/10.1002/chem.201203603", "ResearchContributionsPaperRead", "Chemistry"))">Read Online</MudButton>
                     <MudText GutterBottom="true" Typo="Typo.body1">
                         Metal-ion-directed self-assembly has been used to construct kinetically inert, water-soluble heterometallic Ru2Re2 hosts that are potential sensors for bioanions. A previously reported metallomacrocycle and a new derivative synthesised by this approach are found to be general sensors for bioanions in water, showing an “off–on” luminescent change that is selective for nucleotides over uncharged nucleobases. Through a change in the ancillary ligands coordinated to the ruthenium centres of the host, an “off–on” sensor has been produced. Whilst this host only shows a modest enhancement in binding affinities for nucleotides relative to the other two host systems, its sensing response is much more specific. Although a distinctive “off–on” luminescence response is observed for the addition of adenosine triphosphosphate (ATP), related structures such as adenine and guanosine triphosphate (GTP) do not induce any emission change in the host. Detailed and demanding DFT studies on the ATP- and GTP-bound host–guest complexes reveal subtle differences in their geometries that modulate the stacking interactions between the nucleotide guests and the ancillary ligands of the host. It is suggested that this change in stacking geometries affects solvent accessibility to the binding pocket of the host and thus leads to observed difference in the host luminescence response to the guests.
                     </MudText>
@@ -223,13 +226,13 @@
         <MudPaper Elevation="3" Class="pa-3" Style="@($"background: {PortfolioThemeProvider.SecondaryColour}")">
             <MudText GutterBottom="true" Typo="Typo.h4">Compositions</MudText>
             <MudExpansionPanels>
-                <MudExpansionPanel Text="Instrumental Scores" Style="@($"background: {PortfolioThemeProvider.PrimaryColour}")">
+                <MudExpansionPanel Text="Instrumental Scores" Style="@($"background: {PortfolioThemeProvider.PrimaryColour}")" @onclick="@(async () => await this.TelemetryService.SendEvent("InstrumentalScores", "Music", this.GetPageUrl()))">
                     <MudText GutterBottom="true" Typo="Typo.body2">
                         A selection of my instrumental compositions are available to view and listen to in the Music section.
                     </MudText>
                     <MudButton Variant="Variant.Filled" Style="@($"background: {PortfolioThemeProvider.PrimaryLightenColour}")" OnClick="@(() => this.NavigationManager.NavigateTo("/Music/Scores"))">Listen Online</MudButton>
                 </MudExpansionPanel>
-                <MudExpansionPanel Text="Four Forces" Style="@($"background: {PortfolioThemeProvider.PrimaryColour}")">
+                <MudExpansionPanel Text="Four Forces" Style="@($"background: {PortfolioThemeProvider.PrimaryColour}")" @onclick="@(async () => await this.TelemetryService.SendEvent("FourForces", "Music", this.GetPageUrl()))">
                     <MudText GutterBottom="true" Typo="Typo.body1">
                         Listen to samples of Four Forces, an electronica album I wrote using GarageBand.
                     </MudText>
@@ -263,15 +266,15 @@
         <MudPaper Elevation="3" Class="pa-3" Style="@($"background: {PortfolioThemeProvider.SecondaryColour}")">
             <MudText GutterBottom="true" Typo="Typo.h4">My Taekwondo Journey</MudText>
             <MudExpansionPanels>
-                <MudExpansionPanel Text="Competitions" Style="@($"background: {PortfolioThemeProvider.PrimaryColour}")">
+                <MudExpansionPanel Text="Competitions" Style="@($"background: {PortfolioThemeProvider.PrimaryColour}")" @onclick="@(async () => await this.TelemetryService.SendEvent("Competitions", "Sport", this.GetPageUrl()))">
                     <MudText Typo="Typo.h6">13th November 2010 <em>(Kyo Hoon Taekwondo, Sheffield)</em></MudText>
                     <MudText GutterBottom="true" Typo="Typo.body1"><strong>Poomsae (Jung In) - Bronze</strong></MudText>
-                    <MudButton Variant="Variant.Filled" Style="@($"background: {PortfolioThemeProvider.PrimaryLightenColour}")" OnClick="@(() => this.NavigationManager.NavigateTo("https://www.youtube.com/watch?v=jIJbiOlm_eo"))">Watch on YouTube</MudButton>
+                    <MudButton Variant="Variant.Filled" Style="@($"background: {PortfolioThemeProvider.PrimaryLightenColour}")" OnClick="@(() => this.NavigateTo("https://www.youtube.com/watch?v=jIJbiOlm_eo", "Competition2010VideoView", "Sport"))">Watch on YouTube</MudButton>
                     <MudText Typo="Typo.h6">21st April 2012 <em>(Kyo Hoon Taekwondo, Sheffield)</em></MudText>
                     <MudText GutterBottom="true" Typo="Typo.body1"><strong>Poomsae (Jung Do) - Silver</strong></MudText>
-                    <MudButton Variant="Variant.Filled" Style="@($"background: {PortfolioThemeProvider.PrimaryLightenColour}")" OnClick="@(() => this.NavigationManager.NavigateTo("https://www.youtube.com/watch?v=lvEgZVoiHgw"))">Watch on YouTube</MudButton>
+                    <MudButton Variant="Variant.Filled" Style="@($"background: {PortfolioThemeProvider.PrimaryLightenColour}")" OnClick="@(() => this.NavigateTo("https://www.youtube.com/watch?v=lvEgZVoiHgw", "Competition2012VideoView", "Sport"))">Watch on YouTube</MudButton>
                 </MudExpansionPanel>
-                <MudExpansionPanel Text="Significant Milestones" Style="@($"background: {PortfolioThemeProvider.PrimaryColour}")">
+                <MudExpansionPanel Text="Significant Milestones" Style="@($"background: {PortfolioThemeProvider.PrimaryColour}")" @onclick="@(async () => await this.TelemetryService.SendEvent("SignificantMilestones", "Sport", this.GetPageUrl()))">
                     <MudTimeline>
                         <MudTimelineItem>
                             <ItemOpposite>
@@ -394,3 +397,26 @@
                   Class="rounded-lg my-4" />
     </MudItem>
 </MudGrid>
+
+@code {
+    /// <summary>
+    /// Navigates to a specified URL and sends its telemetry event.
+    /// </summary>
+    /// <param name="destinationUrl">The destination URL.</param>
+    /// <param name="eventName">The telemetry event name.</param>
+    /// <param name="category">The telemetry event category.</param>
+    private async Task NavigateTo(string destinationUrl, string eventName, string category)
+    {
+        await this.TelemetryService.SendEvent(eventName, category, this.GetPageUrl());
+        this.NavigationManager.NavigateTo(destinationUrl);
+    }
+    
+    /// <summary>
+    /// Gets the current page URL relative to the root.
+    /// </summary>
+    /// <returns>The current page relative URL.</returns>
+    private string GetPageUrl()
+    {
+        return $"/{this.NavigationManager.ToBaseRelativePath(this.NavigationManager.Uri)}";
+    }
+}

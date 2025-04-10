@@ -13,6 +13,13 @@ public class PortfolioTestContext : TestContext
     /// </summary>
     public PortfolioTestContext()
     {
-        this.Services.AddMudServices();
+        this.Services.AddMudServices(options =>
+        {
+            options.PopoverOptions.CheckForPopoverProvider = false;
+        });
+        
+        this.JSInterop.SetupVoid("mudKeyInterceptor.connect", _ => true);
+        this.JSInterop.SetupVoid("mudPopover.initialize", _ => true);
+        this.JSInterop.SetupVoid("mudElementRef.addOnBlurEvent", _ => true);
     }
 }
