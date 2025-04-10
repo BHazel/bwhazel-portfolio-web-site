@@ -77,4 +77,20 @@
                                     The album ID and SI code are required.
                                 </MudAlert>);
     }
+    
+    /// <summary>
+    /// Tests that the <see cref="SpotifyBadge"/> component executes the click event handler when clicked.
+    /// </summary>
+    [Fact]
+    public void SpotifyBadge_WithOnClickHandler_ExecutesDelegate()
+    {
+        bool isClicked = false;
+        IRenderedFragment component = this.Render(@<SpotifyBadge AlbumId="123"
+                                                                 SiCode="si-code"
+                                                                 OnClick="@(async () => await Task.Run<bool>(() => isClicked = !isClicked))" />);
+
+        component.Find("a").Click();
+        
+        isClicked.ShouldBeTrue();
+    }
 }

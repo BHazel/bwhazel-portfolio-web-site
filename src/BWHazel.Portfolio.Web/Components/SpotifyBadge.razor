@@ -1,7 +1,8 @@
 @if (!string.IsNullOrWhiteSpace(this.AlbumId) && !string.IsNullOrWhiteSpace(this.SiCode))
 {
     <a href="https://open.spotify.com/album/@this.AlbumId?si=@this.SiCode"
-       style="display: inline-block; width: @(this.Width)px; height: @(this.Height)px">
+       style="display: inline-block; width: @(this.Width)px; height: @(this.Height)px"
+       onclick="@(async () => await this.OnClickHandler(new MouseEventArgs()))">
         <img src="@Assets["/img/music/services/spotify.png"]"
              alt="Listen on Spotify"
              style="width: @(this.Width - 30)px; height: @(this.Height - 30)px; vertical-align: middle; object-fit: contain;"/>
@@ -39,4 +40,22 @@ else
     /// </summary>
     [Parameter]
     public string SiCode { get; set; } = string.Empty;
+    
+    /// <summary>
+    /// Gets or sets the handler for the click event.
+    /// </summary>
+    [Parameter]
+    public EventCallback<MouseEventArgs> OnClick { get; set; }
+    
+    /// <summary>
+    /// Handles the click event.
+    /// </summary>
+    /// <param name="args">Mouse information about the event.</param>
+    private async Task OnClickHandler(MouseEventArgs args)
+    {
+        if (this.OnClick.HasDelegate)
+        {
+            await this.OnClick.InvokeAsync(args);
+        }
+    }
 }

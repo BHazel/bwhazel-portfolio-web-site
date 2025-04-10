@@ -1,7 +1,8 @@
 @if (this.AlbumId != 0 && !string.IsNullOrWhiteSpace(this.AlbumSlug))
 {
     <a href="https://music.apple.com/gb/album/@this.AlbumSlug/@this.AlbumId?itscg=@this.ItscgToken&itsct=music_box_badge&ls=1&app=music&mttnsubad=@this.AlbumId"
-       style="display: inline-block;">
+       style="display: inline-block;"
+       onclick="@(async () => await this.OnClickHandler(new MouseEventArgs()))">
         <img src="https://toolbox.marketingtools.apple.com/api/v2/badges/listen-on-apple-music/badge/en-gb?releaseDate=1201824000"
              alt="Listen on Apple Music"
              style="width: @(this.Width)px; height: @(this.Height)px; vertical-align: middle; object-fit: contain;" />
@@ -45,4 +46,22 @@ else
     /// </summary>
     [Parameter]
     public int ItscgToken { get; set; } = 30200;
+    
+    /// <summary>
+    /// Gets or sets the handler for the click event.
+    /// </summary>
+    [Parameter]
+    public EventCallback<MouseEventArgs> OnClick { get; set; }
+    
+    /// <summary>
+    /// Handles the click event.
+    /// </summary>
+    /// <param name="args">Mouse information about the event.</param>
+    private async Task OnClickHandler(MouseEventArgs args)
+    {
+        if (this.OnClick.HasDelegate)
+        {
+            await this.OnClick.InvokeAsync(args);
+        }
+    }
 }
