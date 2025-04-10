@@ -50,4 +50,44 @@ public class ApplicationInsightsTelemetryService(IApplicationInsights applicatio
         
         await this.applicationInsights.TrackEvent(eventTelemetry);
     }
+
+    /// <summary>
+    /// Sends a telemetry exception.
+    /// </summary>
+    /// <param name="exceptionName">The exception name.</param>
+    /// <param name="exceptionMessage">The exception message.</param>
+    /// <param name="pageUri">The source page URI.</param>
+    /// <returns>A task representing any asynchronous operation.</returns>
+    public async Task SendException(string exceptionName, string exceptionMessage, string pageUri)
+    {
+        if (string.IsNullOrWhiteSpace(exceptionName))
+        {
+            throw new ArgumentNullException(nameof(exceptionName));
+        }
+        
+        if (string.IsNullOrWhiteSpace(exceptionMessage))
+        {
+            throw new ArgumentNullException(nameof(exceptionMessage));
+        }
+        
+        if (string.IsNullOrWhiteSpace(pageUri))
+        {
+            throw new ArgumentNullException(nameof(pageUri));
+        }
+        
+        ExceptionTelemetry exceptionTelemetry = new()
+        {
+            Exception = new()
+            {
+                Name = exceptionName,
+                Message = exceptionMessage
+            },
+            Properties = new()
+            {
+                ["PageUri"] = pageUri
+            }
+        };
+        
+        await this.applicationInsights.TrackException(exceptionTelemetry);
+    }
 }

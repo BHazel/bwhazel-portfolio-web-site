@@ -15,4 +15,13 @@ public interface ITelemetryService
     /// <param name="pageUri">The source page URI.</param>
     /// <returns>A task representing any asynchronous operation.</returns>
     Task SendEvent(string eventName, string category, string pageUri);
+    
+    /// <summary>
+    /// Sends a telemetry exception.
+    /// </summary>
+    /// <param name="exceptionName">The exception name.</param>
+    /// <param name="exceptionMessage">The exception message.</param>
+    /// <param name="pageUri">The source page URI.</param>
+    /// <returns>A task representing any asynchronous operation.</returns>
+    Task SendException(string exceptionName, string exceptionMessage, string pageUri);
 }
