@@ -87,7 +87,7 @@
         bool isClicked = false;
         IRenderedFragment component = this.Render(@<SpotifyBadge AlbumId="123"
                                                                  SiCode="si-code"
-                                                                 OnClick="@(async () => await Task.Run<bool>(() => isClicked = !isClicked))" />);
+                                                                 OnClick="@(() => isClicked = !isClicked)" />);
 
         component.Find("a").Click();
         

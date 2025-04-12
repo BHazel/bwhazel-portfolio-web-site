@@ -2,7 +2,7 @@
 {
     <a href="https://open.spotify.com/album/@this.AlbumId?si=@this.SiCode"
        style="display: inline-block; width: @(this.Width)px; height: @(this.Height)px"
-       onclick="@(async () => await this.OnClickHandler(new MouseEventArgs()))">
+       @onclick="@(async () => await this.OnClickHandler(new MouseEventArgs()))">
         <img src="@Assets["/img/music/services/spotify.png"]"
              alt="Listen on Spotify"
              style="width: @(this.Width - 30)px; height: @(this.Height - 30)px; vertical-align: middle; object-fit: contain;"/>
