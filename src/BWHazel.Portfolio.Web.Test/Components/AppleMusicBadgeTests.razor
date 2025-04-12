@@ -88,7 +88,7 @@
         bool isClicked = false;
         IRenderedFragment component = this.Render(@<AppleMusicBadge AlbumId="123"
                                                                     AlbumSlug="album-1"
-                                                                    OnClick="@(async () => await Task.Run<bool>(() => isClicked = !isClicked))" />);
+                                                                    OnClick="@(() => isClicked = !isClicked)" />);
 
         component.Find("a").Click();
         
