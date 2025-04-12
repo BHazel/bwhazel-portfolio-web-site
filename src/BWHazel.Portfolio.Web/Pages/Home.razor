@@ -1,7 +1,422 @@
 ﻿@page "/"
 
-<PageTitle>Home</PageTitle>
+@using BWHazel.Portfolio.Web.Services
 
-<h1>Hello, World!</h1>
+@inject ITelemetryService TelemetryService
+@inject NavigationManager NavigationManager
 
-Welcome to your new app.
+<PortfolioPageTitle Title="Welcome!" />
+
+<MudGrid>
+    <MudItem xs="12" lg="3" Style="text-align: center">
+        <MudImage Src="img/meSquare.jpg"
+                  Alt="Me"
+                  Fluid="true"
+                  ObjectFit="ObjectFit.None"
+                  Elevation="10"
+                  Class="rounded-lg my-4" />
+    </MudItem>
+    <MudItem xs="12" lg="9">
+        <MudPaper Elevation="3" Class="pa-3" Style="@($"background: {PortfolioThemeProvider.SecondaryColour}")">
+            <div style="text-align: center">
+                <MudText GutterBottom="true" Typo="Typo.h2">Benedict W. Hazel</MudText>
+                <MudText GutterBottom="true" Typo="Typo.h4">London based Software Engineer & Manager<br />with a Theoretical Chemsitry Background</MudText>
+            </div>
+            <MudText GutterBottom="true" Typo="Typo.h5">
+                Hello! I am Benedict, based in Wimbledon, London. I am a manager at a large, international IT consultancy working as a software engineer and technical team leader, a profession I have been working in since late 2012.
+            </MudText>
+            <MudText GutterBottom="true" Typo="Typo.body1">
+                Although my work involves a wide variety of technologies, I specialise in the Microsoft .NET platform, including ASP.NET, and Microsoft Azure.
+            </MudText>
+            <MudText GutterBottom="true" Typo="Typo.body1">
+                My IT career actually followed my life hobby as my academic background is in chemistry! I hold a masters degree and PhD in inorganic and theoretical chemistry from the University of Sheffield.
+            </MudText>
+            <MudText Typo="Typo.body1">
+                Away from work I am involved in music and amateur operatics and enjoy a good game, tabletop, video or otherwise!
+            </MudText>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+<MudImage Src="img/codeRacks.jpg"
+          Alt="Code Blocks"
+          Fluid="true"
+          ObjectFit="ObjectFit.None"
+          Style="height: 15vh; width: 100%"
+          Elevation="10"
+          Class="rounded-lg my-4" />
+
+<MudGrid>
+    <MudItem xs="12" lg="6">
+        <MudText GutterBottom="true" Typo="Typo.h3">Computing</MudText>
+        <MudText GutterBottom="true" Typo="Typo.body1">
+            I have always been interested in computers since the age of 6 when my family bought our first computer with Windows 3.1.  I discovered programming when I was 11 with BBC BASIC and Microsoft Visual Basic 6.0 when I was 12, still one of the greatest Christmas presents ever!
+        </MudText>
+        <MudText GutterBottom="true" Typo="Typo.body1">
+            I specialise in the Microsoft .NET platform, including ASP.NET for the web, and Microsoft Azure cloud but happily work with many different technologies.  On a daily basis I use and develop on Windows, macOS and Linux and have had experience with development for mobile platforms including iOS and Android.
+        </MudText>
+        <MudText GutterBottom="true" Typo="Typo.body1">
+            Recently I have started to transition away from full-time development work and take on more management and leadership roles.  However, I still enjoy getting my hands dirty so am developing my skills in AI and am always on the look out to explore technologies at the forefront of innovation!
+        </MudText>
+        <MudText GutterBottom="true" Typo="Typo.body1">
+            My other IT interests include game development and some dabbling in low-level programming with assembly, both ARM and WebAssembly!  I am also interested in combining my scientific background and IT interest to develop a deeper understanding of and build skills in quantum computing, an exciting and pioneering new field!
+        </MudText>
+        <MudText GutterBottom="true" Typo="Typo.body1">
+            Away from work, and talking of games, I do enjoy some unwinding time on the Xbox and PlayStation although my skills leave rather a lot to be desired!
+        </MudText>
+    </MudItem>
+    <MudItem xs="12" lg="6">
+        <MudPaper Elevation="3" Class="pa-3" Style="@($"background: {PortfolioThemeProvider.SecondaryColour}")">
+            <MudText GutterBottom="true" Typo="Typo.h4">Personal Skill Highlights</MudText>
+            <MudChip T="string" Class="teal">.NET</MudChip>
+            <MudChip T="string" Class="teal">ASP.NET</MudChip>
+            <MudChip T="string" Class="teal">C#</MudChip>
+            <MudChip T="string" Class="teal">VB</MudChip>
+            <MudChip T="string" Class="teal">Entity Framework</MudChip>
+            <MudChip T="string" Class="teal">WinForms</MudChip>
+            <MudChip T="string" Class="teal">WPF</MudChip>
+            <MudChip T="string" Class="teal">Azure</MudChip>
+            <MudChip T="string" Class="teal">SQL Server</MudChip>
+            <MudChip T="string" Class="teal">Python</MudChip>
+            <MudChip T="string" Class="teal">Ruby</MudChip>
+            <MudChip T="string" Class="teal">HTML</MudChip>
+            <MudChip T="string" Class="teal">JavaScript</MudChip>
+            <MudChip T="string" Class="teal">CSS</MudChip>
+            <MudChip T="string" Class="teal">Docker</MudChip>
+            <MudChip T="string" Class="teal">C/C++</MudChip>
+
+            <MudChip T="string" Class="amber">AI</MudChip>
+            <MudChip T="string" Class="amber">Quantum Computing</MudChip>
+            <MudChip T="string" Class="amber">Q#</MudChip>
+            <MudChip T="string" Class="amber">Kubernetes</MudChip>
+            <MudChip T="string" Class="amber">Helm</MudChip>
+            <MudChip T="string" Class="amber">Rust</MudChip>
+            <MudChip T="string" Class="amber">Swift</MudChip>
+
+            <MudChip T="string" Class="deep-orange">Android</MudChip>
+            <MudChip T="string" Class="deep-orange">iOS</MudChip>
+            <MudChip T="string" Class="deep-orange">Java</MudChip>
+            <MudChip T="string" Class="deep-orange">Objective-C</MudChip>
+            <MudChip T="string" Class="deep-orange">Go</MudChip>
+            <MudChip T="string" Class="deep-orange">Oracle</MudChip>
+            <MudChip T="string" Class="deep-orange">Postgres</MudChip>
+            <MudChip T="string" Class="deep-orange">SSIS</MudChip>
+            <MudChip T="string" Class="deep-orange">MongoDB</MudChip>
+            <MudChip T="string" Class="deep-orange">AWS</MudChip>
+            <MudChip T="string" Class="deep-orange">Microsoft 365</MudChip>
+
+            <MudChip T="string" Class="indigo">Assembly (x86/ARM)</MudChip>
+            <MudChip T="string" Class="indigo">RISC OS</MudChip>
+            <MudChip T="string" Class="indigo">Unity</MudChip>
+            <MudChip T="string" Class="indigo">Unreal Engine</MudChip>
+            <MudChip T="string" Class="indigo">SideFX Houdini</MudChip>
+
+            <MudChip T="string" Class="gray darken-1">Azure Fundamentals</MudChip>
+            <MudChip T="string" Class="gray darken-1">Azure Data Fundamentals</MudChip>
+            <MudChip T="string" Class="gray darken-1">Azure AI Fundamentals</MudChip>
+            <MudChip T="string" Class="gray darken-1">Azure Developer</MudChip>
+            <MudChip T="string" Class="gray darken-1">Azure Architect</MudChip>
+            <MudChip T="string" Class="gray darken-1">Green Software Practitioner</MudChip>
+            <MudChip T="string" Class="gray darken-1">Scrum.org PSM-1</MudChip>
+            
+            <MudText GutterBottom="true" Typo="Typo.body1">Colours correspond to:</MudText>
+            <MudChip T="string" Class="teal">Competent</MudChip>
+            <MudChip T="string" Class="amber">Developing</MudChip>
+            <MudChip T="string" Class="deep-orange">Experience</MudChip>
+            <MudChip T="string" Class="indigo">Other Interests</MudChip>
+            <MudChip T="string" Class="gray darken-1">Certified</MudChip>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+<MudImage Src="img/chemistryLabware.jpg"
+          Alt="Labware"
+          Fluid="true"
+          ObjectFit="ObjectFit.None"
+          Style="height: 15vh; width: 100%"
+          Elevation="10"
+          Class="rounded-lg my-4" />
+
+<MudGrid>
+    <MudItem xs="12" lg="6">
+        <MudText GutterBottom="true" Typo="Typo.h3">Chemistry</MudText>
+        <MudText GutterBottom="true" Typo="Typo.body1">
+            I became interested in chemistry aged 12 and went on to complete a masters degree and PhD at the University of Sheffield.
+        </MudText>
+        <MudText GutterBottom="true" Typo="Typo.body1">
+            During my academic studies and research I specialised in inorganic and theoretical chemistry, a polar opposite to when I first arrived at university as an organic chemist vowing never to go into physical chemistry.  My PhD was in applied molecular quantum theory, about as physical as you can get!
+        </MudText>
+        <MudText GutterBottom="true" Typo="Typo.body1">
+            It was during my PhD that I got deeply into programming, mostly in my own time but with some as part of my research investigating quantum dynamics of molecules.  It was this programming experience which led me to pursue a career in software engineering.
+        </MudText>
+    </MudItem>
+    <MudItem xs="12" lg="6">
+        <MudPaper Elevation="3" Class="pa-3" Style="@($"background: {PortfolioThemeProvider.SecondaryColour}")">
+            <MudText GutterBottom="true" Typo="Typo.h4">Big Squares (PhD Research)</MudText>
+            <MudText GutterBottom="true" Typo="Typo.h6">Properties of Metallomacrocycles with d<sup>6</sup> Metal Centres</MudText>
+            <MudPaper Elevation="3" Class="mb-4 pa-3" Style="@($"background: {PortfolioThemeProvider.SecondaryLightenColour}")">
+                <MudText GutterBottom="true" Typo="Typo.body1">Supermolecules are to molecules and the intermolecular bond what molecules are to atoms and the covalent bond.</MudText>
+                <MudText GutterBottom="true" Typo="Typo.body1"><em>Jean-Marie Lehn, Angew. Chem. Int. Ed., <strong>1990</strong>, 20, 1304</em></MudText>
+            </MudPaper>
+            
+            <MudExpansionPanels>
+                <MudExpansionPanel Text="My PhD Research Overview" Style="@($"background: {PortfolioThemeProvider.PrimaryColour}")" @onclick=@(async () => await this.TelemetryService.SendEvent("ResearchOverview", "Chemistry", this.GetPageUrl()))>
+                    <MudText GutterBottom="true" Typo="Typo.body2">
+                        Metallomacrocycles are examples of cyclic supermolecules, effectively made up of smaller molecules and a large central cavity.  In this case they are organic linker units and metal-centred complexes.  They are often referred to as Molecular Squares as the metal complexes form the corners and are linked together via the organic compounds which are usually linear.
+                    </MudText>
+                    <MudText GutterBottom="true" Typo="Typo.body2">
+                        The metallomacrocycles I studied contain two metals, ruthenium and rhenium, each on two opposite corners.  They are linked together by an interesting C-shaped molecule called quaterpyridine which incorporates the ruthenium corners into its structure.  The quaterpyridine also changes the overall shape of the metallomacrocycle into a bowl which results in a more rhombic central cavity.  This cavity can accept small guest molecules which can also affect the overall metallomacrocycle structure.
+                    </MudText>
+                    <MudText GutterBottom="true" Typo="Typo.body2">
+                        It is these "host-guest" interactions between the metallomacrocycle and small guests that I studied using quantum molecular modelling.  This is a computational technique for simulating the molecules and their interactions on the computer.
+                    </MudText>
+                    <MudText GutterBottom="true" Typo="Typo.body2">
+                        The two papers in the other popup sections below contain information about the metallomacrocycles I studied.  The first is an introduction to them and the second is one I co-authored and presents of some of my research.  Both papers are co-authored by Prof. Anthony Meijer and Prof. Jim Thomas, my PhD supervisors.
+                    </MudText>
+                </MudExpansionPanel>
+                <MudExpansionPanel Text="Metallomacrocycles Paper" Style="@($"background: {PortfolioThemeProvider.PrimaryColour}")" @onclick=@(async () => await this.TelemetryService.SendEvent("MetallomacrocyclesPaper", "Chemistry", this.GetPageUrl()))>
+                    <MudText GutterBottom="true" Typo="Typo.h6">Self-Assembled, Kinetically Locked, RuII-Based Metallomacrocycles: Physical, Structural, and Modeling Studies</MudText>
+                    <MudPaper Elevation="3" Class="mb-4 pa-3" Style="@($"background: {PortfolioThemeProvider.PrimaryLightenColour}")">
+                        <MudText GutterBottom="true" Typo="Typo.body1">Paul de Wolf, Phil Waywell, Matt Hanson, Sarah L. Heath, Anthony J. H. M. Meijer, Simon J. Teat, Jim A. Thomas</MudText>
+                        <MudText GutterBottom="true" Typo="Typo.body1"><em>Chem. Eur. J., 2006, <strong>12</strong>, 8, 2188-2195</em></MudText>
+                    </MudPaper>
+                    <MudButton Class="mb-2" Variant="Variant.Filled" Style="@($"background: {PortfolioThemeProvider.PrimaryLightenColour}")" OnClick="@(() => this.NavigateTo("https://chemistry-europe.onlinelibrary.wiley.com/doi/abs/10.1002/chem.200500623", "MetallomacrocyclesPaperRead", "Chemistry"))">Read Online</MudButton>
+                    <MudText GutterBottom="true" Typo="Typo.body1">
+                        By using a “complex as ligand approach,” the metal-ion-templated self-assembly of heterometallic teteranuclear metallomacrocycles containing kinetically locked RuII centers is described. Depending on the metal-ion template employed in the self-assembly process, the final macrocycle can be kinetically labile or inert. Electrochemical studies reveal that the kinetically inert macrocycles display reversible Ru<sup>III</sup>/<sup>II</sup> oxidation couples. The crystal structure of a kinetically inert Ru2Re2 macrocycles reveals a structurally complex palmate anion-binding pocket. Host–guest studies carried out with the same macrocyle in organic solvents reveals that the complex functions as a luminescent sensor for anions and that binding affinity and luminescent modulation is dependent on the structural nature and charge of the guest anion. Computational density functional theory (DFT) studies support the hypothesis that the luminescence of the macrocycle is from a 3MLCT state and further suggests that the observed guest-induced luminescence changes are most likely due to modulation of nonradiative decay processes.
+                    </MudText>
+                </MudExpansionPanel>
+                <MudExpansionPanel Text="Research Contributions Paper" Style="@($"background: {PortfolioThemeProvider.PrimaryColour}")"  @onclick=@(async () => await this.TelemetryService.SendEvent("ResearchContributionsPaper", "Chemistry", this.GetPageUrl()))>
+                    <MudText GutterBottom="true" Typo="Typo.h6">A Self-Assembled Luminescent Host That Selectively Senses ATP in Water</MudText>
+                    <MudPaper Elevation="3" Class="mb-4 pa-3" Style="@($"background: {PortfolioThemeProvider.PrimaryLightenColour}")">
+                        <MudText GutterBottom="true" Typo="Typo.body1">Haslina Ahmad, Benedict W. Hazel, Anthony J. H. M. Meijer, Jim A. Thomas, Karl A. Wilkinson</MudText>
+                        <MudText GutterBottom="true" Typo="Typo.body1"><em>Chem. Eur. J., 2013, <strong>19</strong>, 16, 5081-5087</em></MudText>
+                    </MudPaper>
+                    <MudButton Class="mb-2 teal lighten-2" Variant="Variant.Filled" Style="@($"background: {PortfolioThemeProvider.PrimaryLightenColour}")" OnClick="@(() => this.NavigateTo("https://chemistry-europe.onlinelibrary.wiley.com/doi/abs/10.1002/chem.201203603", "ResearchContributionsPaperRead", "Chemistry"))">Read Online</MudButton>
+                    <MudText GutterBottom="true" Typo="Typo.body1">
+                        Metal-ion-directed self-assembly has been used to construct kinetically inert, water-soluble heterometallic Ru2Re2 hosts that are potential sensors for bioanions. A previously reported metallomacrocycle and a new derivative synthesised by this approach are found to be general sensors for bioanions in water, showing an “off–on” luminescent change that is selective for nucleotides over uncharged nucleobases. Through a change in the ancillary ligands coordinated to the ruthenium centres of the host, an “off–on” sensor has been produced. Whilst this host only shows a modest enhancement in binding affinities for nucleotides relative to the other two host systems, its sensing response is much more specific. Although a distinctive “off–on” luminescence response is observed for the addition of adenosine triphosphosphate (ATP), related structures such as adenine and guanosine triphosphate (GTP) do not induce any emission change in the host. Detailed and demanding DFT studies on the ATP- and GTP-bound host–guest complexes reveal subtle differences in their geometries that modulate the stacking interactions between the nucleotide guests and the ancillary ligands of the host. It is suggested that this change in stacking geometries affects solvent accessibility to the binding pocket of the host and thus leads to observed difference in the host luminescence response to the guests.
+                    </MudText>
+                </MudExpansionPanel>
+            </MudExpansionPanels>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+<MudImage Src="img/music/sheetMusic.jpg"
+          Alt="Sheet Music"
+          Fluid="true"
+          ObjectFit="ObjectFit.None"
+          Style="height: 15vh; width: 100%"
+          Elevation="10"
+          Class="rounded-lg my-4" />
+
+<MudGrid>
+    <MudItem xs="12" lg="6">
+        <MudText GutterBottom="true" Typo="Typo.h3">Music</MudText>
+        <MudText GutterBottom="true" Typo="Typo.body1">
+            I am musical and have played several instruments and sung throughout my life.  I primarily sing tenor these days and am involved in a local choir and some amateur operatics with a Gilbert & Sullivan light opera company.
+        </MudText>
+        <MudText GutterBottom="true" Typo="Typo.body1">
+            It all started when I was 4 when I started playing the piano as an alternative to gym!  Over the years that was followed by the recorder, both descant and treble, flute, a short stint on the 'cello which confirmed I am a wind player and finally teaching myself the alto saxophone!
+        </MudText>
+        <MudText GutterBottom="true" Typo="Typo.body1">
+            I have also written some music, both classical and modern, one album of which is available on numerous streaming services!  You can find out more about my composition journey in the Music section!
+        </MudText>
+    </MudItem>
+    <MudItem xs="12" lg="6">
+        <MudPaper Elevation="3" Class="pa-3" Style="@($"background: {PortfolioThemeProvider.SecondaryColour}")">
+            <MudText GutterBottom="true" Typo="Typo.h4">Compositions</MudText>
+            <MudExpansionPanels>
+                <MudExpansionPanel Text="Instrumental Scores" Style="@($"background: {PortfolioThemeProvider.PrimaryColour}")" @onclick="@(async () => await this.TelemetryService.SendEvent("InstrumentalScores", "Music", this.GetPageUrl()))">
+                    <MudText GutterBottom="true" Typo="Typo.body2">
+                        A selection of my instrumental compositions are available to view and listen to in the Music section.
+                    </MudText>
+                    <MudButton Variant="Variant.Filled" Style="@($"background: {PortfolioThemeProvider.PrimaryLightenColour}")" OnClick="@(() => this.NavigationManager.NavigateTo("/Music/Scores"))">Listen Online</MudButton>
+                </MudExpansionPanel>
+                <MudExpansionPanel Text="Four Forces" Style="@($"background: {PortfolioThemeProvider.PrimaryColour}")" @onclick="@(async () => await this.TelemetryService.SendEvent("FourForces", "Music", this.GetPageUrl()))">
+                    <MudText GutterBottom="true" Typo="Typo.body1">
+                        Listen to samples of Four Forces, an electronica album I wrote using GarageBand.
+                    </MudText>
+                    <MudButton Class="mb-3" Variant="Variant.Filled" Style="@($"background: {PortfolioThemeProvider.PrimaryLightenColour}")" OnClick="@(() => this.NavigationManager.NavigateTo("/Music/Albums/Four-Forces"))">Find Out More</MudButton>
+                    <AppleMusicPlayer AlbumId="273760711" AlbumSlug="four-forces-ep" />
+                </MudExpansionPanel>
+            </MudExpansionPanels>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+<MudImage Src="img/chessPieces.jpg"
+          Alt="Chess Pieces"
+          Fluid="true"
+          ObjectFit="ObjectFit.None"
+          Style="height: 15vh; width: 100%"
+          Elevation="10"
+          Class="rounded-lg my-4" />
+
+<MudGrid>
+    <MudItem xs="12" lg="6">
+        <MudText GutterBottom="true" Typo="Typo.h3">Sport & Leisure</MudText>
+        <MudText GutterBottom="true" Typo="Typo.body1">
+            I have never been that sporty and many I know would testify to that!  Taking up squash at school was a great way to avoid the cold afternoons of football and at University I went to Sports Fair to pick up freebies!  That is until 2008 when I discovered Taekwondo, signed up and never looked back!  Within 4 years I had attained my 1st Dan black belt!
+        </MudText>
+        <MudText GutterBottom="true" Typo="Typo.body1">
+            I also have a great passion for board and card games, playing frequently with friends.  We had a very active group at my first job in Oxfordshire often visiting Thirsty Meeples, the first board game cafe in the UK.
+        </MudText>
+    </MudItem>
+    <MudItem xs="12" lg="6">
+        <MudPaper Elevation="3" Class="pa-3" Style="@($"background: {PortfolioThemeProvider.SecondaryColour}")">
+            <MudText GutterBottom="true" Typo="Typo.h4">My Taekwondo Journey</MudText>
+            <MudExpansionPanels>
+                <MudExpansionPanel Text="Competitions" Style="@($"background: {PortfolioThemeProvider.PrimaryColour}")" @onclick="@(async () => await this.TelemetryService.SendEvent("Competitions", "Sport", this.GetPageUrl()))">
+                    <MudText Typo="Typo.h6">13th November 2010 <em>(Kyo Hoon Taekwondo, Sheffield)</em></MudText>
+                    <MudText GutterBottom="true" Typo="Typo.body1"><strong>Poomsae (Jung In) - Bronze</strong></MudText>
+                    <MudButton Variant="Variant.Filled" Style="@($"background: {PortfolioThemeProvider.PrimaryLightenColour}")" OnClick="@(() => this.NavigateTo("https://www.youtube.com/watch?v=jIJbiOlm_eo", "Competition2010VideoView", "Sport"))">Watch on YouTube</MudButton>
+                    <MudText Typo="Typo.h6">21st April 2012 <em>(Kyo Hoon Taekwondo, Sheffield)</em></MudText>
+                    <MudText GutterBottom="true" Typo="Typo.body1"><strong>Poomsae (Jung Do) - Silver</strong></MudText>
+                    <MudButton Variant="Variant.Filled" Style="@($"background: {PortfolioThemeProvider.PrimaryLightenColour}")" OnClick="@(() => this.NavigateTo("https://www.youtube.com/watch?v=lvEgZVoiHgw", "Competition2012VideoView", "Sport"))">Watch on YouTube</MudButton>
+                </MudExpansionPanel>
+                <MudExpansionPanel Text="Significant Milestones" Style="@($"background: {PortfolioThemeProvider.PrimaryColour}")" @onclick="@(async () => await this.TelemetryService.SendEvent("SignificantMilestones", "Sport", this.GetPageUrl()))">
+                    <MudTimeline>
+                        <MudTimelineItem>
+                            <ItemOpposite>
+                                <MudText Typo="Typo.h6">September 2008</MudText>
+                            </ItemOpposite>
+                            <ItemContent>
+                                <MudText Typo="Typo.body2">Start training Taekwondo at Sheffield University club; <em>"London 2012, Here I Come!"</em></MudText>
+                            </ItemContent>
+                        </MudTimelineItem>
+                        <MudTimelineItem>
+                            <ItemOpposite>
+                                <MudText Typo="Typo.h6">December 2008</MudText>
+                            </ItemOpposite>
+                            <ItemContent>
+                                <MudText Typo="Typo.body2">Pass my first grading from white to yellow belt.</MudText>
+                            </ItemContent>
+                        </MudTimelineItem>
+                        <MudTimelineItem>
+                            <ItemOpposite>
+                                <MudText Typo="Typo.h6">April 2010</MudText>
+                            </ItemOpposite>
+                            <ItemContent>
+                                <MudText Typo="Typo.body2">Elected to position of publicity officer of SU club and grade from green belt to blue tag.</MudText>
+                            </ItemContent>
+                        </MudTimelineItem>
+                        <MudTimelineItem>
+                            <ItemOpposite>
+                                <MudText Typo="Typo.h6">April 2011</MudText>
+                            </ItemOpposite>
+                            <ItemContent>
+                                <MudText Typo="Typo.body2">Elected to position of secretary of SU club.</MudText>
+                            </ItemContent>
+                        </MudTimelineItem>
+                        <MudTimelineItem>
+                            <ItemOpposite>
+                                <MudText Typo="Typo.h6">November 2011</MudText>
+                            </ItemOpposite>
+                            <ItemContent>
+                                <MudText Typo="Typo.body2">Become captain (acting) of SU club, risking causing a rupture in the space-time continuum.</MudText>
+                            </ItemContent>
+                        </MudTimelineItem>
+                        <MudTimelineItem>
+                            <ItemOpposite>
+                                <MudText Typo="Typo.h6">December 2011</MudText>
+                            </ItemOpposite>
+                            <ItemContent>
+                                <MudText Typo="Typo.body2">Give obligatory captain's speech at SU club Christmas meal!</MudText>
+                            </ItemContent>
+                        </MudTimelineItem>
+                        <MudTimelineItem>
+                            <ItemOpposite>
+                                <MudText Typo="Typo.h6">April 2012</MudText>
+                            </ItemOpposite>
+                            <ItemContent>
+                                <MudText Typo="Typo.body2">Grade from red belt to black tag.</MudText>
+                            </ItemContent>
+                        </MudTimelineItem>
+                        <MudTimelineItem>
+                            <ItemOpposite>
+                                <MudText Typo="Typo.h6">August 2012</MudText>
+                            </ItemOpposite>
+                            <ItemContent>
+                                <MudText Typo="Typo.body2">Watch 12 hours of Taekwondo at the ExCeL during the London 2012 Olympics.</MudText>
+                            </ItemContent>
+                        </MudTimelineItem>
+                        <MudTimelineItem>
+                            <ItemOpposite>
+                                <MudText Typo="Typo.h6">October 2012</MudText>
+                            </ItemOpposite>
+                            <ItemContent>
+                                <MudText Typo="Typo.body2">Grade from black tag to 1st Dan black belt.</MudText>
+                            </ItemContent>
+                        </MudTimelineItem>
+                        <MudTimelineItem>
+                            <ItemOpposite>
+                                <MudText Typo="Typo.h6">October 2015</MudText>
+                            </ItemOpposite>
+                            <ItemContent>
+                                <MudText Typo="Typo.body2">Brush shoulders with the high and mighty of the Taekwondo world, including Team GB members, at a Taekwondo Grand Prix in Manchester!</MudText>
+                            </ItemContent>
+                        </MudTimelineItem>
+                        <MudTimelineItem>
+                            <ItemOpposite>
+                                <MudText Typo="Typo.h6">Current</MudText>
+                            </ItemOpposite>
+                            <ItemContent>
+                                <MudText Typo="Typo.body2">Getting back into the martial art after some time out and aiming for 2nd Dan black belt.</MudText>
+                            </ItemContent>
+                        </MudTimelineItem>
+                    </MudTimeline>
+                </MudExpansionPanel>
+            </MudExpansionPanels>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+<MudGrid>
+    <MudItem xs="12" lg="4" Style="text-align: center">
+        <MudImage Src="img/sport/fightingGear.jpg"
+                  Alt="Me in Fighting Gear"
+                  Fluid="true"
+                  ObjectFit="ObjectFit.None"
+                  Elevation="10"
+                  Class="rounded-lg my-4" />
+    </MudItem>
+    <MudItem xs="12" lg="4" Style="text-align: center">
+        <MudImage Src="img/sport/jumpingKick.jpg"
+                  Alt="Jumping Front Kick"
+                  Fluid="true"
+                  ObjectFit="ObjectFit.None"
+                  Elevation="10"
+                  Class="rounded-lg my-4" />
+    </MudItem>
+    <MudItem xs="12" lg="4" Style="text-align: center">
+        <MudImage Src="img/sport/blackBelt.jpg"
+                  Alt="Getting my First Dan Black Belt"
+                  Fluid="true"
+                  ObjectFit="ObjectFit.None"
+                  Elevation="10"
+                  Class="rounded-lg my-4" />
+    </MudItem>
+</MudGrid>
+
+@code {
+    /// <summary>
+    /// Navigates to a specified URL and sends its telemetry event.
+    /// </summary>
+    /// <param name="destinationUrl">The destination URL.</param>
+    /// <param name="eventName">The telemetry event name.</param>
+    /// <param name="category">The telemetry event category.</param>
+    private async Task NavigateTo(string destinationUrl, string eventName, string category)
+    {
+        await this.TelemetryService.SendEvent(eventName, category, this.GetPageUrl());
+        this.NavigationManager.NavigateTo(destinationUrl);
+    }
+    
+    /// <summary>
+    /// Gets the current page URL relative to the root.
+    /// </summary>
+    /// <returns>The current page relative URL.</returns>
+    private string GetPageUrl()
+    {
+        return $"/{this.NavigationManager.ToBaseRelativePath(this.NavigationManager.Uri)}";
+    }
+}

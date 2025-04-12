@@ -1,0 +1,171 @@
+{
+    "Music": {
+        "Scores": {
+            "MuseScoreUser": {
+                "Id": 536,
+                "Username": "BWHazel"
+            },
+            "Works": [
+                {
+                    "ScoreId": "fete-galante",
+                    "MuseScoreScoreId": 6287503,
+                    "Title": "Fete Galante",
+                    "Year": 2004,
+                    "Ensemble": "Mixed Quartet",
+                    "Parts": [
+                        "Flute",
+                        "Recorder (Descant)",
+                        "Oboe",
+                        "Piano"
+                    ],
+                    "ProgrammeNotes": "Written for flute, descant recorder, oboe and piano.  This was written for my A-Level music coursework and, like Wind in Harmony, started out as a simple exercise within the course!  This composition explores musical transformations and arrangements of a main theme as well as a piano cadenza."
+                },
+                {
+                    "ScoreId": "summer-dusk",
+                    "MuseScoreScoreId": 14830435,
+                    "Title": "Summer Dusk",
+                    "Year": 2002,
+                    "Ensemble": "Piano Solo",
+                    "Parts": [
+                        "Piano"
+                    ],
+                    "ProgrammeNotes": "This composition was written for GCSE Music coursework and is intended to invoke the image of a warm evening in midsummer."
+                },
+                {
+                    "ScoreId": "trumpet-fanfare",
+                    "MuseScoreScoreId": 6287479,
+                    "Title": "Trumpet Fanfare",
+                    "Year": 2000,
+                    "Ensemble": "Brass Duet",
+                    "Parts": [
+                        "Trumpet (x2)"
+                    ],
+                    "ProgrammeNotes": "This is a fanfare duet for two trumpets, also originating as a music exercise when was in year 8 at school!  A friend used the piece as the introductory fanfare to a Christmas concert he hosted several years ago."
+                },
+                {
+                    "ScoreId": "wind-in-harmony",
+                    "MuseScoreScoreId": 6287456,
+                    "Title": "Wind in Harmony",
+                    "Year": 2002,
+                    "Ensemble": "Mixed Quintet",
+                    "Parts": [
+                        "Flute",
+                        "Recorder (Descant)",
+                        "Oboe",
+                        "Piano"
+                    ],
+                    "ProgrammeNotes": "Written for flute, descant recorder, oboe and piano.  This was written for my GCSE music coursework and started out as a simple exercise within the course for applying a melody to a chord sequence!  To this day, it is my favourite composition!"
+                }
+            ]
+        },
+        "Albums": {
+            "Works": [
+                {
+                    "AlbumId": "four-forces",
+                    "Title": "Four Forces",
+                    "Description": "The four forces of nature represented in Electronica!",
+                    "Year": 2008,
+                    "ImagePath": "img/music/albums/four-forces/album.png"
+                }
+            ]
+        }
+    },
+    "GraphicDesign": {
+        "BehanceProjects": {
+            "Works": [
+                {
+                    "ProjectId": "creative-explorations-2020-11",
+                    "BehanceProjectId": 107089045
+                },
+                {
+                    "ProjectId": "exploring-photoshop-in-antarctica",
+                    "BehanceProjectId": 106788851
+                },
+                {
+                    "ProjectId": "tastes-of-canada",
+                    "BehanceProjectId": 215618513
+                },
+                {
+                    "ProjectId": "triumvirates-flag",
+                    "BehanceProjectId": 215626971
+                }
+            ]
+        }
+    },
+    "SiteList": {
+        "Sites": [
+            {
+                "Title": "Aka.BWHazel",
+                "Url": "https://aka.bwhazel.co.uk",
+                "Description": "My personal URL shortener.",
+                "Hosting": "Civo Kubernetes",
+                "SourceCodeUrl": "https://github.com/BHazel/aka.git",
+                "Availability": "AlwaysAvailable",
+                "Notes": null
+            },
+            {
+                "Title": "Benedict W. Hazel",
+                "Url": "https://bwhazel.co.uk",
+                "Description": "My personal website and creative portfolio!",
+                "Hosting": "Netlify",
+                "SourceCodeUrl": "https://github.com/BHazel/bwhazel-portfolio-web-site.git",
+                "Availability": "AlwaysAvailable",
+                "Notes": "Relaunched as v4 and renamed in 2025 from B W Hazel."
+            },
+            {
+                "Title": "BWHazel API",
+                "Url": "https://api.bwhazel.co.uk",
+                "Description": "Basic APIs for use by 3rd parties in their own solutions.",
+                "Hosting": "Civo Kubernetes",
+                "SourceCodeUrl": "https://github.com/BHazel/bwhazel-web-api.git",
+                "Availability": "AlwaysAvailable",
+                "Notes": null
+            },
+            {
+                "Title": "BWHazel Info",
+                "Url": null,
+                "Description": "Technical and legal info on my web sites",
+                "Hosting": "Netlify",
+                "SourceCodeUrl": "https://github.com/BHazel/bwhazel-info-web-site.git",
+                "Availability": "TakenOffline",
+                "Notes": "Shut down in 2025 and content merged into B W Hazel."
+            },
+            {
+                "Title": "Carols",
+                "Url": null,
+                "Description": "Interactive song sheets for Christmas carolling.",
+                "Hosting": "Microsoft Azure App Service",
+                "SourceCodeUrl": null,
+                "Availability": "LimitedAccess",
+                "Notes": null
+            },
+            {
+                "Title": "Countdown",
+                "Url": null,
+                "Description": "Basic countdown clock for tailored events.",
+                "Hosting": "Netlify",
+                "SourceCodeUrl": null,
+                "Availability": "LimitedAccess",
+                "Notes": null
+            },
+            {
+                "Title": "Four Forces",
+                "Url": null,
+                "Description": "Web site for an electronica album I wrote inspired by the four forces of nature.",
+                "Hosting": "eUKhost IIS",
+                "SourceCodeUrl": null,
+                "Availability": "TakenOffline",
+                "Notes": "Shut down in 2025 and content merged into B W Hazel."
+            },
+            {
+                "Title": "Travel Blog",
+                "Url": "https://bwhantarctica.blogspot.com",
+                "Description": "A blog for my travels.",
+                "Hosting": "Google Blogger",
+                "SourceCodeUrl": null,
+                "Availability": "AlwaysAvailable",
+                "Notes": null
+            }
+        ]
+    }
+}

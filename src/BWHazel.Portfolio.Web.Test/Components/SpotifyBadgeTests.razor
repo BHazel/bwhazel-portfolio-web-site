@@ -1,0 +1,96 @@
+@inherits PortfolioTestContext
+
+@code {
+    /// <summary>
+    /// Tests that the <see cref="SpotifyBadge"/> component renders the badge with default values with the album ID and SI code provided.
+    /// </summary>
+    [Fact]
+    public void SpotifyBadge_WithAlbumIdAndSiCodeAndDefaultValues_RendersBadge()
+    {
+        IRenderedFragment component = this.Render(@<SpotifyBadge AlbumId="album-1" SiCode="si-code" />);
+        
+        component.MarkupMatches(@<a href="https://open.spotify.com/album/album-1?si=si-code"
+                                   style="display: inline-block; width: 281px; height: 82px">
+                                    <img src="/img/music/services/spotify.png"
+                                         alt="Listen on Spotify"
+                                         style="width: 251px; height: 52px; vertical-align: middle; object-fit: contain;"/>
+                                </a>);
+    }
+    
+    /// <summary>
+    /// Tests that the <see cref="SpotifyBadge"/> component renders the badge with modified default values with the album ID and SI code provided.
+    /// </summary>
+    [Fact]
+    public void SpotifyBadge_WithAlbumIdAndSiCodeAndModifiedDefaultValues_RendersBadge()
+    {
+        IRenderedFragment component = this.Render(@<SpotifyBadge Height="100"
+                                                                 Width="300"
+                                                                 AlbumId="album-1"
+                                                                 SiCode="si-code" />);
+        
+        component.MarkupMatches(@<a href="https://open.spotify.com/album/album-1?si=si-code"
+                                    style="display: inline-block; width: 300px; height: 100px">
+                                    <img src="/img/music/services/spotify.png"
+                                         alt="Listen on Spotify"
+                                         style="width: 270px; height: 70px; vertical-align: middle; object-fit: contain;"/>
+                                </a>);
+    }
+    
+    /// <summary>
+    /// Tests that the <see cref="SpotifyBadge"/> component renders an error when the album ID and SI code are not provided.
+    /// </summary>
+    [Fact]
+    public void SpotifyBadge_WithMissingAlbumIdAndSiCode_RendersError()
+    {
+        IRenderedFragment component = this.Render(@<SpotifyBadge />);
+        
+        component.MarkupMatches(@<MudAlert Severity="Severity.Error">
+                                    <strong>An error occurred displaying the Spotify badge:</strong><br/>
+                                    The album ID and SI code are required.
+                                </MudAlert>);
+    }
+    
+    /// <summary>
+    /// Tests that the <see cref="SpotifyBadge"/> component renders an error when the album ID is not provided.
+    /// </summary>
+    [Fact]
+    public void SpotifyBadge_WithMissingAlbumId_RendersError()
+    {
+        IRenderedFragment component = this.Render(@<SpotifyBadge SiCode="si-code" />);
+        
+        component.MarkupMatches(@<MudAlert Severity="Severity.Error">
+                                    <strong>An error occurred displaying the Spotify badge:</strong><br/>
+                                    The album ID and SI code are required.
+                                </MudAlert>);
+    }
+    
+    /// <summary>
+    /// Tests that the <see cref="SpotifyBadge"/> component renders an error when the SI code is not provided.
+    /// </summary>
+    [Fact]
+    public void SpotifyBadge_WithMissingSiCode_RendersError()
+    {
+        IRenderedFragment component = this.Render(@<SpotifyBadge AlbumId="album-1" />);
+        
+        component.MarkupMatches(@<MudAlert Severity="Severity.Error">
+                                    <strong>An error occurred displaying the Spotify badge:</strong><br/>
+                                    The album ID and SI code are required.
+                                </MudAlert>);
+    }
+    
+    /// <summary>
+    /// Tests that the <see cref="SpotifyBadge"/> component executes the click event handler when clicked.
+    /// </summary>
+    [Fact]
+    public void SpotifyBadge_WithOnClickHandler_ExecutesDelegate()
+    {
+        bool isClicked = false;
+        IRenderedFragment component = this.Render(@<SpotifyBadge AlbumId="123"
+                                                                 SiCode="si-code"
+                                                                 OnClick="@(() => isClicked = !isClicked)" />);
+
+        component.Find("a").Click();
+        
+        isClicked.ShouldBeTrue();
+    }
+}

@@ -1,0 +1,82 @@
+@page "/Music/Albums"
+
+@using BWHazel.Portfolio.Web.Models
+@using BWHazel.Portfolio.Web.Services
+
+@inject AlbumService AlbumService
+@inject NavigationManager NavigationManager
+
+<PortfolioPageTitle Title="Albums" />
+
+<MudText GutterBottom="true" Typo="Typo.h3">Albums</MudText>
+<MudAlert Severity="Severity.Info">
+    Click on an album for more information and to listen to a preview of the music.
+</MudAlert>
+<br />
+
+@if (this.albums.Any())
+{
+    <MudGrid>
+        @foreach (Album album in this.albums)
+        {
+            <MudItem xs="12" sm="6" md="4">
+                <MudCard Style="height: 100%">
+                    <MudCardMedia Image="@album.ImagePath" Height="344" Title="@album.Title" />
+                    <MudCardContent>
+                        <MudText Typo="Typo.h6">@album.Title</MudText>
+                        <MudText Typo="Typo.body1">@album.Description</MudText>
+                    </MudCardContent>
+                    <MudCardActions>
+                        <MudButton Variant="Variant.Text"
+                                   Color="Color.Primary"
+                                   OnClick="@(() => this.NavigationManager.NavigateTo($"/Music/Albums/{album.AlbumId}"))">
+                            More Info
+                        </MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+        }
+    </MudGrid>
+}
+else if (this.isError)
+{
+    <MudAlert Severity="Severity.Error">
+        <strong>An error occurred while loading the albums:</strong><br />
+        @this.errorMessage
+    </MudAlert>
+}
+else if (this.isLoaded)
+{
+    <MudAlert Severity="Severity.Warning">
+        No albums found.
+    </MudAlert>
+}
+
+@code {
+    private bool isLoaded = false;
+    private bool isError = false;
+    private string? errorMessage;
+    private List<Album> albums = [];
+    
+    /// <summary>
+    /// Method invoked when the component is ready to start, having received its initial parameters from its parent in the render tree.
+    /// </summary>
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            this.albums = this.AlbumService.GetAllAlbums();
+        }
+        catch (Exception exception)
+        {
+            this.isError = true;
+            this.errorMessage = exception.Message;
+        }
+        finally
+        {
+            this.isLoaded = true;
+        }
+
+        await base.OnInitializedAsync();
+    }
+}

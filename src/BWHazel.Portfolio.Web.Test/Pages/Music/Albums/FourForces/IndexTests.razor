@@ -1,0 +1,69 @@
+@inherits PortfolioTestContext
+
+@using BWHazel.Portfolio.Web.Pages.Music.Albums.FourForces
+@using BWHazel.Portfolio.Web.Services
+
+@code {
+    private readonly ITelemetryService telemetryService;
+    private readonly NavigationManager navigationManager;
+
+    /// <summary>
+    /// Initialises a new instance of the <see cref="HomeTests" /> class.
+    /// </summary>
+    public IndexTests()
+    {
+        this.telemetryService = Substitute.For<ITelemetryService>();
+        this.Services.AddSingleton(this.telemetryService);
+        this.navigationManager = this.Services.GetRequiredService<NavigationManager>();
+    }
+    
+    /// <summary>
+    /// Tests that the <see cref="Web.Pages.Music.Albums.FourForces.Index" /> page sends a telemetry event when the Apple Music badge is clicked.
+    /// </summary>
+    [Fact]
+    public void Index_WhenAppleMusicBadgeIsClicked_SendsTelemetryEvent()
+    {
+        IRenderedFragment page = this.Render(@<Index />);
+        IRenderedComponent<AppleMusicBadge> appleMusicBadge = page.FindComponent<AppleMusicBadge>();
+
+        appleMusicBadge.Find("a").Click();
+        
+        this.telemetryService.Received(1).SendEvent(Arg.Is("FourForcesAppleMusicView"), Arg.Is("Music"), Arg.Any<string>());
+    }
+    
+    /// <summary>
+    /// Tests that the <see cref="Web.Pages.Music.Albums.FourForces.Index" /> page sends a telemetry event when the Apple Music badge is clicked.
+    /// </summary>
+    [Fact]
+    public void Index_WhenSpotifyBadgeIsClicked_SendsTelemetryEvent()
+    {
+        IRenderedFragment page = this.Render(@<Index />);
+        IRenderedComponent<SpotifyBadge> appleMusicBadge = page.FindComponent<SpotifyBadge>();
+
+        appleMusicBadge.Find("a").Click();
+        
+        this.telemetryService.Received(1).SendEvent(Arg.Is("FourForcesSpotifyView"), Arg.Is("Music"), Arg.Any<string>());
+    }
+
+    /// <summary>
+    /// Tests that the <see cref="Web.Pages.Music.Albums.FourForces.Index" /> page navigates to the correct URL and sends a telemetry event when a streaming service button is clicked.
+    /// </summary>
+    /// <param name="buttonIndex">The button index in the button group.</param>
+    /// <param name="destinationUrl">The destination URL.</param>
+    /// <param name="telemetryEventName">The telemetry event name.</param>
+    [Theory]
+    [InlineData(0, "https://music.youtube.com/playlist?list=OLAK5uy_nhPRD9FNk7yFDsxmpoWmvVWYgnsEwMDEU&si=NQfDllTUhBHAZoix", "FourForcesYouTubeMusicView")]
+    [InlineData(1, "https://music.amazon.com/albums/B0BT1Y1J7Y?marketplaceId=ATVPDKIKX0DER&musicTerritory=US&ref=dm_sh_Jn5yu8UuUFJu4bLJHkZpZJXfD", "FourForcesAmazonMusicView")]
+    public void Index_WhenStreamingServiceButtonIsClicked_NavigatesAndSendsTelemetryEvent(int buttonIndex, string destinationUrl, string telemetryEventName)
+    {
+        IRenderedFragment page = this.Render(@<Index />);
+        IRenderedComponent<MudButtonGroup> streamingServiceButtonGroup = page.FindComponent<MudButtonGroup>();
+        IReadOnlyList<IRenderedComponent<MudButton>> buttons = streamingServiceButtonGroup.FindComponents<MudButton>();
+        IRenderedComponent<MudButton> button = buttons[buttonIndex];
+
+        button.Find("button").Click();
+        
+        this.navigationManager.Uri.ShouldBe(destinationUrl);
+        this.telemetryService.Received(1).SendEvent(Arg.Is(telemetryEventName), Arg.Is("Music"), Arg.Any<string>());
+    }
+}

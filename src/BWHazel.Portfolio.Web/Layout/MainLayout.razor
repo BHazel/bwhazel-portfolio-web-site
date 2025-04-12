@@ -1,3 +1,42 @@
 ﻿@inherits LayoutComponentBase
 
-@this.Body
+@inject NavigationManager NavigationManager
+
+<MudThemeProvider Theme="@PortfolioThemeProvider.PortfolioTheme" IsDarkMode="true" />
+<MudPopoverProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<MudLayout>
+    <MudAppBar Color="Color.Primary">
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="e => this.ToggleDrawer()" />
+        <MudText Typo="Typo.h5">@this.SiteTitle</MudText>
+    </MudAppBar>
+    <MudDrawer @bind-Open="@this.isDrawerOpen" ClipMode="DrawerClipMode.Always">
+        <NavMenu />
+    </MudDrawer>
+    <MudMainContent>
+        <MudContainer Class="mt-8" MaxWidth="MaxWidth.Large">
+            @this.Body
+            <br />
+        </MudContainer>
+    </MudMainContent>
+</MudLayout>
+
+@code {
+    private bool isDrawerOpen = true;
+
+    /// <summary>
+    /// Gets or sets the site title.
+    /// </summary>
+    [CascadingParameter(Name = "SiteTitle")]
+    public string SiteTitle { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Toggles the navigation drawer between open and closed.
+    /// </summary>
+    private void ToggleDrawer()
+    {
+        this.isDrawerOpen = !this.isDrawerOpen;
+    }
+}

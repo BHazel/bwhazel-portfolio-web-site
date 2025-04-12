@@ -1,0 +1,196 @@
+@page "/Music/Albums/Four-Forces"
+
+@using BWHazel.Portfolio.Web.Services
+
+@inject NavigationManager NavigationManager
+@inject ITelemetryService TelemetryService
+
+<PortfolioPageTitle Title="Four Forces" />
+
+<MudPaper Class="pa-3" Style="@($"background-color: {Colors.Shades.Black}; color: {Colors.Shades.White}")">
+    <MudGrid>
+        <MudItem xs="12" lg="3">
+            <MudImage Src="img/music/albums/four-forces/album.png" Fluid="true" Alt="Four Forces Album" />
+        </MudItem>
+        <MudItem xs="12" lg="9">
+            <MudText GutterBottom="true" Typo="Typo.h3">Four Forces</MudText>
+            <MudText GutterBottom="true" Typo="Typo.h5">
+                The four forces of nature represented in Electronica!
+            </MudText>
+            <MudText GutterBottom="true" Typo="Typo.body1">
+                Gravity, Electromagnetism, the Weak Nuclear Force and Strong Nuclear Force are the four fundamental forces of nature.  At high energy they merge to form the Combined Force.
+            </MudText>
+            <MudText GutterBottom="true" Typo="Typo.body1">
+                <em><strong>Four Forces</strong></em>, released in 2008, is my musical representation in electronica!
+            </MudText>
+            <MudText Typo="Typo.body1">
+                Scroll down for more information on the Four Forces and a preview!
+            </MudText>
+        </MudItem>
+    </MudGrid>
+    
+    <MudPaper Class="pa-3 mt-3 mb-3" Style="@($"background-color: {Colors.Gray.Darken3}; color: inherit")">
+        <MudText Typo="Typo.h4">Listen to Four Forces Now!</MudText>
+        <MudPaper Elevation="0" Class="mt-2 mb-2 mr-1" Style="@($"background-color: inherit; display: inline-block")">
+            <AppleMusicBadge AlbumId="273760711" AlbumSlug="four-forces-ep" @onclick="@(async () => await this.TelemetryService.SendEvent("FourForcesAppleMusicView", "Music", this.GetPageUrl()))" />
+        </MudPaper>
+        <MudPaper Elevation="0" Class="mt-2 mb-2 ml-1" Style="@($"background-color: inherit; display: inline-block")">
+            <SpotifyBadge AlbumId="5XrQMZ8si2WRKN1epSGgE7" SiCode="YQRsc1Q7Quq06Qm-JxJWqg" @onclick="@(async () => await this.TelemetryService.SendEvent("FourForcesSpotifyView", "Music", this.GetPageUrl()))" />
+        </MudPaper>
+        <MudText GutterBottom="true" Typo="Typo.body1">
+            And available for purchase on the iTunes Store!  To purchase click the "..." button on the Apple Music album page and select <em>Show in iTunes Store</em>.
+        </MudText>
+        
+        <MudText GutterBottom="true" Typo="Typo.h6">
+            Also available on:
+        </MudText>
+        <MudPaper Elevation="0" Class="mb-2" Style="@($"background-color: inherit; color: inherit")">
+            <MudButtonGroup Variant="Variant.Filled" Vertical="true">
+                <MudButton Variant="Variant.Filled"
+                           OnClick="@(async () => await this.NavigateTo("https://music.youtube.com/playlist?list=OLAK5uy_nhPRD9FNk7yFDsxmpoWmvVWYgnsEwMDEU&si=NQfDllTUhBHAZoix", "FourForcesYouTubeMusicView", "Music"))"
+                           Style=@($"background-color: {Colors.Red.Accent4}; color: inherit")>
+                    YouTube Music
+                </MudButton>
+                <MudButton Variant="Variant.Filled"
+                           OnClick="@(async () => await this.NavigateTo("https://music.amazon.com/albums/B0BT1Y1J7Y?marketplaceId=ATVPDKIKX0DER&musicTerritory=US&ref=dm_sh_Jn5yu8UuUFJu4bLJHkZpZJXfD", "FourForcesAmazonMusicView", "Music"))"
+                           Style=@($"background-color: {Colors.Blue.Accent4}; color: inherit")>
+                    Amazon Music
+                </MudButton>
+            </MudButtonGroup>
+        </MudPaper>
+    </MudPaper>
+    
+    <MudText GutterBottom="true" Typo="Typo.h4">
+        The Four Forces
+    </MudText>
+    <MudTimeline TimelinePosition="TimelinePosition.Alternate" Class="mt-3 mb-3">
+        <MudTimelineItem Class="d-flex align-center">
+            <ItemOpposite>
+                <MudImage Src="img/music/albums/four-forces/gravity.png" Fluid="true" Alt="Gravity"/>
+            </ItemOpposite>
+            <ItemContent>
+                <MudText Typo="Typo.body1">
+                    <strong>Gravity</strong> is the weakest of all the four forces but has the longest range.  It is always an attractive force between two objects in the Universe.
+                </MudText>
+            </ItemContent>
+        </MudTimelineItem>
+        <MudTimelineItem Class="d-flex align-center">
+            <ItemOpposite>
+                <MudImage Src="img/music/albums/four-forces/weak-force.png" Fluid="true" Alt="Weak Nuclear Force"/>
+            </ItemOpposite>
+            <ItemContent>
+                <MudText Typo="Typo.body1">
+                    The <strong>Weak Nuclear Force</strong>, as its name suggests, is weak and has a short range.  It is responsible for radioactive decay and neutrino interactions.
+                </MudText>
+            </ItemContent>
+        </MudTimelineItem>
+        <MudTimelineItem Class="d-flex align-center">
+            <ItemOpposite>
+                <MudImage Src="img/music/albums/four-forces/electromagnetism.png" Fluid="true" Alt="Electromagnetism"/>
+            </ItemOpposite>
+            <ItemContent>
+                <MudText Typo="Typo.body1">
+                    <strong>Electromagnetism</strong> has a long-range and can be attractive or repulsive.  However, it only acts on objects carrying an electric charge.  It is responsible for the attraction and repulsion of unlike and like electric charges or bar magnets.
+                </MudText>
+            </ItemContent>
+        </MudTimelineItem>
+        <MudTimelineItem Class="d-flex align-center">
+            <ItemOpposite>
+                <MudImage Src="img/music/albums/four-forces/strong-force.png" Fluid="true" Alt="Strong Nuclear Force"/>
+            </ItemOpposite>
+            <ItemContent>
+                <MudText Typo="Typo.body1">
+                    The <strong>Strong Nuclear Force</strong>, as its name suggests, is strong but has a short range.  It is an attractive force but can be repulsive.  It is responsible for holding the nuclei of atoms together.
+                </MudText>
+            </ItemContent>
+        </MudTimelineItem>
+        <MudTimelineItem Class="d-flex align-center">
+            <ItemOpposite>
+                <MudImage Src="img/music/albums/four-forces/combined-force.png" Fluid="true" Alt="Combined Force"/>
+            </ItemOpposite>
+            <ItemContent>
+                <MudText Typo="Typo.body1">
+                    It is believed that at very high temperatures, such as those in the Big Bang, all the four forces unify to form a <strong>Combined Force</strong>.  As temperatures lower, the forces separate in a process known as Spontaneous Symmetry Breaking.
+                </MudText>
+            </ItemContent>
+        </MudTimelineItem>
+    </MudTimeline>
+
+    <MudText GutterBottom="true" Typo="Typo.h4">Preview the Music</MudText>
+    <MudPaper Elevation="0" Style="@($"background-color: inherit")">
+        <MudGrid>
+            <MudItem xs="12" md="3">
+                <MudSelect T="string" Label="Preview Service" Value="@this.selectedPreviewService" ValueChanged="@(async service => await this.OnSelectValueChangeHandler(service))">
+                    @foreach (string previewService in this.previewServices)
+                    {
+                        <MudSelectItem Value="@previewService">@previewService</MudSelectItem>
+                    }
+                </MudSelect>
+            </MudItem>
+            <MudItem xs="12" md="9" Style="; text-align: center">
+                @switch (this.selectedPreviewService)
+                {
+                    case "Apple Music":
+                        <AppleMusicPlayer AlbumId="273760711" AlbumSlug="four-forces-ep" />
+                        break;
+                    case "Spotify":
+                        <SpotifyMusicPlayer AlbumId="5XrQMZ8si2WRKN1epSGgE7" />
+                        break;
+                    case "SoundCloud":
+                        <SoundCloudPlayer PlaylistId="19481628" PlaylistSlug="four-forces-samples" PlaylistTitle="Four Forces (Samples)" />
+                        break;
+                }
+            </MudItem>
+        </MudGrid>
+    </MudPaper>
+</MudPaper>
+
+@code {
+    private string selectedPreviewService = "Apple Music";
+    private readonly string[] previewServices =
+    [
+        "Apple Music",
+        "Spotify",
+        "SoundCloud"
+    ];
+    
+    /// <summary>
+    /// Navigates to a specified URL and sends its telemetry event.
+    /// </summary>
+    /// <param name="destinationUrl">The destination URL.</param>
+    /// <param name="eventName">The telemetry event name.</param>
+    /// <param name="category">The telemetry event category.</param>
+    private async Task NavigateTo(string destinationUrl, string eventName, string category)
+    {
+        await this.TelemetryService.SendEvent(eventName, category, this.GetPageUrl());
+        this.NavigationManager.NavigateTo(destinationUrl);
+    }
+    
+    /// <summary>
+    /// Gets the current page URL relative to the root.
+    /// </summary>
+    /// <returns>The current page relative URL.</returns>
+    private string GetPageUrl()
+    {
+        return $"/{this.NavigationManager.ToBaseRelativePath(this.NavigationManager.Uri)}";
+    }
+
+    /// <summary>
+    /// Handles the change event of the streaming service preview selection.
+    /// </summary>
+    /// <param name="selectedService">The selected streaming service.</param>
+    /// <exception cref="NotSupportedException">Exception thrown if an unknown streaming service is provided.</exception>
+    private async Task OnSelectValueChangeHandler(string selectedService)
+    {
+        this.selectedPreviewService = selectedService;
+        string telemetryEventName = selectedService switch
+        {
+            "Apple Music" => "FourForcesAppleMusicPreview",
+            "Spotify" => "FourForcesSpotifyPreview",
+            "SoundCloud" => "FourForcesSoundCloudPreview",
+            _ => throw new NotSupportedException($"{selectedService} is not a supported service for preview.")
+        };
+        
+        await this.TelemetryService.SendEvent(telemetryEventName, "Music", this.GetPageUrl());
+    }
+}
