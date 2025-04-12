@@ -30,10 +30,10 @@ jobs:
         run: dotnet build --configuration ${{ env.buildConfiguration }}
       - name: Test
         working-directory: src
-        run: dotnet test
+        run: dotnet test --no-build
       - name: Package
-        working-directory: src
-        run: dotnet publish --configuration ${{ env.buildConfiguration }} -o dist
+        working-directory: src/BWHazel.Portfolio.Web
+        run: dotnet publish --configuration ${{ env.buildConfiguration }} -o ../../dist
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
