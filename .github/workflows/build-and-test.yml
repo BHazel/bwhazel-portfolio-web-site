@@ -30,7 +30,7 @@ jobs:
         run: dotnet build --configuration ${{ env.buildConfiguration }}
       - name: Test
         working-directory: src
-        run: dotnet test --no-build
+        run: dotnet test
       - name: Package
         working-directory: src/BWHazel.Portfolio.Web
         run: dotnet publish --configuration ${{ env.buildConfiguration }} -o ../../dist
