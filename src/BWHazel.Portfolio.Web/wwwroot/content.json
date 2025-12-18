@@ -114,12 +114,12 @@
             },
             {
                 "Title": "BWHazel API",
-                "Url": "https://api.bwhazel.co.uk",
+                "Url": null,
                 "Description": "Basic APIs for use by 3rd parties in their own solutions.",
                 "Hosting": "Civo Kubernetes",
                 "SourceCodeUrl": "https://github.com/BHazel/bwhazel-web-api.git",
-                "Availability": "AlwaysAvailable",
-                "Notes": null
+                "Availability": "TakenOffline",
+                "Notes": "Shut down in 2025 due to low traffic and higher maintenance requirements."
             },
             {
                 "Title": "BWHazel Info",

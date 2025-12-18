@@ -9,7 +9,7 @@ jobs:
       - name: Set up .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '9.0.x'
+          dotnet-version: '10.0.x'
       - name: Get Environment & Secrets (Development)
         if: github.ref != 'refs/heads/master' && !contains(github.ref, '/rl-')
         run: |
